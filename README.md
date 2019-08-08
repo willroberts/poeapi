@@ -12,10 +12,6 @@ A Go client for the Path of Exile API.
 * Built-in, tunable caching for responses
 * 100% standard library code
 
-## Documentation
-
-TBD.
-
 ## Examples
 
 There are some examples in the `cmd` directory.
