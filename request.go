@@ -2,7 +2,6 @@ package poeapi
 
 import (
 	"io/ioutil"
-	"log"
 	"net/http"
 	"time"
 )
@@ -10,11 +9,14 @@ import (
 const rateLimitTimeout = 2 * time.Second
 
 func (c *client) getJSON(url string) (string, error) {
-	if err := c.limiter.Wait(); err != nil {
-		log.Println("failed to get json:", err)
-		return "", err
+	var ratelimit int
+	if url == c.formatURL(stashTabsEndpoint) {
+		ratelimit = c.limiter.rateLimit
+	} else {
+		ratelimit = c.limiter.stashTabRateLimit
 	}
 
+	c.limiter.wait(ratelimit)
 	resp, err := http.Get(url)
 	if err != nil {
 		// An error is returned if the Client's CheckRedirect function fails or

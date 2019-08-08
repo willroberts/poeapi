@@ -6,11 +6,6 @@ import (
 	"time"
 )
 
-const (
-	apiRateLimit  = 1.0
-	apiBurstLimit = 1
-)
-
 // APIClient provides methods for interacting with the Path of Exile API.
 type APIClient interface {
 	GetAllLeagues() ([]League, error)
@@ -39,7 +34,7 @@ func NewAPIClient(opts ClientOptions) APIClient {
 	return &client{
 		host:    opts.Host,
 		useSSL:  opts.UseSSL,
-		limiter: newRatelimiter(ratelimit(opts.RateLimit), opts.RateLimit),
+		limiter: newJankLimiter(opts.RateLimit, opts.StashTabRateLimit),
 	}
 }
 
@@ -47,7 +42,7 @@ type client struct {
 	host   string
 	useSSL bool
 
-	limiter *ratelimiter
+	limiter *janklimiter
 }
 
 func (c *client) GetAllLeagues() ([]League, error) {
