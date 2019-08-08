@@ -19,19 +19,25 @@ import (
 )
 
 const (
-	initialRate int = 4
+	initialRate int = 1
 	maxRate     int = 10
-	testCount   int = 1000
+	testCount   int = 10
 
-	//testURL string = "https://api.pathofexile.com/leagues/Standard" // 5rps.
-	testURL string = "https://api.pathofexile.com/ladders/Standard" // 6-7rps.
+	//testURL string = "https://api.pathofexile.com/public-stash-tabs" // 1rps.
+	testURL string = "https://api.pathofexile.com/leagues/Standard" // 5rps.
+	//testURL string = "https://api.pathofexile.com/ladders/Standard" // 5rps.
+	//testURL string = "https://api.pathofexile.com/pvp-matches" // 5rps.
+	//testURL string = "https://api.pathofexile.com/league-rules" // no limit.
 
-	verbose bool = false
+	verbose bool = true
 )
 
 // Keys: Whole number of requests per second.
 // Values: Milliseconds between each request.
 var rateToInterval = map[int]float64{
+	1:  1000,
+	2:  500,
+	3:  333,
 	4:  250,
 	5:  200,
 	6:  167,
@@ -110,13 +116,16 @@ func main() {
 
 func sendRequest() (int, error) {
 	start := time.Now()
+
 	resp, err := http.Get(testURL)
 	if err != nil {
 		return 0, err
 	}
+	defer resp.Body.Close()
+
 	if verbose {
 		log.Println("code:", resp.StatusCode, "latency:", time.Since(start))
 	}
-	defer resp.Body.Close()
+
 	return resp.StatusCode, nil
 }
