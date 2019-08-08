@@ -19,17 +19,30 @@ import (
 )
 
 const (
-	initialFreq  float64 = 0.5 // 4 RPS.
-	minFreq      float64 = 0.1 // 10 RPS.
-	successCount int     = 100
+	initialRate int = 4
+	maxRate     int = 10
+	testCount   int = 1000
 
-	// Testing suggests that /leagues/ URLs have no rate limit.
 	//testURL string = "https://api.pathofexile.com/leagues/Standard" // 5rps.
-	testURL string = "https://api.pathofexile.com/ladders/Standard" // 1/.15
+	testURL string = "https://api.pathofexile.com/ladders/Standard" // 6-7rps.
+
+	verbose bool = false
 )
 
+// Keys: Whole number of requests per second.
+// Values: Milliseconds between each request.
+var rateToInterval = map[int]float64{
+	4:  250,
+	5:  200,
+	6:  167,
+	7:  143,
+	8:  125,
+	9:  111,
+	10: 100,
+}
+
 type limitfinder struct {
-	freq      float64
+	rate      int
 	successes int
 	lock      sync.Mutex
 }
@@ -41,10 +54,10 @@ func (lf *limitfinder) ParseCode(code int) bool {
 	if code == http.StatusOK {
 		lf.successes++
 	}
-	if lf.successes == successCount {
-		lf.freq = lf.freq - 0.05
-		log.Println("new frequency:", lf.freq)
-		if lf.freq < minFreq {
+	if lf.successes == testCount {
+		lf.rate++
+		log.Println("rate limit:", lf.rate)
+		if lf.rate == maxRate {
 			limitFound = true
 		}
 		lf.successes = 0
@@ -61,9 +74,11 @@ func main() {
 	sigCh := make(chan os.Signal, 1)
 	signal.Notify(sigCh, os.Interrupt)
 	doneCh := make(chan struct{}, 1)
-	lf := limitfinder{freq: initialFreq}
 
 	log.Println("sending requests to api.pathofexile.com")
+	lf := limitfinder{rate: initialRate}
+	log.Println("rate limit:", lf.rate)
+
 	for {
 		select {
 		case <-sigCh:
@@ -82,12 +97,12 @@ func main() {
 
 			select {
 			case <-doneCh:
-				log.Printf("testing ended at frequency %.2f", lf.freq)
+				log.Printf("rate limit reached at %d requests per second", lf.rate)
 				return
 			default:
 			}
 
-			sleepLen := time.Duration(lf.freq*1000) * time.Millisecond
+			sleepLen := time.Duration(rateToInterval[lf.rate]) * time.Millisecond
 			time.Sleep(sleepLen)
 		}
 	}
@@ -99,7 +114,9 @@ func sendRequest() (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	log.Println("code:", resp.StatusCode, "latency:", time.Since(start))
+	if verbose {
+		log.Println("code:", resp.StatusCode, "latency:", time.Since(start))
+	}
 	defer resp.Body.Close()
 	return resp.StatusCode, nil
 }
