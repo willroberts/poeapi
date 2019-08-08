@@ -34,7 +34,7 @@ func NewAPIClient(opts ClientOptions) APIClient {
 	return &client{
 		host:    opts.Host,
 		useSSL:  opts.UseSSL,
-		limiter: newJankLimiter(opts.RateLimit, opts.StashTabRateLimit),
+		limiter: newRateLimiter(opts.RateLimit, opts.StashTabRateLimit),
 	}
 }
 
@@ -42,7 +42,7 @@ type client struct {
 	host   string
 	useSSL bool
 
-	limiter *janklimiter
+	limiter *ratelimiter
 }
 
 func (c *client) GetAllLeagues() ([]League, error) {
