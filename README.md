@@ -1,5 +1,7 @@
 # poeapi
 
+[![GoDoc Widget]][GoDoc]
+
 A Go client for the Path of Exile API.
 
 ## Features
@@ -27,3 +29,6 @@ much time it has remaining.
 
 1. Implement all endpoints.
 1. Use fixtures to run tests without Internet access.
+
+[GoDoc]: https://godoc.org/willroberts/poeapi
+[GoDoc Widget]: https://godoc.org/willroberts/poeapi?status.svg
