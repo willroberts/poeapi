@@ -1,6 +1,7 @@
 package poeapi
 
 import (
+	"sync"
 	"testing"
 	"time"
 )
@@ -35,6 +36,7 @@ func TestRateLimiterTooFast(t *testing.T) {
 		requestCount = 0
 		testDuration = 5 // Seconds.
 		r            = newRateLimiter(rateLimit, rateLimit)
+		lock         = sync.Mutex{}
 		timer        = time.NewTimer(time.Duration(testDuration) * time.Second)
 	)
 	defer timer.Stop()
@@ -42,12 +44,18 @@ func TestRateLimiterTooFast(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		go func() {
 			r.wait(rateLimit)
+			lock.Lock()
 			requestCount++
+			lock.Unlock()
 		}()
 	}
 	<-timer.C
 
-	if requestCount > (rateLimit * testDuration) {
+	lock.Lock()
+	reqs := requestCount
+	lock.Unlock()
+
+	if reqs > (rateLimit * testDuration) {
 		t.Fatalf("ratelimiter failed: saw %d requests in %d seconds (expected %d)",
 			requestCount, testDuration, rateLimit*testDuration)
 	}
