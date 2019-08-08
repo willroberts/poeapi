@@ -1,7 +1,5 @@
 package poeapi
 
-import "errors"
-
 // ClientOptions contains settings for client initialization.
 type ClientOptions struct {
 	Host              string
@@ -20,10 +18,13 @@ var DefaultOptions = ClientOptions{
 
 func validateOptions(opts ClientOptions) error {
 	if opts.Host != "api.pathofexile.com" {
-		return errors.New("unsupported API host")
+		return ErrInvalidHost
 	}
-	if opts.RateLimit < 1 || opts.StashTabRateLimit < 1 {
-		return errors.New("rate limits must be 1 or higher")
+	if opts.RateLimit < 1 {
+		return ErrInvalidRateLimit
+	}
+	if opts.StashTabRateLimit < 1 {
+		return ErrInvalidStashTabRateLimit
 	}
 	return nil
 }

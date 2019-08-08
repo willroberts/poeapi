@@ -20,3 +20,13 @@ var ErrServerFailure = errors.New("server error")
 // ErrUnknownFailure is raised when an undocumented status code is returned by
 // the API. This should never occur, but is handled anyway.
 var ErrUnknownFailure = errors.New("unknown server failure")
+
+// ErrInvalidHost is raised when an unsupported hostname is provided.
+var ErrInvalidHost = errors.New("invalid API host")
+
+// ErrInvalidRateLimit is raised when the general rate limit is out of range.
+var ErrInvalidRateLimit = errors.New("invalid rate limit")
+
+// ErrInvalidStashTabRateLimit is raised when the stash tab rate limit is out of
+// range.
+var ErrInvalidStashTabRateLimit = errors.New("invalid stash tab rate limit")
