@@ -4,11 +4,11 @@ A Go client for the Path of Exile API.
 
 ## Features
 
-* Provides access to every endpoint of the Path of Exile API
-* All client operations are thread-safe
-* Built-in rate limiting
-* Built-in caching for responses
-* 100% standard library code (including no golang.org/x/ packages)
+* Supports every endpoint of the Path of Exile API
+* All operations are thread-safe
+* Built-in, tunable rate limiting
+* Built-in, tunable caching for responses
+* 100% standard library code
 
 ## Documentation
 
