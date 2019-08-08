@@ -25,6 +25,5 @@ much time it has remaining.
 
 ## To Do
 
-1. Implement all endpoints. 
-1. Spruce up documentation.
+1. Implement all endpoints.
 1. Use fixtures to run tests without Internet access.
