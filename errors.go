@@ -30,3 +30,6 @@ var ErrInvalidRateLimit = errors.New("invalid rate limit")
 // ErrInvalidStashTabRateLimit is raised when the stash tab rate limit is out of
 // range.
 var ErrInvalidStashTabRateLimit = errors.New("invalid stash tab rate limit")
+
+// ErrInvalidCacheSize is raised when the cache size is out of range.
+var ErrInvalidCacheSize = errors.New("invalid cache size")

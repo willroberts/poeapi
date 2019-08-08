@@ -11,7 +11,10 @@ func TestGetJSON(t *testing.T) {
 
 func TestGetStashTabsJSON(t *testing.T) {
 	var (
-		c   = client{limiter: newRateLimiter(1, 1)}
+		c = client{
+			host:    defaultHost,
+			limiter: newRateLimiter(defaultRateLimit, defaultStashTabRateLimit),
+		}
 		url = c.formatURL(stashTabsEndpoint)
 	)
 	_, err := c.getJSON(url)
@@ -22,7 +25,9 @@ func TestGetStashTabsJSON(t *testing.T) {
 
 func TestGetJSONWithInvalidProtocol(t *testing.T) {
 	var (
-		c   = client{limiter: newRateLimiter(1, 1)}
+		c = client{
+			limiter: newRateLimiter(defaultRateLimit, defaultStashTabRateLimit),
+		}
 		url = "htps://www.google.com"
 	)
 	_, err := c.getJSON(url)
@@ -38,11 +43,13 @@ func TestGetJSONRateLimit(t *testing.T) {
 	}
 	var (
 		c = client{
-			host:    "api.pathofexile.com",
-			limiter: newRateLimiter(50, 50),
+			host:    defaultHost,
+			limiter: newRateLimiter(50, defaultStashTabRateLimit),
 		}
 		url  = c.formatURL(leaguesEndpoint)
-		errs = errorCollector{set: make([]error, 0)}
+		errs = errorCollector{
+			set: make([]error, 0),
+		}
 	)
 	var wg sync.WaitGroup
 	for i := 0; i < 50; i++ {

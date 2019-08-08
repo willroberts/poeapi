@@ -7,10 +7,12 @@ type APIClient interface {
 }
 
 type client struct {
-	host   string
-	useSSL bool
+	host     string
+	useSSL   bool
+	useCache bool
 
 	limiter *ratelimiter
+	cache   *cache
 }
 
 // NewAPIClient configures and returns an APIClient.
@@ -18,9 +20,20 @@ func NewAPIClient(opts ClientOptions) (APIClient, error) {
 	if err := validateOptions(opts); err != nil {
 		return nil, err
 	}
-	return &client{
-		host:    opts.Host,
-		useSSL:  opts.UseSSL,
-		limiter: newRateLimiter(opts.RateLimit, opts.StashTabRateLimit),
-	}, nil
+	c := &client{
+		host:     opts.Host,
+		useSSL:   opts.UseSSL,
+		useCache: opts.UseCache,
+		limiter:  newRateLimiter(opts.RateLimit, opts.StashTabRateLimit),
+	}
+
+	if opts.UseCache {
+		cache, err := newCache(opts.CacheSize)
+		if err != nil {
+			return nil, err
+		}
+		c.cache = cache
+	}
+
+	return c, nil
 }

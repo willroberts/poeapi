@@ -22,9 +22,10 @@ func TestValidateOptionsInvalidHost(t *testing.T) {
 
 func TestValidateOptionsInvalidRateLimit(t *testing.T) {
 	opts := ClientOptions{
-		Host:              "api.pathofexile.com",
+		Host:              defaultHost,
+		CacheSize:         defaultCacheSize,
 		RateLimit:         0,
-		StashTabRateLimit: 1,
+		StashTabRateLimit: defaultStashTabRateLimit,
 	}
 	if err := validateOptions(opts); err != ErrInvalidRateLimit {
 		t.Fatal("failed to detect invalid rate limit option")
@@ -33,8 +34,9 @@ func TestValidateOptionsInvalidRateLimit(t *testing.T) {
 
 func TestValidateOptionsInvalidStashTabRateLimit(t *testing.T) {
 	opts := ClientOptions{
-		Host:              "api.pathofexile.com",
-		RateLimit:         1,
+		Host:              defaultHost,
+		CacheSize:         defaultCacheSize,
+		RateLimit:         defaultRateLimit,
 		StashTabRateLimit: 0,
 	}
 	if err := validateOptions(opts); err != ErrInvalidStashTabRateLimit {

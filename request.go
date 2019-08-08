@@ -6,6 +6,13 @@ import (
 )
 
 func (c *client) getJSON(url string) (string, error) {
+	if c.useCache {
+		cached := c.cache.Get(url)
+		if cached != "" {
+			return cached, nil
+		}
+	}
+
 	ratelimit := c.limiter.rateLimit
 	if url == c.formatURL(stashTabsEndpoint) {
 		ratelimit = c.limiter.stashTabRateLimit
@@ -42,5 +49,10 @@ func (c *client) getJSON(url string) (string, error) {
 		return "", err
 	}
 
-	return string(b), nil
+	body := string(b)
+	if c.useCache {
+		c.cache.Add(url, body)
+	}
+
+	return body, nil
 }
