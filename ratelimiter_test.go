@@ -11,18 +11,17 @@ func TestRateLimiter(t *testing.T) {
 		rateLimit    = 4
 		requestCount = 0
 		testDuration = 5 // Seconds.
+		r            = newRateLimiter(rateLimit, rateLimit)
 	)
-	r := newRateLimiter(rateLimit, rateLimit)
+
 	timer := time.NewTimer(time.Duration(testDuration) * time.Second)
 	defer timer.Stop()
 
-	select {
-	case <-timer.C:
-		break
-	default:
-		requestCount++
+	for i := 0; i < 20; i++ {
 		r.wait(rateLimit)
+		requestCount++
 	}
+	<-timer.C
 
 	if requestCount > (rateLimit * testDuration) {
 		t.Fatalf("ratelimiter failed: saw %d requests in %d seconds (expected %d)",
