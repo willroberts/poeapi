@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// GetAllLeagues retrieves all leagues (Standard, Hardcore, etc.) from the API.
 func (c *client) GetAllLeagues() ([]League, error) {
 	resp, err := c.getJSON(c.formatURL(leaguesEndpoint))
 	if err != nil {
@@ -14,6 +15,7 @@ func (c *client) GetAllLeagues() ([]League, error) {
 	return parseLeaguesResponse(resp)
 }
 
+// parseLeaguesResponse unmarshals JSON from the API into local types.
 func parseLeaguesResponse(resp string) ([]League, error) {
 	leagues := make([]League, 0)
 	if err := json.Unmarshal([]byte(resp), &leagues); err != nil {
@@ -22,15 +24,14 @@ func parseLeaguesResponse(resp string) ([]League, error) {
 	return leagues, nil
 }
 
+// GetCurrentChallengeLeague retrieves all leagues and returns the first league
+// with a time limit, which is generally the current challenge league.
 func (c *client) GetCurrentChallengeLeague() (League, error) {
 	leagues, err := c.GetAllLeagues()
 	if err != nil {
 		return League{}, err
 	}
 
-	// The challenge league is generally the fifth entry in the slice, after
-	// Standard, Hardcore, SSF Standard, and SSF Hardcore.
-	// It is the first entry with a non-nil EndTime value.
 	for _, l := range leagues {
 		if (l.EndTime != time.Time{}) {
 			return l, nil

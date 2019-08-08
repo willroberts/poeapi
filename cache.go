@@ -16,6 +16,7 @@ type cache struct {
 	lock      sync.RWMutex
 }
 
+// entry is an item in the cache's eviction list.
 type entry struct {
 	key   string
 	value string
@@ -33,6 +34,7 @@ func newCache(size int) (*cache, error) {
 	return c, nil
 }
 
+// Get adds an item to the cache.
 func (c *cache) Add(key, value string) {
 	c.lock.Lock()
 	defer c.lock.Unlock()

@@ -5,6 +5,8 @@ import (
 	"net/http"
 )
 
+// getJSON retrieves the given URL, checking the local cache before making an
+// external request. It returns the JSON response as a string.
 func (c *client) getJSON(url string) (string, error) {
 	if c.useCache {
 		cached := c.cache.Get(url)
@@ -28,7 +30,6 @@ func (c *client) getJSON(url string) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	// Check status code for HTTP error handling.
 	switch resp.StatusCode {
 	case http.StatusOK:
 		// Continue.

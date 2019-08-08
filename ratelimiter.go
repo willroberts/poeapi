@@ -2,6 +2,8 @@ package poeapi
 
 import "time"
 
+// ratelimiter uses blocking time.Sleep calls to prevent callers from sending
+// requests too frequently.
 type ratelimiter struct {
 	rateLimit         int
 	stashTabRateLimit int

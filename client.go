@@ -6,6 +6,7 @@ type APIClient interface {
 	GetCurrentChallengeLeague() (League, error)
 }
 
+// client is the implementation of the APIClient interface.
 type client struct {
 	host     string
 	useSSL   bool
