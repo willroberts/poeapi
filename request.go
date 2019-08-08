@@ -7,9 +7,9 @@ import (
 	"time"
 )
 
-const rateLimitTimeout = 5 * time.Second
+const rateLimitTimeout = 2 * time.Second
 
-func (c *apiClient) getJSON(url string) (string, error) {
+func (c *client) getJSON(url string) (string, error) {
 	if err := c.limiter.Wait(); err != nil {
 		log.Println("failed to get json:", err)
 		return "", err
@@ -27,18 +27,14 @@ func (c *apiClient) getJSON(url string) (string, error) {
 	// Check status code for HTTP error handling.
 	switch resp.StatusCode {
 	case http.StatusOK:
-		// Skip ahead.
+		// Continue.
 	case http.StatusBadRequest:
 		return "", ErrBadRequest
 	case http.StatusNotFound:
 		return "", ErrNotFound
 	case http.StatusTooManyRequests:
-		// Rate limiter is not working if we reach this block.
-		// Back off and retry.
-		time.Sleep(rateLimitTimeout)
-		return c.getJSON(url)
+		return "", ErrRateLimited
 	case http.StatusInternalServerError:
-		// While 5xx errors should be retried, we leave this up to the caller.
 		return "", ErrServerFailure
 	default:
 		return "", ErrUnknownFailure

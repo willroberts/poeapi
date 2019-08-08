@@ -11,28 +11,49 @@ const (
 	apiBurstLimit = 1
 )
 
-// APIClient provides an API client for pathofexile.com/api.
+// APIClient provides methods for interacting with the Path of Exile API.
 type APIClient interface {
 	GetAllLeagues() ([]League, error)
 	GetCurrentChallengeLeague() (League, error)
 }
 
+// ClientOptions contains settings for client initialization.
+// TODO: Validate options somewhere.
+type ClientOptions struct {
+	Host              string
+	UseSSL            bool
+	RateLimit         int
+	StashTabRateLimit int
+}
+
+// DefaultOptions initializes the client with the most common settings.
+var DefaultOptions = ClientOptions{
+	Host:              "api.pathofexile.com",
+	UseSSL:            true,
+	RateLimit:         4,
+	StashTabRateLimit: 1,
+}
+
 // NewAPIClient configures and returns an APIClient.
-func NewAPIClient() APIClient {
-	limiter := newRatelimiter(apiRateLimit, apiBurstLimit)
-	return &apiClient{
-		limiter: limiter,
+func NewAPIClient(opts ClientOptions) APIClient {
+	return &client{
+		host:    opts.Host,
+		useSSL:  opts.UseSSL,
+		limiter: newRatelimiter(ratelimit(opts.RateLimit), opts.RateLimit),
 	}
 }
 
-type apiClient struct {
+type client struct {
+	host   string
+	useSSL bool
+
 	limiter *ratelimiter
 }
 
-func (c *apiClient) GetAllLeagues() ([]League, error) {
+func (c *client) GetAllLeagues() ([]League, error) {
 	leagues := make([]League, 0)
 
-	resp, err := c.getJSON(leaguesURL)
+	resp, err := c.getJSON(c.formatURL(leaguesEndpoint))
 	if err != nil {
 		return leagues, err
 	}
@@ -44,7 +65,7 @@ func (c *apiClient) GetAllLeagues() ([]League, error) {
 	return leagues, nil
 }
 
-func (c *apiClient) GetCurrentChallengeLeague() (League, error) {
+func (c *client) GetCurrentChallengeLeague() (League, error) {
 	leagues, err := c.GetAllLeagues()
 	if err != nil {
 		return League{}, err

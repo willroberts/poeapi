@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	client := poeapi.NewAPIClient()
+	client := poeapi.NewAPIClient(poeapi.DefaultOptions)
 	l, err := client.GetCurrentChallengeLeague()
 	if err != nil {
 		log.Fatal(err)

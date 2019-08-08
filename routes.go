@@ -1,7 +1,20 @@
 package poeapi
 
-// This is the full set of routes available in the API.
+import "fmt"
 
 const (
-	leaguesURL = "https://api.pathofexile.com/leagues"
+	leaguesEndpoint     = "/leagues"
+	laddersEndpoint     = "/ladders"
+	stashTabsEndpoint   = "/public-stash-tabs"
+	pvpMatchesEndpoint  = "/pvp-matches"
+	leagueRulesEndpoint = "/league-rules"
 )
+
+func (c *client) formatURL(endpoint string) string {
+	protocol := "https"
+	if !c.useSSL {
+		protocol = "http"
+	}
+
+	return fmt.Sprintf("%s://%s%s", protocol, c.host, endpoint)
+}
