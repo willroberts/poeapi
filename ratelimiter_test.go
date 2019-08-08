@@ -37,8 +37,9 @@ func TestRateLimiterTooFast(t *testing.T) {
 		testDuration = 5 // Seconds.
 		r            = newRateLimiter(rateLimit, rateLimit)
 		lock         = sync.Mutex{}
-		timer        = time.NewTimer(time.Duration(testDuration) * time.Second)
 	)
+
+	timer := time.NewTimer(time.Duration(testDuration) * time.Second)
 	defer timer.Stop()
 
 	for i := 0; i < 10; i++ {
