@@ -16,7 +16,7 @@ func TestGetStashTabsJSON(t *testing.T) {
 	)
 	_, err := c.getJSON(url)
 	if err != nil {
-		t.Fail()
+		t.Fatalf("failed to get stash tabs json: %v", err)
 	}
 }
 
@@ -27,7 +27,7 @@ func TestGetJSONWithInvalidProtocol(t *testing.T) {
 	)
 	_, err := c.getJSON(url)
 	if err == nil {
-		t.Fail()
+		t.Fatal("failed to detect invalid http protocol")
 	}
 }
 
@@ -58,12 +58,11 @@ func TestGetJSONRateLimit(t *testing.T) {
 	wg.Wait()
 	rateLimited := false
 	for _, e := range errs.set {
-		t.Log("error:", e)
 		if e == ErrRateLimited {
 			rateLimited = true
 		}
 	}
 	if !rateLimited {
-		t.Fatal("failed to handle 429 responses")
+		t.Fatal("failed to handle rate-limited responses")
 	}
 }

@@ -24,7 +24,8 @@ func TestRateLimiter(t *testing.T) {
 	}
 
 	if requestCount > (rateLimit * testDuration) {
-		t.Fail()
+		t.Fatalf("ratelimiter failed: saw %d requests in %d seconds (expected %d)",
+			requestCount, testDuration, rateLimit*testDuration)
 	}
 }
 
@@ -51,6 +52,7 @@ func TestRateLimiterTooFast(t *testing.T) {
 	}
 
 	if requestCount > (rateLimit * testDuration) {
-		t.Fail()
+		t.Fatalf("ratelimiter failed: saw %d requests in %d seconds (expected %d)",
+			requestCount, testDuration, rateLimit*testDuration)
 	}
 }

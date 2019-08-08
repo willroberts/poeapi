@@ -5,7 +5,7 @@ import "testing"
 func TestNewAPIClient(t *testing.T) {
 	_, err := NewAPIClient(DefaultOptions)
 	if err != nil {
-		t.Fail()
+		t.Fatalf("failed to create client: %v", err)
 	}
 }
 
@@ -17,6 +17,6 @@ func TestNewAPIClientWithInvalidOptions(t *testing.T) {
 	)
 	_, err := NewAPIClient(opts)
 	if err != ErrInvalidHost {
-		t.Fail()
+		t.Fatal("failed to detect invalid options")
 	}
 }

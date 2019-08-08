@@ -11,7 +11,8 @@ func TestFormatURL(t *testing.T) {
 		}
 	)
 	if client.formatURL(leaguesEndpoint) != expected {
-		t.Fail()
+		t.Fatalf("failed to format url: expected %s, got %s",
+			expected, client.formatURL(leaguesEndpoint))
 	}
 }
 
@@ -25,5 +26,7 @@ func TestFormatHTTPURL(t *testing.T) {
 	)
 	if client.formatURL(laddersEndpoint) != expected {
 		t.Fail()
+		t.Fatalf("failed to format url: expected %s, got %s",
+			expected, client.formatURL(laddersEndpoint))
 	}
 }

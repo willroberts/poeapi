@@ -5,7 +5,7 @@ import "testing"
 func TestValidateOptions(t *testing.T) {
 	opts := DefaultOptions
 	if err := validateOptions(opts); err != nil {
-		t.Fail()
+		t.Fatalf("failed to validate options: %v", err)
 	}
 }
 
@@ -16,7 +16,7 @@ func TestValidateOptionsInvalidHost(t *testing.T) {
 		StashTabRateLimit: 1,
 	}
 	if err := validateOptions(opts); err != ErrInvalidHost {
-		t.Fail()
+		t.Fatal("failed to detect invalid host option")
 	}
 }
 
@@ -27,7 +27,7 @@ func TestValidateOptionsInvalidRateLimit(t *testing.T) {
 		StashTabRateLimit: 1,
 	}
 	if err := validateOptions(opts); err != ErrInvalidRateLimit {
-		t.Fail()
+		t.Fatal("failed to detect invalid rate limit option")
 	}
 }
 
@@ -38,6 +38,6 @@ func TestValidateOptionsInvalidStashTabRateLimit(t *testing.T) {
 		StashTabRateLimit: 0,
 	}
 	if err := validateOptions(opts); err != ErrInvalidStashTabRateLimit {
-		t.Fail()
+		t.Fatal("failed to detect invalid stash tab rate limit option")
 	}
 }
