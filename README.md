@@ -24,7 +24,7 @@ much time it has remaining.
 ## To Do
 
 1. Implement all endpoints.
-1. Use fixtures to run tests without Internet access.
+1. Use local HTTP server and fixtures to run tests without Internet access.
 
 [GoDoc]: https://godoc.org/willroberts/poeapi
 [GoDoc Widget]: https://godoc.org/willroberts/poeapi?status.svg
