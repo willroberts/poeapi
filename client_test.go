@@ -8,3 +8,15 @@ func TestNewAPIClient(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestNewAPIClientWithInvalidOptions(t *testing.T) {
+	var (
+		opts = ClientOptions{
+			Host: "google.com",
+		}
+	)
+	_, err := NewAPIClient(opts)
+	if err != ErrInvalidHost {
+		t.Fail()
+	}
+}

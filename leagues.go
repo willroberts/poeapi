@@ -7,17 +7,18 @@ import (
 )
 
 func (c *client) GetAllLeagues() ([]League, error) {
-	leagues := make([]League, 0)
-
 	resp, err := c.getJSON(c.formatURL(leaguesEndpoint))
 	if err != nil {
-		return leagues, err
+		return []League{}, err
 	}
+	return parseLeaguesResponse(resp)
+}
 
+func parseLeaguesResponse(resp string) ([]League, error) {
+	leagues := make([]League, 0)
 	if err := json.Unmarshal([]byte(resp), &leagues); err != nil {
-		return leagues, err
+		return []League{}, err
 	}
-
 	return leagues, nil
 }
 

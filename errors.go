@@ -8,7 +8,7 @@ import "errors"
 var ErrBadRequest = errors.New("bad request")
 
 // ErrNotFound is raised when we have requested an invalid URL.
-var ErrNotFound = errors.New("not found")
+var ErrNotFound = errors.New("url not found")
 
 // ErrRateLimited is raised when we exceed the API rate limits.
 var ErrRateLimited = errors.New("rate limited")
