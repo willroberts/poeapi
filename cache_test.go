@@ -68,6 +68,6 @@ func TestCacheLatency(t *testing.T) {
 
 	// Latency should be under 1ms, but give some headroom.
 	if time.Since(start) > 10*time.Millisecond {
-		t.Fail()
+		t.Fatal("cache test took longer than 10ms")
 	}
 }

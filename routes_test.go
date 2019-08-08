@@ -25,7 +25,6 @@ func TestFormatHTTPURL(t *testing.T) {
 		}
 	)
 	if client.formatURL(laddersEndpoint) != expected {
-		t.Fail()
 		t.Fatalf("failed to format url: expected %s, got %s",
 			expected, client.formatURL(laddersEndpoint))
 	}

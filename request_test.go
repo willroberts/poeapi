@@ -6,7 +6,17 @@ import (
 )
 
 func TestGetJSON(t *testing.T) {
-	t.Skip() // Coverage already provided in other tests.
+	var (
+		c = client{
+			host:    defaultHost,
+			limiter: newRateLimiter(defaultRateLimit, defaultStashTabRateLimit),
+		}
+		url = c.formatURL(leaguesEndpoint)
+	)
+	_, err := c.getJSON(url)
+	if err != nil {
+		t.Fatalf("failed to get json: %v", err)
+	}
 }
 
 func TestGetStashTabsJSON(t *testing.T) {
