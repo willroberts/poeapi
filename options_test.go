@@ -12,11 +12,23 @@ func TestValidateOptions(t *testing.T) {
 func TestValidateOptionsInvalidHost(t *testing.T) {
 	opts := ClientOptions{
 		Host:              "google.com",
-		RateLimit:         1,
-		StashTabRateLimit: 1,
+		RateLimit:         defaultRateLimit,
+		StashTabRateLimit: defaultStashTabRateLimit,
 	}
 	if err := validateOptions(opts); err != ErrInvalidHost {
 		t.Fatal("failed to detect invalid host option")
+	}
+}
+
+func TestValidateOptionsInvalidCacheSize(t *testing.T) {
+	opts := ClientOptions{
+		Host:              defaultHost,
+		CacheSize:         0,
+		RateLimit:         defaultRateLimit,
+		StashTabRateLimit: defaultStashTabRateLimit,
+	}
+	if err := validateOptions(opts); err != ErrInvalidCacheSize {
+		t.Fatal("failed to detect invalid cache size")
 	}
 }
 
