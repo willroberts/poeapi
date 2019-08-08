@@ -2,8 +2,6 @@ package poeapi
 
 import "time"
 
-// Types in this file represent objects returned by the API.
-
 // League represents a permanent or challenge league.
 type League struct {
 	Name         string    `json:"id"`

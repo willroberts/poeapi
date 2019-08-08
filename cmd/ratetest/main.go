@@ -2,11 +2,6 @@
 // API latency can be anywhere from 100ms to over 100ms, so synchronous usage
 // will rarely exceed 4-5 requests per second. For this reason, the test code is
 // asynchronous to maximize the number of requests per second we can send.
-
-// Results:
-// API endpoints succeed reliably (for 100 sequential requests) at rates up to
-// five per second.
-
 package main
 
 import (

@@ -12,30 +12,16 @@ type APIClient interface {
 	GetCurrentChallengeLeague() (League, error)
 }
 
-// ClientOptions contains settings for client initialization.
-// TODO: Validate options somewhere.
-type ClientOptions struct {
-	Host              string
-	UseSSL            bool
-	RateLimit         int
-	StashTabRateLimit int
-}
-
-// DefaultOptions initializes the client with the most common settings.
-var DefaultOptions = ClientOptions{
-	Host:              "api.pathofexile.com",
-	UseSSL:            true,
-	RateLimit:         4,
-	StashTabRateLimit: 1,
-}
-
 // NewAPIClient configures and returns an APIClient.
-func NewAPIClient(opts ClientOptions) APIClient {
+func NewAPIClient(opts ClientOptions) (APIClient, error) {
+	if err := validateOptions(opts); err != nil {
+		return nil, err
+	}
 	return &client{
 		host:    opts.Host,
 		useSSL:  opts.UseSSL,
 		limiter: newRateLimiter(opts.RateLimit, opts.StashTabRateLimit),
-	}
+	}, nil
 }
 
 type client struct {

@@ -1,5 +1,4 @@
 // leaguetimer prints the time remaining for the current challenge league.
-
 package main
 
 import (
@@ -12,7 +11,11 @@ import (
 )
 
 func main() {
-	client := poeapi.NewAPIClient(poeapi.DefaultOptions)
+	client, err := poeapi.NewAPIClient(poeapi.DefaultOptions)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	l, err := client.GetCurrentChallengeLeague()
 	if err != nil {
 		log.Fatal(err)
