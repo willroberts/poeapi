@@ -1,7 +1,69 @@
 package poeapi
 
-import "testing"
+import (
+	"sync"
+	"testing"
+)
 
 func TestGetJSON(t *testing.T) {
-	t.Skip() // TODO: Implement this.
+	t.Skip() // Coverage already provided in other tests.
+}
+
+func TestGetStashTabsJSON(t *testing.T) {
+	var (
+		c   = client{limiter: newRateLimiter(1, 1)}
+		url = c.formatURL(stashTabsEndpoint)
+	)
+	_, err := c.getJSON(url)
+	if err != nil {
+		t.Fail()
+	}
+}
+
+func TestGetJSONWithInvalidProtocol(t *testing.T) {
+	var (
+		c   = client{limiter: newRateLimiter(1, 1)}
+		url = "htps://www.google.com"
+	)
+	_, err := c.getJSON(url)
+	if err == nil {
+		t.Fail()
+	}
+}
+
+func TestGetJSONRateLimit(t *testing.T) {
+	type errorCollector struct {
+		set  []error
+		lock sync.Mutex
+	}
+	var (
+		c = client{
+			host:    "api.pathofexile.com",
+			limiter: newRateLimiter(50, 50),
+		}
+		url  = c.formatURL(leaguesEndpoint)
+		errs = errorCollector{set: make([]error, 0)}
+	)
+	var wg sync.WaitGroup
+	for i := 0; i < 50; i++ {
+		wg.Add(1)
+		go func() {
+			_, err := c.getJSON(url)
+			errs.lock.Lock()
+			errs.set = append(errs.set, err)
+			errs.lock.Unlock()
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+	rateLimited := false
+	for _, e := range errs.set {
+		t.Log("error:", e)
+		if e == ErrRateLimited {
+			rateLimited = true
+		}
+	}
+	if !rateLimited {
+		t.Fatal("failed to handle 429 responses")
+	}
 }
