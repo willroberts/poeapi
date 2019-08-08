@@ -1,0 +1,22 @@
+package poeapi
+
+import "errors"
+
+// See https://www.pathofexile.com/developer/docs/api-errors.
+
+// ErrBadRequest is raised when we have sent a malformed request to the API.
+var ErrBadRequest = errors.New("bad request")
+
+// ErrNotFound is raised when we have requested an invalid URL.
+var ErrNotFound = errors.New("not found")
+
+// ErrRateLimited is raised when we exceed the API rate limits.
+var ErrRateLimited = errors.New("rate limited")
+
+// ErrServerFailure is raised when the API returns a 5xx response for any
+// reason.
+var ErrServerFailure = errors.New("server error")
+
+// ErrUnknownFailure is raised when an undocumented status code is returned by
+// the API. This should never occur, but is handled anyway.
+var ErrUnknownFailure = errors.New("unknown server failure")
