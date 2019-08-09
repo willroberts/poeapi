@@ -204,6 +204,18 @@ func TestGetLadderPageFailure(t *testing.T) {
 	}
 }
 
+func TestParseLadderResponse(t *testing.T) {
+	resp, err := loadFixture("fixtures/ladders.json")
+	if err != nil {
+		t.Fatalf("failed to load fixture for ladder response test: %v", err)
+	}
+
+	_, err = parseLadderResponse(resp)
+	if err != nil {
+		t.Fatalf("failed to parse ladder response: %v", err)
+	}
+}
+
 func TestParseInvalidLadderResponse(t *testing.T) {
 	var resp = "{\"total\": \"invalid\"}"
 	_, err := parseLadderResponse(resp)
