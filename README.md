@@ -12,7 +12,28 @@ A Go client for the Path of Exile API.
 * All operations are thread-safe
 * Built-in, tunable rate limiting
 * Built-in, tunable caching for responses
-* 100% standard library code
+* No dependencies; 100% standard library code
+
+## Usage
+
+```go
+client, err := poeapi.NewAPIClient(poeapi.DefaultClientOptions)
+if err != nil {
+    // handle error
+}
+league, err := client.GetCurrentChallengeLeague() // etc.
+```
+
+## Interface
+
+These are the methods available on the client's interface:
+
+```go
+	GetAllLeagues() ([]poeapi.League, error)
+	GetCurrentChallengeLeague() (poeapi.League, error)
+	GetLadder(poeapi.GetLadderOptions) (poeapi.Ladder, error)
+    GetPVPMatches(poeapi.GetPVPMatchesOptions) ([]poeapi.PVPMatch, error)
+```
 
 ## Examples
 
