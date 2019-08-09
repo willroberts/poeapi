@@ -11,6 +11,29 @@ import (
 const (
 	maxLimit = 200
 	maxPages = 75 // 15000 % 200
+
+	earliestLabyrinthTime = 1456790400 // March 1, 2016: One day before 3.2.0.
+)
+
+var (
+	validRealms = map[string]struct{}{
+		"pc":   struct{}{},
+		"xbox": struct{}{},
+		"sony": struct{}{},
+	}
+
+	validTypes = map[string]struct{}{
+		"league":    struct{}{},
+		"labyrinth": struct{}{},
+		"pvp":       struct{}{},
+	}
+
+	validDifficulties = map[string]struct{}{
+		"Normal":    struct{}{},
+		"Cruel":     struct{}{},
+		"Merciless": struct{}{},
+		"Eternal":   struct{}{},
+	}
 )
 
 // GetLadderOptions contains the request parameters for the ladder endpoint.
@@ -40,7 +63,7 @@ type GetLadderOptions struct {
 	AccountName string
 
 	// Difficulty of the Labyrinth ladder to retrieve.
-	// Valid options: 'Normal', 'Cruel', or 'Merciless'.
+	// Valid options: 'Normal', 'Cruel', 'Merciless', or 'Eternal'.
 	LabyrinthDifficulty string
 
 	// Start time of the Labyrinth ladder to retrieve. This is a Unix timestamp.
@@ -73,6 +96,37 @@ func (opts GetLadderOptions) ToQueryParams() string {
 		u.Add("start", strconv.Itoa(opts.LabyrinthStartTime))
 	}
 	return u.Encode()
+}
+
+func validateLadderOptions(opts GetLadderOptions) error {
+	if opts.ID == "" {
+		return ErrMissingID
+	}
+	if _, ok := validRealms[opts.Realm]; opts.Realm != "" && !ok {
+		return ErrInvalidRealm
+	}
+	if opts.Limit < 1 || opts.Limit > maxLimit {
+		return ErrInvalidLimit
+	}
+	if opts.Offset < 0 || opts.Offset > maxLimit*maxPages {
+		return ErrInvalidOffset
+	}
+	if _, ok := validTypes[opts.Type]; opts.Type != "" && !ok {
+		return ErrInvalidLadderType
+	}
+	if opts.Type == "labyrinth" {
+		if _, ok := validDifficulties[opts.LabyrinthDifficulty]; opts.LabyrinthDifficulty != "" && !ok {
+			return ErrInvalidDifficulty
+		}
+		if opts.LabyrinthStartTime < 0 {
+			return ErrInvalidLabyrinthStartTime
+		}
+		if opts.LabyrinthStartTime > 0 && opts.LabyrinthStartTime < earliestLabyrinthTime {
+			return ErrInvalidLabyrinthStartTime
+		}
+	}
+
+	return nil
 }
 
 func (c *client) getLadderPage(opts GetLadderOptions) (Ladder, error) {

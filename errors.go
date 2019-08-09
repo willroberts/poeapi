@@ -33,3 +33,29 @@ var ErrInvalidStashTabRateLimit = errors.New("invalid stash tab rate limit")
 
 // ErrInvalidCacheSize is raised when the cache size is out of range.
 var ErrInvalidCacheSize = errors.New("invalid cache size")
+
+// ErrMissingID is raised when the user fails to provide a league ID for a
+// ladder request.
+var ErrMissingID = errors.New("missing league id")
+
+// ErrInvalidRealm is raised when the provided realm is not pc, xbox, or sony.
+var ErrInvalidRealm = errors.New("invalid realm")
+
+// ErrInvalidLimit is raised when the page size limit is out of bounds.
+var ErrInvalidLimit = errors.New("invalid limit")
+
+// ErrInvalidOffset is raised when the page offset is out of bounds.
+var ErrInvalidOffset = errors.New("invalid offset")
+
+// ErrInvalidLadderType is raised when the provided type is not league, pvp, or
+// labyrinth.
+var ErrInvalidLadderType = errors.New("invalid ladder type")
+
+// ErrInvalidDifficulty is raised when the provided difficulty is not Normal,
+// Cruel, Merciless, or Eternal.
+var ErrInvalidDifficulty = errors.New("invalid difficulty")
+
+// ErrInvalidLabyrinthStartTime is raised when the provided Unix timestamp is
+// below zero, above zero but earlier than the release of the Labyrinth, or
+// is an invalid timestamp.
+var ErrInvalidLabyrinthStartTime = errors.New("invalid labyrinth start time")
