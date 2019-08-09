@@ -4,7 +4,7 @@ import "time"
 
 // League represents a permanent or challenge league.
 type League struct {
-	Name         string       `json:"id"`
+	Name         string       `json:"id" validate:"nonzero"`
 	Realm        string       `json:"realm"`
 	Description  string       `json:"description"`
 	LadderURL    string       `json:"url"`
@@ -16,16 +16,16 @@ type League struct {
 
 // LeagueRule represents a modifier placed on a league.
 type LeagueRule struct {
-	ID          string `json:"id"`
+	ID          string `json:"id" validate:"nonzero"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 }
 
 // Ladder represents the leaderboard for a specific league.
 type Ladder struct {
-	TotalEntries int           `json:"total"`
+	TotalEntries int           `json:"total" validate:"nonzero"`
 	Title        string        `json:"title"`
-	StartTime    time.Time     `json:"startTime"`
+	StartTime    int           `json:"startTime"`
 	Entries      []LadderEntry `json:"entries"`
 }
 
