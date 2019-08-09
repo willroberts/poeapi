@@ -16,7 +16,7 @@ A Go client for the Path of Exile API.
 
 ## Examples
 
-There are some examples in the `cmd` directory.
+There are some examples in the `examples` directory.
 
 #### leaguetimer
 
