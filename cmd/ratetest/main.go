@@ -50,8 +50,6 @@ type limitfinder struct {
 
 func (lf *limitfinder) ParseCode(code int) bool {
 	lf.lock.Lock()
-	var limitFound bool
-
 	if code == http.StatusOK {
 		lf.successes++
 	}
@@ -59,16 +57,16 @@ func (lf *limitfinder) ParseCode(code int) bool {
 		lf.rate++
 		log.Println("rate limit:", lf.rate)
 		if lf.rate == maxRate {
-			limitFound = true
+			return true
 		}
 		lf.successes = 0
 	}
-	if code == http.StatusTooManyRequests {
-		limitFound = true
-	}
-
 	lf.lock.Unlock()
-	return limitFound
+
+	if code == http.StatusTooManyRequests {
+		return true
+	}
+	return false
 }
 
 func main() {
