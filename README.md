@@ -29,10 +29,10 @@ league, err := client.GetCurrentChallengeLeague() // etc.
 These are the methods available on the client's interface:
 
 ```go
-	GetAllLeagues() ([]poeapi.League, error)
-	GetCurrentChallengeLeague() (poeapi.League, error)
-	GetLadder(poeapi.GetLadderOptions) (poeapi.Ladder, error)
-    GetPVPMatches(poeapi.GetPVPMatchesOptions) ([]poeapi.PVPMatch, error)
+GetAllLeagues() ([]poeapi.League, error)
+GetCurrentChallengeLeague() (poeapi.League, error)
+GetLadder(poeapi.GetLadderOptions) (poeapi.Ladder, error)
+GetPVPMatches(poeapi.GetPVPMatchesOptions) ([]poeapi.PVPMatch, error)
 ```
 
 ## Examples
