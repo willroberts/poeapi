@@ -28,6 +28,11 @@ much time it has remaining.
 This example retrieves the ladder or leaderboard for a league, computes the
 distribution of character classes, and prints the results.
 
+#### upcomingmatches
+
+This example retrieves all upcoming PVP matches from the API and prints how many
+events are scheduled (hint: it's zero).
+
 ## To Do
 
 1. Implement all endpoints. GetLeague for single leagues, query params for all

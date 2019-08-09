@@ -33,7 +33,6 @@ func (opts GetPVPMatchesOptions) ToQueryParams() string {
 func (c *client) GetPVPMatches(opts GetPVPMatchesOptions) ([]PVPMatch, error) {
 	url := fmt.Sprintf("%s?%s", c.formatURL(pvpMatchesEndpoint),
 		opts.ToQueryParams())
-	fmt.Println(url)
 	resp, err := c.get(url)
 	if err != nil {
 		return []PVPMatch{}, err
@@ -43,7 +42,6 @@ func (c *client) GetPVPMatches(opts GetPVPMatchesOptions) ([]PVPMatch, error) {
 
 // parsePVPMatchesResponse unmarshals JSON from the API into local types.
 func parsePVPMatchesResponse(resp string) ([]PVPMatch, error) {
-	fmt.Println(resp)
 	pvpMatches := make([]PVPMatch, 0)
 	if err := json.Unmarshal([]byte(resp), &pvpMatches); err != nil {
 		return []PVPMatch{}, err
