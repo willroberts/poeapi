@@ -58,3 +58,17 @@ type Account struct {
 type Challenges struct {
 	Total int `json:"total"`
 }
+
+// PVPMatch represents a PVP event type.
+type PVPMatch struct {
+	ID            string    `json:"id"`
+	Realm         string    `json:"realm"`
+	StartTime     time.Time `json:"startAt"`
+	EndTime       time.Time `json:"endAt"`
+	LadderURL     string    `json:"url"`
+	Description   string    `json:"description"`
+	GlickoRatings bool      `json:"glickoRatings"`
+	PVP           bool      `json:"pvp"`
+	Style         string    `json:"style"`
+	RegisterTime  time.Time `json:"registerAt"`
+}

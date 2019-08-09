@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	client, err := poeapi.NewAPIClient(poeapi.DefaultOptions)
+	client, err := poeapi.NewAPIClient(poeapi.DefaultClientOptions)
 	if err != nil {
 		log.Fatal(err)
 	}

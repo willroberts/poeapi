@@ -30,11 +30,12 @@ distribution of character classes, and prints the results.
 
 ## To Do
 
-1. Implement all endpoints.
-1. Use local HTTP server and fixtures to run tests without Internet access.\
-1. Open source the repo
-1. Add TravisCI, CircleCI, etc. and get a build|passing badge.
-1. Add CodeCov or Coveralls and get a coverage badge.
+1. Implement all endpoints. GetLeague for single leagues, query params for all
+   leagues endpoints. 
+1. Use local HTTP server and fixtures to run tests without Internet access.
+1. Open source the repo to enable GoDoc and Go Report Card
+1. Add TravisCI to get a build passing badge.
+1. Add CodeCov to get a coverage badge.
 
 [GoDoc]: https://godoc.org/willroberts/poeapi
 [GoDoc Badge]: https://godoc.org/willroberts/poeapi?status.svg
