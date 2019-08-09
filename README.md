@@ -1,6 +1,8 @@
 # poeapi
 
-[![GoDoc Widget]][GoDoc]
+[![GoDoc Badge]][GoDoc]
+[![GoReportCard Badge]][GoReportCard]
+[![License Badge]][License]
 
 A Go client for the Path of Exile API.
 
@@ -29,7 +31,14 @@ distribution of character classes, and prints the results.
 ## To Do
 
 1. Implement all endpoints.
-1. Use local HTTP server and fixtures to run tests without Internet access.
+1. Use local HTTP server and fixtures to run tests without Internet access.\
+1. Open source the repo
+1. Add TravisCI, CircleCI, etc. and get a build|passing badge.
+1. Add CodeCov or Coveralls and get a coverage badge.
 
 [GoDoc]: https://godoc.org/willroberts/poeapi
-[GoDoc Widget]: https://godoc.org/willroberts/poeapi?status.svg
+[GoDoc Badge]: https://godoc.org/willroberts/poeapi?status.svg
+[GoReportCard]: https://goreportcard.com/report/github.com/willroberts/poeapi
+[GoReportCard Badge]: https://goreportcard.com/badge/github.com/willroberts/poeapi
+[License]: https://www.gnu.org/licenses/gpl-3.0
+[License Badge]: https://img.shields.io/badge/License-GPLv3-blue.svg
