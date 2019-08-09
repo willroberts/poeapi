@@ -17,34 +17,34 @@ const (
 // All parameters are optional with the exception of ID.
 type GetLadderOptions struct {
 	// The name of the league whose ladder you want to retrieve.
-	ID string `json:"id"`
+	ID string
 
 	// The realm of the ladder.
 	// Valid options: 'pc', 'xbox', or 'sony'.
-	Realm string `json:"realm"`
+	Realm string
 
 	// Number of results to retrieve. Default: 20. Maximum: 200.
-	Limit int `json:"limit"`
+	Limit int
 
 	// Position at which to start retrieving results. Default: 0.
-	Offset int `json:"offset"`
+	Offset int
 
 	// The type of league whose ladder you want to retrieve.
 	// Valid options: 'league', 'pvp', or 'labyrinth'.
-	Type string `json:"type"`
+	Type string
 
 	// Associate UUIDs with each character returned for tracking purposes.
-	UniqueIDs bool `json:"track"`
+	UniqueIDs bool
 
 	// Only include the given account in results.
-	AccountName string `json:"accountName"`
+	AccountName string
 
 	// Difficulty of the Labyrinth ladder to retrieve.
 	// Valid options: 'Normal', 'Cruel', or 'Merciless'.
-	LabyrinthDifficulty string `json:"difficulty"`
+	LabyrinthDifficulty string
 
 	// Start time of the Labyrinth ladder to retrieve. This is a Unix timestamp.
-	LabyrinthStartTime int `json:"start"`
+	LabyrinthStartTime int
 }
 
 // ToQueryParams converts ladder options to a URL parameter string.

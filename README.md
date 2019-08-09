@@ -29,6 +29,7 @@ distribution of character classes, and prints the results.
 ## To Do
 
 1. Implement all endpoints.
+1. Update tests, add tests for ladders API.
 1. Use atomic types and RWMutex where preferable
 1. Use local HTTP server and fixtures to run tests without Internet access.
 
