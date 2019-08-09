@@ -1,16 +1,16 @@
 package poeapi
 
 import (
-	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 )
 
 func TestRateLimiter(t *testing.T) {
 	var (
-		rateLimit    = 4
+		rateLimit    = 10
 		requestCount = 0
-		testDuration = 5 // Seconds.
+		testDuration = 2 // Seconds.
 		r            = newRateLimiter(rateLimit, rateLimit)
 	)
 
@@ -32,10 +32,9 @@ func TestRateLimiter(t *testing.T) {
 func TestRateLimiterTooFast(t *testing.T) {
 	var (
 		rateLimit    = 1
-		requestCount = 0
+		requestCount uint32
 		testDuration = 5 // Seconds.
 		r            = newRateLimiter(rateLimit, rateLimit)
-		lock         = sync.Mutex{}
 	)
 
 	timer := time.NewTimer(time.Duration(testDuration) * time.Second)
@@ -44,18 +43,12 @@ func TestRateLimiterTooFast(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		go func() {
 			r.wait(rateLimit)
-			lock.Lock()
-			requestCount++
-			lock.Unlock()
+			atomic.AddUint32(&requestCount, 1)
 		}()
 	}
 	<-timer.C
 
-	lock.Lock()
-	reqs := requestCount
-	lock.Unlock()
-
-	if reqs > (rateLimit * testDuration) {
+	if int(atomic.LoadUint32(&requestCount)) > (rateLimit * testDuration) {
 		t.Fatalf("ratelimiter failed: saw %d requests in %d seconds (expected %d)",
 			requestCount, testDuration, rateLimit*testDuration)
 	}
