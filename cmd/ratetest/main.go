@@ -1,5 +1,5 @@
 // ratetest attempts to reverse engineer the rate limits for the PoE API.
-// API latency can be anywhere from 100ms to over 100ms, so synchronous usage
+// API latency can be anywhere from 100ms to over 1000ms, so synchronous usage
 // will rarely exceed 4-5 requests per second. For this reason, the test code is
 // asynchronous to maximize the number of requests per second we can send.
 package main
