@@ -20,3 +20,41 @@ type LeagueRule struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 }
+
+// Ladder represents the leaderboard for a specific league.
+type Ladder struct {
+	TotalEntries int           `json:"total"`
+	Title        string        `json:"title"`
+	StartTime    time.Time     `json:"startTime"`
+	Entries      []LadderEntry `json:"entries"`
+}
+
+// LadderEntry represents an entry on the ladder.
+type LadderEntry struct {
+	Online        bool      `json:"bool"`
+	Rank          int       `json:"rank"`
+	LabyrinthTime int       `json:"time"`
+	Character     Character `json:"character"`
+	Account       Account   `json:"account"`
+}
+
+// Character represents a player in a ladder entry.
+type Character struct {
+	Name       string `json:"name"`
+	Level      int    `json:"level"`
+	Class      string `json:"class"`
+	ID         string `json:"id"`
+	Experience int    `json:"experience"`
+}
+
+// Account represents an account for a ladder entry.
+type Account struct {
+	Name       string     `json:"name"`
+	Realm      string     `json:"realm"`
+	Challenges Challenges `json:"challenges"`
+}
+
+// Challenges represents an account's completed challenges.
+type Challenges struct {
+	Total int `json:"total"`
+}

@@ -8,7 +8,7 @@ import (
 
 // GetAllLeagues retrieves all leagues (Standard, Hardcore, etc.) from the API.
 func (c *client) GetAllLeagues() ([]League, error) {
-	resp, err := c.getJSON(c.formatURL(leaguesEndpoint))
+	resp, err := c.get(c.formatURL(leaguesEndpoint))
 	if err != nil {
 		return []League{}, err
 	}

@@ -5,22 +5,16 @@ import (
 	"net/http"
 )
 
-// getJSON retrieves the given URL, checking the local cache before making an
-// external request. It returns the JSON response as a string.
+type requestFunc func(string) (string, error)
+
+// Get is a helper function which includes caching and ratelimiting for outbound
+// requests.
+func (c *client) get(url string) (string, error) {
+	return c.withCache(url, c.withRateLimit(url, c.getJSON))
+}
+
+// getJSON retrieves the given URL. It returns the JSON response as a string.
 func (c *client) getJSON(url string) (string, error) {
-	if c.useCache {
-		cached := c.cache.Get(url)
-		if cached != "" {
-			return cached, nil
-		}
-	}
-
-	ratelimit := c.limiter.rateLimit
-	if url == c.formatURL(stashTabsEndpoint) {
-		ratelimit = c.limiter.stashTabRateLimit
-	}
-	c.limiter.wait(ratelimit)
-
 	resp, err := http.Get(url)
 	if err != nil {
 		// An error is returned if the Client's CheckRedirect function fails or
@@ -30,30 +24,55 @@ func (c *client) getJSON(url string) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	switch resp.StatusCode {
-	case http.StatusOK:
-		// Continue.
-	case http.StatusBadRequest:
-		return "", ErrBadRequest
-	case http.StatusNotFound:
-		return "", ErrNotFound
-	case http.StatusTooManyRequests:
-		return "", ErrRateLimited
-	case http.StatusInternalServerError:
-		return "", ErrServerFailure
-	default:
-		return "", ErrUnknownFailure
+	if resp.StatusCode != http.StatusOK {
+		return "", parseError(resp.StatusCode)
 	}
 
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}
+	return string(b), nil
+}
 
-	body := string(b)
-	if c.useCache {
-		c.cache.Add(url, body)
+func (c *client) withCache(url string, fn requestFunc) (string, error) {
+	if !c.useCache {
+		return fn(url)
 	}
 
-	return body, nil
+	if cached := c.cache.Get(url); cached != "" {
+		return cached, nil
+	}
+
+	resp, err := fn(url)
+	if err != nil {
+		return "", err
+	}
+
+	c.cache.Add(url, resp)
+	return resp, nil
+}
+
+func (c *client) withRateLimit(url string, fn requestFunc) requestFunc {
+	ratelimit := c.limiter.rateLimit
+	if url == c.formatURL(stashTabsEndpoint) {
+		ratelimit = c.limiter.stashTabRateLimit
+	}
+	c.limiter.wait(ratelimit)
+	return fn
+}
+
+func parseError(statusCode int) error {
+	switch statusCode {
+	case http.StatusBadRequest:
+		return ErrBadRequest
+	case http.StatusNotFound:
+		return ErrNotFound
+	case http.StatusTooManyRequests:
+		return ErrRateLimited
+	case http.StatusInternalServerError:
+		return ErrServerFailure
+	default:
+		return ErrUnknownFailure
+	}
 }

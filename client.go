@@ -4,6 +4,10 @@ package poeapi
 type APIClient interface {
 	GetAllLeagues() ([]League, error)
 	GetCurrentChallengeLeague() (League, error)
+
+	// GetLadder retrieves the entire leaderboard for a league. For ladders with
+	// the maximum 15,000 entries, this function may take 15-20 seconds to run.
+	GetLadder(GetLadderOptions) (Ladder, error)
 }
 
 // client is the implementation of the APIClient interface.

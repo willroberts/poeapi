@@ -21,9 +21,15 @@ There are some examples in the `cmd` directory.
 This example retrieves the current challenge league from the API and prints how
 much time it has remaining.
 
+#### ladderstats
+
+This example retrieves the ladder or leaderboard for a league, computes the
+distribution of character classes, and prints the results.
+
 ## To Do
 
 1. Implement all endpoints.
+1. Use atomic types and RWMutex where preferable
 1. Use local HTTP server and fixtures to run tests without Internet access.
 
 [GoDoc]: https://godoc.org/willroberts/poeapi
