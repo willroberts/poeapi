@@ -22,9 +22,10 @@ type client struct {
 
 // NewAPIClient configures and returns an APIClient.
 func NewAPIClient(opts ClientOptions) (APIClient, error) {
-	if err := validateOptions(opts); err != nil {
+	if err := validateClientOptions(opts); err != nil {
 		return nil, err
 	}
+
 	c := &client{
 		host:     opts.Host,
 		useSSL:   opts.UseSSL,

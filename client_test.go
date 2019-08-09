@@ -3,7 +3,7 @@ package poeapi
 import "testing"
 
 func TestNewAPIClient(t *testing.T) {
-	_, err := NewAPIClient(DefaultOptions)
+	_, err := NewAPIClient(DefaultClientOptions)
 	if err != nil {
 		t.Fatalf("failed to create client: %v", err)
 	}

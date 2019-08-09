@@ -29,8 +29,8 @@ type ClientOptions struct {
 	StashTabRateLimit int
 }
 
-// DefaultOptions initializes the client with the most common settings.
-var DefaultOptions = ClientOptions{
+// DefaultClientOptions initializes the client with the most common settings.
+var DefaultClientOptions = ClientOptions{
 	Host:              defaultHost,
 	UseSSL:            true,
 	UseCache:          true,
@@ -39,7 +39,7 @@ var DefaultOptions = ClientOptions{
 	StashTabRateLimit: defaultStashTabRateLimit,
 }
 
-func validateOptions(opts ClientOptions) error {
+func validateClientOptions(opts ClientOptions) error {
 	if opts.Host != defaultHost {
 		return ErrInvalidHost
 	}

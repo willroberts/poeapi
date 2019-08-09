@@ -50,7 +50,7 @@ func TestCacheEviction(t *testing.T) {
 }
 
 func TestCacheLatency(t *testing.T) {
-	c, err := NewAPIClient(DefaultOptions)
+	c, err := NewAPIClient(DefaultClientOptions)
 	if err != nil {
 		t.Fatalf("failed to create client for latency test: %v", err)
 	}
@@ -70,4 +70,13 @@ func TestCacheLatency(t *testing.T) {
 	if time.Since(start) > 10*time.Millisecond {
 		t.Fatal("cache test took longer than 10ms")
 	}
+}
+
+func TestCacheExistingKey(t *testing.T) {
+	cache, err := newCache(10)
+	if err != nil {
+		t.Fatalf("failed to create cache for existing key test: %v", err)
+	}
+	cache.Add("foo", "bar")
+	cache.Add("foo", "bar")
 }

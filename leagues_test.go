@@ -3,7 +3,7 @@ package poeapi
 import "testing"
 
 func TestGetAllLeagues(t *testing.T) {
-	client, err := NewAPIClient(DefaultOptions)
+	client, err := NewAPIClient(DefaultClientOptions)
 	if err != nil {
 		t.Fatalf("failed to create client for leagues request: %v", err)
 	}
@@ -43,7 +43,7 @@ func TestGetAllLeaguesWithRequestFailure(t *testing.T) {
 }
 
 func TestGetCurrentChallengeLeague(t *testing.T) {
-	client, err := NewAPIClient(DefaultOptions)
+	client, err := NewAPIClient(DefaultClientOptions)
 	if err != nil {
 		t.Fatalf("failed to create client for challenge league request: %v", err)
 	}
