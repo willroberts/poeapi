@@ -13,6 +13,31 @@ func TestGetLeague(t *testing.T) {
 	}
 }
 
+func TestGetLeagueWithInvalidOptions(t *testing.T) {
+	client, err := NewAPIClient(DefaultClientOptions)
+	if err != nil {
+		t.Fatalf("failed to create client for league request: %v", err)
+	}
+	_, err = client.GetLeague(GetLeagueOptions{ID: ""})
+	if err == nil {
+		t.Fatal("failed to detect invalid options in league request")
+	}
+}
+
+func TestGetLeagueWithRequestFailure(t *testing.T) {
+	var (
+		c = client{
+			host:    "google.com",
+			limiter: newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+		}
+	)
+	_, err := c.GetLeague(GetLeagueOptions{ID: "Standard"})
+	if err != ErrNotFound {
+		t.Log("err:", err)
+		t.Fatal("failed to detect request error for league request")
+	}
+}
+
 func TestParseLeagueResponse(t *testing.T) {
 	resp, err := loadFixture("fixtures/league.json")
 	if err != nil {
@@ -37,17 +62,42 @@ func TestParseLeagueResponseWithInvalidJSON(t *testing.T) {
 	}
 }
 
-func TestGetLeagueWithRequestFailure(t *testing.T) {
-	var (
-		rateLimit = 1
-		client    = client{
-			host:    "google.com",
-			limiter: newRateLimiter(rateLimit, rateLimit),
-		}
-	)
-	_, err := client.GetLeague(GetLeagueOptions{ID: "Standard"})
-	if err != ErrNotFound {
-		t.Log("err:", err)
-		t.Fatal("failed to detect request error for league request")
+func TestLeagueOptionsToQueryParams(t *testing.T) {
+	opts := GetLeagueOptions{Realm: "test"}
+	params := opts.toQueryParams()
+	expected := "realm=test"
+	if params != expected {
+		t.Fatalf("failed to get query params from league options. expected %s, got %s",
+			expected, params)
+	}
+}
+
+func TestValidateGetLeagueOptions(t *testing.T) {
+	opts := GetLeagueOptions{
+		ID:    "test",
+		Realm: "pc",
+	}
+	if err := validateGetLeagueOptions(opts); err != nil {
+		t.Fatalf("failed to validate league options: %v", err)
+	}
+}
+
+func TestValidateGetLeagueOptionsWithInvalidID(t *testing.T) {
+	opts := GetLeagueOptions{
+		ID:    "",
+		Realm: "pc",
+	}
+	if err := validateGetLeagueOptions(opts); err != ErrInvalidLeagueID {
+		t.Fatal("failed to detect invalid league id")
+	}
+}
+
+func TestValidateGetLeagueOptionsWithInvalidRealm(t *testing.T) {
+	opts := GetLeagueOptions{
+		ID:    "test",
+		Realm: "toaster",
+	}
+	if err := validateGetLeagueOptions(opts); err != ErrInvalidRealm {
+		t.Fatalf("failed to detect invalid realm")
 	}
 }

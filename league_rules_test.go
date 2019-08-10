@@ -14,6 +14,19 @@ func TestGetLeagueRules(t *testing.T) {
 	}
 }
 
+func TestGetLeagueRulesRequestFailure(t *testing.T) {
+	var (
+		c = client{
+			host:    "google.com",
+			limiter: newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+		}
+	)
+	_, err := c.GetLeagueRules()
+	if err != ErrNotFound {
+		t.Fatal("failed to detect request error for league rules request")
+	}
+}
+
 func TestParseLeagueRulesResponse(t *testing.T) {
 	resp, err := loadFixture("fixtures/league-rules.json")
 	if err != nil {
@@ -23,5 +36,17 @@ func TestParseLeagueRulesResponse(t *testing.T) {
 	_, err = parseLeagueRulesResponse(resp)
 	if err != nil {
 		t.Fatalf("failed to parse league rules response: %v", err)
+	}
+}
+
+func TestParseLeagueRulesResponseWithInvalidJSON(t *testing.T) {
+	resp, err := loadFixture("fixtures/invalid.json")
+	if err != nil {
+		t.Fatalf("failed to read fixture for league rules test: %v", err)
+	}
+
+	_, err = parseLeagueRulesResponse(resp)
+	if err == nil {
+		t.Fatal("failed to detect invalid league rules json")
 	}
 }

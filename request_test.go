@@ -100,3 +100,27 @@ func TestHandleServerError(t *testing.T) {
 		t.Fatal("failed to handle server error")
 	}
 }
+
+func TestWithRateLimit(t *testing.T) {
+	var (
+		c = client{
+			limiter: newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+		}
+		url = "https://api.pathofexile.com"
+		fn  = func(s string) (string, error) { return s, nil }
+	)
+	_ = c.withRateLimit(url, fn)
+}
+
+func TestWithStashTabRateLimit(t *testing.T) {
+	var (
+		c = client{
+			host:    "api.pathofexile.com",
+			useSSL:  true,
+			limiter: newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+		}
+		url = "https://api.pathofexile.com/public-stash-tabs"
+		fn  = func(s string) (string, error) { return s, nil }
+	)
+	_ = c.withRateLimit(url, fn)
+}

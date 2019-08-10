@@ -183,9 +183,39 @@ func TestGetLadderPageFailure(t *testing.T) {
 		useCache: false,
 		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
 	}
+	_, err := c.getLadderPage(GetLadderOptions{ID: "Nonexistent"})
+	if err == nil {
+		t.Fatal("failed to detect ladder retrieval failure")
+	}
+}
 
-	opts := GetLadderOptions{ID: "Nonexistent"}
+func TestGetLadderRequestFailure(t *testing.T) {
+	c := client{
+		host:     "www.google.com",
+		useSSL:   true,
+		useCache: false,
+		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+	}
+	opts := GetLadderOptions{
+		ID: "test",
+	}
+	_, err := c.GetLadder(opts)
+	if err == nil {
+		t.Fatal("failed to detect ladder request failure")
+	}
+}
 
+func TestGetLadderPageRequestFailure(t *testing.T) {
+	c := client{
+		host:     "www.google.com",
+		useSSL:   true,
+		useCache: false,
+		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+	}
+	opts := GetLadderOptions{
+		ID:    "test",
+		limit: 200,
+	}
 	_, err := c.getLadderPage(opts)
 	if err == nil {
 		t.Fatal("failed to detect ladder request failure")
