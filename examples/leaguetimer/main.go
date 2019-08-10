@@ -16,14 +16,27 @@ func main() {
 		log.Fatal(err)
 	}
 
-	l, err := client.GetCurrentChallengeLeague()
+	leagues, err := client.GetLeagues(poeapi.GetLeaguesOptions{})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	h, m, s := timeUntil(l.EndTime)
+	var challenge poeapi.League
+	var found bool
+	for _, l := range leagues {
+		if (l.EndTime != time.Time{}) {
+			challenge = l
+			found = true
+		}
+	}
+
+	if !found {
+		log.Fatal("failed to find challenge league")
+	}
+
+	h, m, s := timeUntil(challenge.EndTime)
 	fmt.Printf("%s league has %d hours, %d minutes, and %d seconds remaining.",
-		l.Name, h, m, s)
+		challenge.Name, h, m, s)
 }
 
 func timeUntil(t time.Time) (hours, minutes, seconds int) {

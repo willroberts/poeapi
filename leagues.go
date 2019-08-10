@@ -100,19 +100,3 @@ func parseLeaguesResponse(resp string) ([]League, error) {
 	}
 	return leagues, nil
 }
-
-// GetCurrentChallengeLeague retrieves all league and returns the first league
-// with a time limit, which is generally the current challenge league.
-func (c *client) GetCurrentChallengeLeague() (League, error) {
-	leagues, err := c.GetLeagues(GetLeaguesOptions{})
-	if err != nil {
-		return League{}, err
-	}
-
-	for _, l := range leagues {
-		if (l.EndTime != time.Time{}) {
-			return l, nil
-		}
-	}
-	return League{}, errors.New("failed to find challenge league")
-}
