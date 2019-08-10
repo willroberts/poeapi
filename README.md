@@ -50,6 +50,8 @@ GetLeagueRules() ([]poeapi.LeagueRule, error)
 GetLeagueRule(poeapi.GetLeagueRuleOptions) (poeapi.LeagueRule, error)
 GetLadder(poeapi.GetLadderOptions) (poeapi.Ladder, error)
 GetPVPMatches(poeapi.GetPVPMatchesOptions) ([]poeapi.PVPMatch, error)
+GetStashes(opts GetStashOptions) (StashResponse, error)
+GetLatestStashID() (string, error)
 ```
 
 See the [documentation](https://godoc.org/willroberts/poeapi) or examples for
@@ -81,10 +83,10 @@ events are scheduled (hint: it's zero).
 
 ## To Do
 
-1. Implement stash endpoint: https://www.pathofexile.com/developer/docs/api-resource-public-stash-tabs
+1. Update tests and add stash example.
 1. Use local HTTP server to run tests without Internet access.
-1. Address TODO items
-1. Open source the repo to enable GoDoc and Go Report Card
+1. Address TODO items.
+1. Open source the repo to enable GoDoc and Go Report Card.
 1. Add TravisCI to get a build passing badge.
 1. Add CodeCov to get a coverage badge.
 
