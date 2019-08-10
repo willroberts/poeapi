@@ -18,7 +18,7 @@ func TestRateLimiter(t *testing.T) {
 	defer timer.Stop()
 
 	for i := 0; i < 20; i++ {
-		r.wait(rateLimit)
+		r.wait(false)
 		requestCount++
 	}
 	<-timer.C
@@ -42,7 +42,7 @@ func TestRateLimiterTooFast(t *testing.T) {
 
 	for i := 0; i < 10; i++ {
 		go func() {
-			r.wait(rateLimit)
+			r.wait(false)
 			atomic.AddUint32(&requestCount, 1)
 		}()
 	}

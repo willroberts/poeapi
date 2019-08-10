@@ -54,11 +54,11 @@ func (c *client) withCache(url string, fn requestFunc) (string, error) {
 }
 
 func (c *client) withRateLimit(url string, fn requestFunc) requestFunc {
-	ratelimit := c.limiter.rateLimit
 	if url == c.formatURL(stashTabsEndpoint) {
-		ratelimit = c.limiter.stashTabRateLimit
+		c.limiter.wait(true)
+		return fn
 	}
-	c.limiter.wait(ratelimit)
+	c.limiter.wait(false)
 	return fn
 }
 
