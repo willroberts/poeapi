@@ -13,7 +13,6 @@ func (c *client) GetLeagueRules() ([]LeagueRule, error) {
 	return parseLeagueRulesResponse(resp)
 }
 
-// parseLeagueRulesResponse unmarshals JSON from the API into local types.
 func parseLeagueRulesResponse(resp string) ([]LeagueRule, error) {
 	rules := make([]LeagueRule, 0)
 	if err := json.Unmarshal([]byte(resp), &rules); err != nil {

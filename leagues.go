@@ -40,7 +40,6 @@ type GetLeaguesOptions struct {
 	Offset int
 }
 
-// toQueryParams converts options to a URL query string.
 func (opts GetLeaguesOptions) toQueryParams() string {
 	u := url.Values{}
 	if opts.Type != "" {
@@ -105,7 +104,6 @@ func (c *client) GetLeagues(opts GetLeaguesOptions) ([]League, error) {
 	return parseLeaguesResponse(resp)
 }
 
-// parseLeaguesResponse unmarshals JSON from the API into local types.
 func parseLeaguesResponse(resp string) ([]League, error) {
 	leagues := make([]League, 0)
 	if err := json.Unmarshal([]byte(resp), &leagues); err != nil {

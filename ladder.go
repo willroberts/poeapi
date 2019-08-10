@@ -53,7 +53,6 @@ type GetLadderOptions struct {
 	offset int
 }
 
-// toQueryParams converts ladder options to a URL parameter string.
 func (opts GetLadderOptions) toQueryParams() string {
 	u := url.Values{}
 	if opts.Realm != "" {
@@ -114,6 +113,8 @@ func validateGetLadderOptions(opts GetLadderOptions) error {
 	return nil
 }
 
+// GetLadder sends multiple ladder requests to construct the entire ladder for
+// a given league in a single call.
 func (c *client) GetLadder(opts GetLadderOptions) (Ladder, error) {
 	entries := make([]LadderEntry, 0)
 	opts.limit = maxLadderLimit

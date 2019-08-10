@@ -19,7 +19,6 @@ type GetLeagueOptions struct {
 	Realm string
 }
 
-// toQueryParams converts options to a URL query string.
 func (opts GetLeagueOptions) toQueryParams() string {
 	u := url.Values{}
 	if opts.Realm != "" {
@@ -52,7 +51,6 @@ func (c *client) GetLeague(opts GetLeagueOptions) (League, error) {
 	return parseLeagueResponse(resp)
 }
 
-// parseLeagueResponse unmarshals JSON from the API into local types.
 func parseLeagueResponse(resp string) (League, error) {
 	league := League{}
 	if err := json.Unmarshal([]byte(resp), &league); err != nil {

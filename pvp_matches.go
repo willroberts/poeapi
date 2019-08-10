@@ -23,7 +23,6 @@ type GetPVPMatchesOptions struct {
 	Realm string
 }
 
-// toQueryParams converts PVP matches options to a URL parameter string.
 func (opts GetPVPMatchesOptions) toQueryParams() string {
 	u := url.Values{}
 	if opts.Type != "" {
@@ -64,7 +63,6 @@ func (c *client) GetPVPMatches(opts GetPVPMatchesOptions) ([]PVPMatch, error) {
 	return parsePVPMatchesResponse(resp)
 }
 
-// parsePVPMatchesResponse unmarshals JSON from the API into local types.
 func parsePVPMatchesResponse(resp string) ([]PVPMatch, error) {
 	pvpMatches := make([]PVPMatch, 0)
 	if err := json.Unmarshal([]byte(resp), &pvpMatches); err != nil {
