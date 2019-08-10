@@ -9,31 +9,14 @@ import (
 )
 
 const (
-	maxLimit = 200
-	maxPages = 75 // 15000 % 200
+	maxLadderLimit = 200
+	maxLadderPages = 75 // 15000 % 200
+
+	defaultLadderType   = "league"
+	labyrinthLadderType = "labyrinth"
+	pvpLadderType       = "pvp"
 
 	earliestLabyrinthTime = 1456790400 // March 1, 2016: One day before 3.2.0.
-)
-
-var (
-	validRealms = map[string]struct{}{
-		"pc":   struct{}{},
-		"xbox": struct{}{},
-		"sony": struct{}{},
-	}
-
-	validLadderTypes = map[string]struct{}{
-		"league":    struct{}{},
-		"labyrinth": struct{}{},
-		"pvp":       struct{}{},
-	}
-
-	validLabyrinthDifficulties = map[string]struct{}{
-		"Normal":    struct{}{},
-		"Cruel":     struct{}{},
-		"Merciless": struct{}{},
-		"Eternal":   struct{}{},
-	}
 )
 
 // GetLadderOptions contains the request parameters for the ladder endpoint.
@@ -86,13 +69,13 @@ func (opts GetLadderOptions) ToQueryParams() string {
 		u.Add("type", opts.Type)
 	}
 	u.Add("track", strconv.FormatBool(opts.UniqueIDs))
-	if opts.AccountName != "" && opts.Type == "league" {
+	if opts.AccountName != "" && opts.Type == defaultLadderType {
 		u.Add("accountName", opts.AccountName)
 	}
-	if opts.LabyrinthDifficulty != "" && opts.Type == "labyrinth" {
+	if opts.LabyrinthDifficulty != "" && opts.Type == labyrinthLadderType {
 		u.Add("difficulty", opts.LabyrinthDifficulty)
 	}
-	if opts.LabyrinthStartTime != 0 && opts.Type == "labyrinth" {
+	if opts.LabyrinthStartTime != 0 && opts.Type == labyrinthLadderType {
 		u.Add("start", strconv.Itoa(opts.LabyrinthStartTime))
 	}
 	return u.Encode()
@@ -105,16 +88,16 @@ func validateGetLadderOptions(opts GetLadderOptions) error {
 	if _, ok := validRealms[opts.Realm]; opts.Realm != "" && !ok {
 		return ErrInvalidRealm
 	}
-	if opts.Limit < 1 || opts.Limit > maxLimit {
+	if opts.Limit < 1 || opts.Limit > maxLadderLimit {
 		return ErrInvalidLimit
 	}
-	if opts.Offset < 0 || opts.Offset > maxLimit*maxPages {
+	if opts.Offset < 0 || opts.Offset > maxLadderLimit*maxLadderPages {
 		return ErrInvalidOffset
 	}
 	if _, ok := validLadderTypes[opts.Type]; opts.Type != "" && !ok {
 		return ErrInvalidLadderType
 	}
-	if opts.Type == "labyrinth" {
+	if opts.Type == labyrinthLadderType {
 		if opts.LabyrinthDifficulty != "" {
 			if _, ok := validLabyrinthDifficulties[opts.LabyrinthDifficulty]; !ok {
 				return ErrInvalidDifficulty
@@ -154,7 +137,7 @@ func parseLadderResponse(resp string) (Ladder, error) {
 
 func (c *client) GetLadder(opts GetLadderOptions) (Ladder, error) {
 	entries := make([]LadderEntry, 0)
-	opts.Limit = maxLimit
+	opts.Limit = maxLadderLimit
 
 	// Make one initial request to determine the size of the ladder.
 	first, err := c.getLadderPage(opts)
@@ -162,7 +145,7 @@ func (c *client) GetLadder(opts GetLadderOptions) (Ladder, error) {
 		return Ladder{}, err
 	}
 	ladderSize := first.TotalEntries
-	if ladderSize <= maxLimit {
+	if ladderSize <= maxLadderLimit {
 		return first, nil
 	}
 
@@ -170,9 +153,9 @@ func (c *client) GetLadder(opts GetLadderOptions) (Ladder, error) {
 	var (
 		wg    sync.WaitGroup
 		lock  sync.RWMutex
-		errCh = make(chan error, maxPages)
+		errCh = make(chan error, maxLadderPages)
 	)
-	for i := maxLimit; i < ladderSize; i += maxLimit {
+	for i := maxLadderLimit; i < ladderSize; i += maxLadderLimit {
 		go func(offset int) {
 			wg.Add(1)
 			subOpts := opts

@@ -58,13 +58,9 @@ events are scheduled (hint: it's zero).
 
 ## To Do
 
-1. Implement all endpoints.
-   1. GetLeague for single leagues with params. https://www.pathofexile.com/developer/docs/api-resource-leagues
-   1. Stash tabs. https://www.pathofexile.com/developer/docs/api-resource-public-stash-tabs
-1. Pull raw numbers out as constants.
-1. Evaluate where things are like consts, vars, types, maps, and errors. Reorganize package.
 1. Evaluate exported vs nonexported items, ensure docs on all exported items.
 1. Use local HTTP server and fixtures to run tests without Internet access.
+1. Implement stash tab endpoint: https://www.pathofexile.com/developer/docs/api-resource-public-stash-tabs
 1. Open source the repo to enable GoDoc and Go Report Card
 1. Add TravisCI to get a build passing badge.
 1. Add CodeCov to get a coverage badge.

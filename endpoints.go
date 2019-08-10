@@ -4,19 +4,22 @@ import "fmt"
 
 const (
 	leaguesEndpoint     = "/leagues"
-	laddersEndpoint     = "/ladders"
-	stashTabsEndpoint   = "/public-stash-tabs"
-	pvpMatchesEndpoint  = "/pvp-matches"
 	leagueRulesEndpoint = "/league-rules"
+	laddersEndpoint     = "/ladders"
+	pvpMatchesEndpoint  = "/pvp-matches"
+	stashTabsEndpoint   = "/public-stash-tabs"
+
+	httpProtocol  = "http"
+	httpsProtocol = "https"
 )
 
 // formatURL contructs a valid URL from the configured scheme (http or https),
 // the configured host (generally api.pathofexile.com), and the requested
 // endpoint.
 func (c *client) formatURL(endpoint string) string {
-	protocol := "https"
+	protocol := httpsProtocol
 	if !c.useSSL {
-		protocol = "http"
+		protocol = httpProtocol
 	}
 
 	return fmt.Sprintf("%s://%s%s", protocol, c.host, endpoint)

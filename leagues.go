@@ -2,18 +2,14 @@ package poeapi
 
 import (
 	"encoding/json"
-	"errors"
 	"net/url"
 	"strconv"
-	"time"
 )
 
-var (
-	validLeagueTypes = map[string]struct{}{
-		"main":   struct{}{},
-		"event":  struct{}{},
-		"season": struct{}{},
-	}
+const (
+	mainLeagueType   = "main"
+	eventLeagueType  = "event"
+	seasonLeagueType = "season"
 )
 
 // GetLeaguesOptions contains the request parameters for the leagues endpoint.
@@ -36,7 +32,7 @@ func (opts GetLeaguesOptions) ToQueryParams() string {
 	if opts.Realm != "" {
 		u.Add("realm", opts.Realm)
 	}
-	if opts.Type == "season" && opts.Season != "" {
+	if opts.Type == seasonLeagueType && opts.Season != "" {
 		u.Add("season", opts.Season)
 	}
 	if opts.Compact {
@@ -62,7 +58,7 @@ func validateGetLeaguesOptions(opts GetLeaguesOptions) error {
 			return ErrInvalidRealm
 		}
 	}
-	if opts.Type == "season" && opts.Season == "" {
+	if opts.Type == seasonLeagueType && opts.Season == "" {
 		return ErrInvalidSeason
 	}
 	if opts.Limit < 0 {

@@ -23,12 +23,9 @@ const (
 type APIClient interface {
 	GetLeagues(GetLeaguesOptions) ([]League, error)
 	GetLeague(GetLeagueOptions) (League, error)
-
 	GetLeagueRules() ([]LeagueRule, error)
 	GetLeagueRule(GetLeagueRuleOptions) (LeagueRule, error)
-
 	GetLadder(GetLadderOptions) (Ladder, error)
-
 	GetPVPMatches(GetPVPMatchesOptions) ([]PVPMatch, error)
 }
 

@@ -2,6 +2,33 @@ package poeapi
 
 import "time"
 
+var (
+	validRealms = map[string]struct{}{
+		"pc":   struct{}{},
+		"xbox": struct{}{},
+		"sony": struct{}{},
+	}
+
+	validLeagueTypes = map[string]struct{}{
+		"main":   struct{}{},
+		"event":  struct{}{},
+		"season": struct{}{},
+	}
+
+	validLadderTypes = map[string]struct{}{
+		"league":    struct{}{},
+		"labyrinth": struct{}{},
+		"pvp":       struct{}{},
+	}
+
+	validLabyrinthDifficulties = map[string]struct{}{
+		"Normal":    struct{}{},
+		"Cruel":     struct{}{},
+		"Merciless": struct{}{},
+		"Eternal":   struct{}{},
+	}
+)
+
 // League represents a permanent or challenge league.
 type League struct {
 	Name         string       `json:"id" validate:"nonzero"`
