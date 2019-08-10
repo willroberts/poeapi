@@ -83,7 +83,8 @@ events are scheduled (hint: it's zero).
 
 ## To Do
 
-1. Update tests and add stash example.
+1. Add stash tests and add stash example.
+1. Fix flaky ratelimiter tests.
 1. Use local HTTP server to run tests without Internet access.
 1. Address TODO items.
 1. Open source the repo to enable GoDoc and Go Report Card.
