@@ -48,7 +48,7 @@ func TestParseLeagueRuleResponse(t *testing.T) {
 		t.Fatalf("failed to read fixture for league rule test: %v", err)
 	}
 
-	_, err = parseLeagueRulesResponse(resp)
+	_, err = parseLeagueRuleResponse(resp)
 	if err != nil {
 		t.Fatalf("failed to parse league rule response: %v", err)
 	}
