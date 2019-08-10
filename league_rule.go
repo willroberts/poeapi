@@ -8,6 +8,7 @@ import (
 // GetLeagueRuleOptions contains the request parameters for the league rules
 // endpoint. The only parameter, ID, is required.
 type GetLeagueRuleOptions struct {
+	// The identifier of the league rule to retrieve.
 	ID string
 }
 

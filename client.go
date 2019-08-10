@@ -1,22 +1,26 @@
 package poeapi
 
 const (
-	// API access should go to api.pathofexile.com. This may be overridden for
-	// testing purposes.
-	defaultHost = "api.pathofexile.com"
+	// DefaultHost sets the hostname used by the client. This is set to
+	// api.pathofexile.com. This may be overridden for testing purposes.
+	DefaultHost = "api.pathofexile.com"
 
-	// Most API endpoints have a rate limit of 5 requests per second. Tests
-	// performed with the ratetest program (cmd/ratetest) show occasional
-	// failures at this rate, so we back down to 4 requests per second by
-	// default to err on the side of caution.
-	defaultRateLimit = 4
+	// DefaultRateLimit sets the rate limit for all endpoints except for the
+	// stash tab endpoint. Most endpoints have a rate limit of 5 requests per
+	// second. Tests performed with the ratetest program (cmd/ratetest) show
+	// occasional failures at this rate, so we back down to 4 requests per
+	// second by default to err on the side of caution.
+	DefaultRateLimit = 4
 
+	// DefaultStashTabRateLimit sets the rate limit for the stash tab endpoint.
 	// The stash tab API has a rate limit of 1 request per second.
-	defaultStashTabRateLimit = 1
+	DefaultStashTabRateLimit = 1
 
-	// A typical response from the public stash tabs API is around 3MB. By
-	// default, allow around 50x3MB=150MB total cache memory usage.
-	defaultCacheSize = 50
+	// DefaultCacheSize sets the number of items which can be stores in the
+	// in-memory LRU cache. A typical response from the public stash tabs API
+	// is around 3MB. By default, allow around 50x3MB=150MB total cache memory
+	// usage.
+	DefaultCacheSize = 50
 )
 
 // APIClient provides methods for interacting with the Path of Exile API.
@@ -29,7 +33,6 @@ type APIClient interface {
 	GetPVPMatches(GetPVPMatchesOptions) ([]PVPMatch, error)
 }
 
-// client is the implementation of the APIClient interface.
 type client struct {
 	host     string
 	useSSL   bool
@@ -65,26 +68,43 @@ func NewAPIClient(opts ClientOptions) (APIClient, error) {
 
 // ClientOptions contains settings for client initialization.
 type ClientOptions struct {
-	Host              string
-	UseSSL            bool
-	UseCache          bool
-	CacheSize         int
-	RateLimit         int
+	// The hostname used by the client.
+	Host string
+
+	// Set to false if your network does not allow outbound HTTPS traffic.
+	UseSSL bool
+
+	// Set to false to always hit the API for requests instead of using a local
+	// cache.
+	UseCache bool
+
+	// The number of items which can be stored in the cache. Expect around
+	// 3MB per item for stash tab requests, and up to 0.5MB per item for all
+	// other requests.
+	CacheSize int
+
+	// The number of requests per second for all API endpoints except the stash
+	// tab endpoint. The API will ratelimit clients above 5rps.
+	RateLimit int
+
+	// The number of requests per second for the stash tab endpoint. The API
+	// will ratelimit clients above 1rps.
 	StashTabRateLimit int
 }
 
 // DefaultClientOptions initializes the client with the most common settings.
 var DefaultClientOptions = ClientOptions{
-	Host:              defaultHost,
+	Host:              DefaultHost,
 	UseSSL:            true,
 	UseCache:          true,
-	CacheSize:         defaultCacheSize,
-	RateLimit:         defaultRateLimit,
-	StashTabRateLimit: defaultStashTabRateLimit,
+	CacheSize:         DefaultCacheSize,
+	RateLimit:         DefaultRateLimit,
+	StashTabRateLimit: DefaultStashTabRateLimit,
 }
 
 func validateClientOptions(opts ClientOptions) error {
-	if opts.Host != defaultHost {
+	if opts.Host != DefaultHost {
+		// TODO: Allow nonstandard hosts for local test servers.
 		return ErrInvalidHost
 	}
 	if opts.CacheSize < 1 {

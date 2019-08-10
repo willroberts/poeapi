@@ -53,8 +53,8 @@ type GetLadderOptions struct {
 	offset int
 }
 
-// ToQueryParams converts ladder options to a URL parameter string.
-func (opts GetLadderOptions) ToQueryParams() string {
+// toQueryParams converts ladder options to a URL parameter string.
+func (opts GetLadderOptions) toQueryParams() string {
 	u := url.Values{}
 	if opts.Realm != "" {
 		u.Add("realm", opts.Realm)
@@ -171,7 +171,7 @@ func (c *client) getLadderPage(opts GetLadderOptions) (Ladder, error) {
 		return Ladder{}, err
 	}
 	url := fmt.Sprintf("%s/%s?%s", c.formatURL(laddersEndpoint), opts.ID,
-		opts.ToQueryParams())
+		opts.toQueryParams())
 	resp, err := c.get(url)
 	if err != nil {
 		return Ladder{}, err

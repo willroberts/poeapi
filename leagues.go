@@ -15,16 +15,33 @@ const (
 // GetLeaguesOptions contains the request parameters for the leagues endpoint.
 // All parameters are optional.
 type GetLeaguesOptions struct {
-	Type    string // main, event, or season.
-	Realm   string // pc, xbox, or sony.
-	Season  string // Required when Type=season.
+	// The type of leagues to retrieve.
+	// Valid options: 'main', 'event', or 'season'.
+	Type string
+
+	// The realm of leagues to retrieve.
+	// Valid options: 'pc', 'xbox', or 'sony'.
+	Realm string
+
+	// The name of the season to retrieve. Requires when Type is 'season'.
+	Season string
+
+	// Set to true to omit rules, registration time, and description from the
+	// response.
 	Compact bool
-	Limit   int // Default is 50 with Compact=0 and 230 with Compact=1.
-	Offset  int
+
+	// Number of leagues to retrieve. Defaults to 50, but can go up to 230 when
+	// Compact is true.
+	Limit int
+
+	// Starting index for bulk league retrieval. Only needed when requesting
+	// more than 50 leagues.
+	// TODO: Abstract limit/offset behind client methods.
+	Offset int
 }
 
-// ToQueryParams converts options to a URL query string.
-func (opts GetLeaguesOptions) ToQueryParams() string {
+// toQueryParams converts options to a URL query string.
+func (opts GetLeaguesOptions) toQueryParams() string {
 	u := url.Values{}
 	if opts.Type != "" {
 		u.Add("type", opts.Type)

@@ -2,7 +2,7 @@ package poeapi
 
 import "testing"
 
-func TestLadderOptionsToQueryParams(t *testing.T) {
+func TestLadderOptionstoQueryParams(t *testing.T) {
 	var (
 		opts = GetLadderOptions{
 			Realm:       "sony",
@@ -15,14 +15,14 @@ func TestLadderOptionsToQueryParams(t *testing.T) {
 		expected = "accountName=testaccount&limit=200&offset=200&realm=sony&track=true&type=league"
 	)
 
-	params := opts.ToQueryParams()
+	params := opts.toQueryParams()
 	if params != expected {
 		t.Fatalf("failed to convert ladder options to query params. expected %s, got %s",
 			expected, params)
 	}
 }
 
-func TestLabyrinthLadderOptionsToQueryParams(t *testing.T) {
+func TestLabyrinthLadderOptionstoQueryParams(t *testing.T) {
 	var (
 		opts = GetLadderOptions{
 			Realm:               "xbox",
@@ -36,7 +36,7 @@ func TestLabyrinthLadderOptionsToQueryParams(t *testing.T) {
 		expected = "difficulty=Normal&limit=200&offset=400&realm=xbox&start=1565283600&track=false&type=labyrinth"
 	)
 
-	params := opts.ToQueryParams()
+	params := opts.toQueryParams()
 	if params != expected {
 		t.Fatalf("failed to convert ladder options to query params. expected %s, got %s",
 			expected, params)
@@ -154,10 +154,10 @@ func TestValidateLadderOptionsWithEarlyStartTime(t *testing.T) {
 
 func TestGetLadderPage(t *testing.T) {
 	c := client{
-		host:     defaultHost,
+		host:     DefaultHost,
 		useSSL:   true,
 		useCache: false,
-		limiter:  newRateLimiter(defaultRateLimit, defaultStashTabRateLimit),
+		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
 	}
 
 	opts := GetLadderOptions{
@@ -178,10 +178,10 @@ func TestGetLadderPage(t *testing.T) {
 
 func TestGetLadderPageFailure(t *testing.T) {
 	c := client{
-		host:     defaultHost,
+		host:     DefaultHost,
 		useSSL:   true,
 		useCache: false,
-		limiter:  newRateLimiter(defaultRateLimit, defaultStashTabRateLimit),
+		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
 	}
 
 	opts := GetLadderOptions{ID: "Nonexistent"}

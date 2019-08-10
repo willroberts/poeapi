@@ -11,12 +11,16 @@ import (
 // request the ladder alongside the league, but this is not implemented. Use
 // the GetLadder() method instead.
 type GetLeagueOptions struct {
-	ID    string
-	Realm string // pc, xbox, or sony.
+	// The name of the league to retrieve.
+	ID string
+
+	// The realm of the ladder.
+	// Valid options: 'pc', 'xbox', or 'sony'.
+	Realm string
 }
 
-// ToQueryParams converts options to a URL query string.
-func (opts GetLeagueOptions) ToQueryParams() string {
+// toQueryParams converts options to a URL query string.
+func (opts GetLeagueOptions) toQueryParams() string {
 	u := url.Values{}
 	if opts.Realm != "" {
 		u.Add("realm", opts.Realm)

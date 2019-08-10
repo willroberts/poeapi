@@ -8,8 +8,8 @@ import (
 func TestGetJSON(t *testing.T) {
 	var (
 		c = client{
-			host:    defaultHost,
-			limiter: newRateLimiter(defaultRateLimit, defaultStashTabRateLimit),
+			host:    DefaultHost,
+			limiter: newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
 		}
 		url = c.formatURL(leaguesEndpoint)
 	)
@@ -22,8 +22,8 @@ func TestGetJSON(t *testing.T) {
 func TestGetStashTabsJSON(t *testing.T) {
 	var (
 		c = client{
-			host:    defaultHost,
-			limiter: newRateLimiter(defaultRateLimit, defaultStashTabRateLimit),
+			host:    DefaultHost,
+			limiter: newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
 		}
 		url = c.formatURL(stashTabsEndpoint)
 	)
@@ -36,7 +36,7 @@ func TestGetStashTabsJSON(t *testing.T) {
 func TestGetJSONWithInvalidProtocol(t *testing.T) {
 	var (
 		c = client{
-			limiter: newRateLimiter(defaultRateLimit, defaultStashTabRateLimit),
+			limiter: newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
 		}
 		url = "htps://www.google.com"
 	)
@@ -53,8 +53,8 @@ func TestGetJSONRateLimit(t *testing.T) {
 	}
 	var (
 		c = client{
-			host:    defaultHost,
-			limiter: newRateLimiter(50, defaultStashTabRateLimit),
+			host:    DefaultHost,
+			limiter: newRateLimiter(50, DefaultStashTabRateLimit),
 		}
 		url  = c.formatURL(leaguesEndpoint)
 		errs = errorCollector{
