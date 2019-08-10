@@ -150,7 +150,7 @@ func TestGetLeaguesRequestFailure(t *testing.T) {
 	var (
 		c = client{
 			host:    "google.com",
-			limiter: newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+			limiter: newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
 		}
 	)
 	_, err := c.GetLeagues(GetLeaguesOptions{})

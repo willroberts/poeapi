@@ -6,18 +6,18 @@ const (
 	DefaultHost = "api.pathofexile.com"
 
 	// DefaultRateLimit sets the rate limit for all endpoints except for the
-	// stash tab endpoint. Most endpoints have a rate limit of 5 requests per
+	// stash endpoint. Most endpoints have a rate limit of 5 requests per
 	// second. Tests performed with the ratetest program (cmd/ratetest) show
 	// occasional failures at this rate, so we back down to 4 requests per
 	// second by default to err on the side of caution.
 	DefaultRateLimit = 4
 
-	// DefaultStashTabRateLimit sets the rate limit for the stash tab endpoint.
-	// The stash tab API has a rate limit of 1 request per second.
-	DefaultStashTabRateLimit = 1
+	// DefaultStashRateLimit sets the rate limit for the stash endpoint.
+	// The stash API has a rate limit of 1 request per second.
+	DefaultStashRateLimit = 1
 
 	// DefaultCacheSize sets the number of items which can be stores in the
-	// in-memory LRU cache. A typical response from the public stash tabs API
+	// in-memory LRU cache. A typical response from the public stashs API
 	// is around 3MB. By default, allow around 50x3MB=150MB total cache memory
 	// usage.
 	DefaultCacheSize = 50
@@ -31,6 +31,8 @@ type APIClient interface {
 	GetLeagueRule(GetLeagueRuleOptions) (LeagueRule, error)
 	GetLadder(GetLadderOptions) (Ladder, error)
 	GetPVPMatches(GetPVPMatchesOptions) ([]PVPMatch, error)
+	GetStashes(opts GetStashOptions) (StashResponse, error)
+	GetLatestChangeID() (string, error)
 }
 
 type client struct {
@@ -52,7 +54,7 @@ func NewAPIClient(opts ClientOptions) (APIClient, error) {
 		host:     opts.Host,
 		useSSL:   opts.UseSSL,
 		useCache: opts.UseCache,
-		limiter:  newRateLimiter(opts.RateLimit, opts.StashTabRateLimit),
+		limiter:  newRateLimiter(opts.RateLimit, opts.StashRateLimit),
 	}
 
 	if opts.UseCache {
@@ -79,7 +81,7 @@ type ClientOptions struct {
 	UseCache bool
 
 	// The number of items which can be stored in the cache. Expect around
-	// 3MB per item for stash tab requests, and up to 0.5MB per item for all
+	// 3MB per item for stash requests, and up to 0.5MB per item for all
 	// other requests.
 	CacheSize int
 
@@ -87,19 +89,19 @@ type ClientOptions struct {
 	// tab endpoint. The API will ratelimit clients above 5rps.
 	RateLimit int
 
-	// The number of requests per second for the stash tab endpoint. The API
+	// The number of requests per second for the stash endpoint. The API
 	// will ratelimit clients above 1rps.
-	StashTabRateLimit int
+	StashRateLimit int
 }
 
 // DefaultClientOptions initializes the client with the most common settings.
 var DefaultClientOptions = ClientOptions{
-	Host:              DefaultHost,
-	UseSSL:            true,
-	UseCache:          true,
-	CacheSize:         DefaultCacheSize,
-	RateLimit:         DefaultRateLimit,
-	StashTabRateLimit: DefaultStashTabRateLimit,
+	Host:           DefaultHost,
+	UseSSL:         true,
+	UseCache:       true,
+	CacheSize:      DefaultCacheSize,
+	RateLimit:      DefaultRateLimit,
+	StashRateLimit: DefaultStashRateLimit,
 }
 
 func validateClientOptions(opts ClientOptions) error {
@@ -113,8 +115,8 @@ func validateClientOptions(opts ClientOptions) error {
 	if opts.RateLimit < 1 {
 		return ErrInvalidRateLimit
 	}
-	if opts.StashTabRateLimit < 1 {
-		return ErrInvalidStashTabRateLimit
+	if opts.StashRateLimit < 1 {
+		return ErrInvalidStashRateLimit
 	}
 	return nil
 }

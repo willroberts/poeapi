@@ -9,7 +9,7 @@ import (
 // requests too frequently. ratelimiter is threadsafe.
 type ratelimiter struct {
 	rateLimit         int
-	stashTabRateLimit int
+	stashRateLimit int
 
 	lastRequest      time.Time
 	lastStashRequest time.Time
@@ -23,7 +23,7 @@ func (r *ratelimiter) wait(stash bool) {
 
 	var interval time.Duration
 	if stash {
-		interval = time.Duration(1000.0/r.stashTabRateLimit) * time.Millisecond
+		interval = time.Duration(1000.0/r.stashRateLimit) * time.Millisecond
 		elapsed := time.Since(r.lastStashRequest)
 		if elapsed < interval {
 			time.Sleep(interval - elapsed)
@@ -39,9 +39,9 @@ func (r *ratelimiter) wait(stash bool) {
 	}
 }
 
-func newRateLimiter(rateLimit, stashTabRateLimit int) *ratelimiter {
+func newRateLimiter(rateLimit, stashRateLimit int) *ratelimiter {
 	return &ratelimiter{
 		rateLimit:         rateLimit,
-		stashTabRateLimit: stashTabRateLimit,
+		stashRateLimit: stashRateLimit,
 	}
 }

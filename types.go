@@ -99,3 +99,23 @@ type PVPMatch struct {
 	Style         string    `json:"style"`
 	RegisterTime  time.Time `json:"registerAt"`
 }
+
+// StashResponse ...
+type StashResponse struct {
+	NextChangeID string  `json:"next_change_id"`
+	Stashes      []Stash `json:"stashes"`
+}
+
+// Stash ...
+type Stash struct {
+	ID                string `json:"id"`
+	AccountName       string `json:"accountName"`
+	LastCharacterName string `json:"lastCharacterName"`
+	Index             string `json:"stash"`
+	Type              string `json:"stashType"`
+	Items             []Item `json:"items"`
+	Public            bool   `json:"public"`
+}
+
+// Item ...
+type Item struct{}

@@ -157,7 +157,7 @@ func TestGetLadderPage(t *testing.T) {
 		host:     DefaultHost,
 		useSSL:   true,
 		useCache: false,
-		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
 	}
 
 	opts := GetLadderOptions{
@@ -181,7 +181,7 @@ func TestGetLadderPageFailure(t *testing.T) {
 		host:     DefaultHost,
 		useSSL:   true,
 		useCache: false,
-		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
 	}
 	_, err := c.getLadderPage(GetLadderOptions{ID: "Nonexistent"})
 	if err == nil {
@@ -194,7 +194,7 @@ func TestGetLadderRequestFailure(t *testing.T) {
 		host:     "www.google.com",
 		useSSL:   true,
 		useCache: false,
-		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
 	}
 	opts := GetLadderOptions{
 		ID: "test",
@@ -210,7 +210,7 @@ func TestGetLadderPageRequestFailure(t *testing.T) {
 		host:     "www.google.com",
 		useSSL:   true,
 		useCache: false,
-		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
 	}
 	opts := GetLadderOptions{
 		ID:    "test",

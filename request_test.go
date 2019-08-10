@@ -9,7 +9,7 @@ func TestGetJSON(t *testing.T) {
 	var (
 		c = client{
 			host:    DefaultHost,
-			limiter: newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+			limiter: newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
 		}
 		url = c.formatURL(leaguesEndpoint)
 	)
@@ -19,24 +19,24 @@ func TestGetJSON(t *testing.T) {
 	}
 }
 
-func TestGetStashTabsJSON(t *testing.T) {
+func TestGetStashsJSON(t *testing.T) {
 	var (
 		c = client{
 			host:    DefaultHost,
-			limiter: newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+			limiter: newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
 		}
 		url = c.formatURL(stashTabsEndpoint)
 	)
 	_, err := c.getJSON(url)
 	if err != nil {
-		t.Fatalf("failed to get stash tabs json: %v", err)
+		t.Fatalf("failed to get stashs json: %v", err)
 	}
 }
 
 func TestGetJSONWithInvalidProtocol(t *testing.T) {
 	var (
 		c = client{
-			limiter: newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+			limiter: newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
 		}
 		url = "htps://www.google.com"
 	)
@@ -54,7 +54,7 @@ func TestGetJSONRateLimit(t *testing.T) {
 	var (
 		c = client{
 			host:    DefaultHost,
-			limiter: newRateLimiter(50, DefaultStashTabRateLimit),
+			limiter: newRateLimiter(50, DefaultStashRateLimit),
 		}
 		url  = c.formatURL(leaguesEndpoint)
 		errs = errorCollector{
@@ -104,7 +104,7 @@ func TestHandleServerError(t *testing.T) {
 func TestWithRateLimit(t *testing.T) {
 	var (
 		c = client{
-			limiter: newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+			limiter: newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
 		}
 		url = "https://api.pathofexile.com"
 		fn  = func(s string) (string, error) { return s, nil }
@@ -112,12 +112,12 @@ func TestWithRateLimit(t *testing.T) {
 	_ = c.withRateLimit(url, fn)
 }
 
-func TestWithStashTabRateLimit(t *testing.T) {
+func TestWithStashRateLimit(t *testing.T) {
 	var (
 		c = client{
 			host:    "api.pathofexile.com",
 			useSSL:  true,
-			limiter: newRateLimiter(DefaultRateLimit, DefaultStashTabRateLimit),
+			limiter: newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
 		}
 		url = "https://api.pathofexile.com/public-stash-tabs"
 		fn  = func(s string) (string, error) { return s, nil }

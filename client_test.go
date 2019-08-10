@@ -32,7 +32,7 @@ func TestValidateOptionsInvalidHost(t *testing.T) {
 	opts := ClientOptions{
 		Host:              "google.com",
 		RateLimit:         DefaultRateLimit,
-		StashTabRateLimit: DefaultStashTabRateLimit,
+		StashRateLimit: DefaultStashRateLimit,
 	}
 	if err := validateClientOptions(opts); err != ErrInvalidHost {
 		t.Fatal("failed to detect invalid host option")
@@ -44,7 +44,7 @@ func TestValidateOptionsInvalidCacheSize(t *testing.T) {
 		Host:              DefaultHost,
 		CacheSize:         0,
 		RateLimit:         DefaultRateLimit,
-		StashTabRateLimit: DefaultStashTabRateLimit,
+		StashRateLimit: DefaultStashRateLimit,
 	}
 	if err := validateClientOptions(opts); err != ErrInvalidCacheSize {
 		t.Fatal("failed to detect invalid cache size")
@@ -56,21 +56,21 @@ func TestValidateOptionsInvalidRateLimit(t *testing.T) {
 		Host:              DefaultHost,
 		CacheSize:         DefaultCacheSize,
 		RateLimit:         0,
-		StashTabRateLimit: DefaultStashTabRateLimit,
+		StashRateLimit: DefaultStashRateLimit,
 	}
 	if err := validateClientOptions(opts); err != ErrInvalidRateLimit {
 		t.Fatal("failed to detect invalid rate limit option")
 	}
 }
 
-func TestValidateOptionsInvalidStashTabRateLimit(t *testing.T) {
+func TestValidateOptionsInvalidStashRateLimit(t *testing.T) {
 	opts := ClientOptions{
 		Host:              DefaultHost,
 		CacheSize:         DefaultCacheSize,
 		RateLimit:         DefaultRateLimit,
-		StashTabRateLimit: 0,
+		StashRateLimit: 0,
 	}
-	if err := validateClientOptions(opts); err != ErrInvalidStashTabRateLimit {
-		t.Fatal("failed to detect invalid stash tab rate limit option")
+	if err := validateClientOptions(opts); err != ErrInvalidStashRateLimit {
+		t.Fatal("failed to detect invalid stash rate limit option")
 	}
 }

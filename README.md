@@ -23,7 +23,7 @@ clientOpts := poeapi.ClientOptions{
     UseCache:          true,
     CacheSize:         50,
     RateLimit:         4,
-    StashTabRateLimit: 1,
+    StashRateLimit: 1,
 } // This is equivalent to poeapi.DefaultClientOptions.
 
 client, err := poeapi.NewAPIClient(clientOpts)
@@ -81,7 +81,7 @@ events are scheduled (hint: it's zero).
 
 ## To Do
 
-1. Implement stash tab endpoint: https://www.pathofexile.com/developer/docs/api-resource-public-stash-tabs
+1. Implement stash endpoint: https://www.pathofexile.com/developer/docs/api-resource-public-stash-tabs
 1. Use local HTTP server to run tests without Internet access.
 1. Address TODO items
 1. Open source the repo to enable GoDoc and Go Report Card

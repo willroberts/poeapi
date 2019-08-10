@@ -27,9 +27,9 @@ var ErrInvalidHost = errors.New("invalid API host")
 // ErrInvalidRateLimit is raised when the general rate limit is out of range.
 var ErrInvalidRateLimit = errors.New("invalid rate limit")
 
-// ErrInvalidStashTabRateLimit is raised when the stash tab rate limit is out of
+// ErrInvalidStashRateLimit is raised when the stash rate limit is out of
 // range.
-var ErrInvalidStashTabRateLimit = errors.New("invalid stash tab rate limit")
+var ErrInvalidStashRateLimit = errors.New("invalid stash rate limit")
 
 // ErrInvalidCacheSize is raised when the cache size is out of range.
 var ErrInvalidCacheSize = errors.New("invalid cache size")
@@ -75,3 +75,7 @@ var ErrInvalidLeagueType = errors.New("invalid league type")
 // ErrInvalidLeagueID is raised when the league ID is omitted from a league
 // request.
 var ErrInvalidLeagueID = errors.New("invalid league id")
+
+// ErrInvalidStashID is raised when the stash ID is omitted from a stash
+// request.
+var ErrInvalidStashID = errors.New("invalid stash id")
