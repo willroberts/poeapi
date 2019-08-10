@@ -1,4 +1,4 @@
-// upcomingmatches prints the number of upcoming PVP events.
+// listleaguerules prints all league rules from the API.
 package main
 
 import (
@@ -14,10 +14,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	m, err := client.GetPVPMatches(poeapi.GetPVPMatchesOptions{})
+	rules, err := client.GetLeagueRules()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("There are %d upcoming PVP matches.", len(m))
+	for _, r := range rules {
+		fmt.Printf("%s: %s\n", r.Name, r.Description)
+	}
 }

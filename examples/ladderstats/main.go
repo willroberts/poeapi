@@ -1,3 +1,4 @@
+// ladderstats prints the distribution of character classes in a ladder.
 package main
 
 import (

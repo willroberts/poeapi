@@ -1,6 +1,8 @@
 package poeapi
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 // GetLeagueRules retrieves all league rules from the API.
 func (c *client) GetLeagueRules() ([]LeagueRule, error) {
