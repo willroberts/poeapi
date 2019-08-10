@@ -8,7 +8,7 @@ A Go client for the Path of Exile API.
 
 ## Features
 
-* Supports every endpoint of the Path of Exile API
+* Supports every endpoint of the [Path of Exile API](https://www.pathofexile.com/developer/docs/api)
 * All operations are thread-safe
 * Built-in, tunable rate limiting
 * Built-in, tunable caching for responses
@@ -39,8 +39,6 @@ ladder, err := client.GetLadder(poeapi.GetLadderOptions{
 // ...
 ```
 
-See examples below for more usage information.
-
 ## Interface
 
 These are the methods available on the client's interface:
@@ -53,6 +51,9 @@ GetLeagueRule(poeapi.GetLeagueRuleOptions) (poeapi.LeagueRule, error)
 GetLadder(poeapi.GetLadderOptions) (poeapi.Ladder, error)
 GetPVPMatches(poeapi.GetPVPMatchesOptions) ([]poeapi.PVPMatch, error)
 ```
+
+See the [documentation](https://godoc.org/willroberts/poeapi) or examples for
+more usage information.
 
 ## Examples
 
