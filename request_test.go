@@ -83,3 +83,20 @@ func TestGetJSONRateLimit(t *testing.T) {
 		t.Fatal("failed to handle rate-limited responses")
 	}
 }
+
+func TestHandleServerError(t *testing.T) {
+	c, err := NewAPIClient(DefaultClientOptions)
+	if err != nil {
+		t.Fatalf("failed to create client in server error test: %v", err)
+	}
+
+	opts := GetLeagueRuleOptions{
+		// This ID is invalid and caused a 500. It should be "TurboMonsters".
+		// This could be patched at any time, necessitating a test update.
+		ID: "Turbo",
+	}
+	_, err = c.GetLeagueRule(opts)
+	if err != ErrServerFailure {
+		t.Fatal("failed to handle server error")
+	}
+}

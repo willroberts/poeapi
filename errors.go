@@ -59,3 +59,7 @@ var ErrInvalidDifficulty = errors.New("invalid difficulty")
 // below zero, above zero but earlier than the release of the Labyrinth, or
 // is an invalid timestamp.
 var ErrInvalidLabyrinthStartTime = errors.New("invalid labyrinth start time")
+
+// ErrInvalidLeagueRuleID is raised when the ID is missing in a league rule
+// request.
+var ErrInvalidLeagueRuleID = errors.New("missing league rule id")

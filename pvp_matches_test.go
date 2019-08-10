@@ -13,7 +13,6 @@ func TestGetPVPMatches(t *testing.T) {
 		Season: "EUPvPSeason1",
 	}
 	_, err = c.GetPVPMatches(opts)
-	t.Fail()
 	if err != nil {
 		t.Fatalf("failed to get pvp matches: %v", err)
 	}

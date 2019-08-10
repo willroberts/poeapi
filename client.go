@@ -4,6 +4,8 @@ package poeapi
 type APIClient interface {
 	GetLeagues() ([]League, error)
 	GetCurrentChallengeLeague() (League, error)
+	GetLeagueRules() ([]LeagueRule, error)
+	GetLeagueRule(GetLeagueRuleOptions) (LeagueRule, error)
 	GetLadder(GetLadderOptions) (Ladder, error)
 	GetPVPMatches(GetPVPMatchesOptions) ([]PVPMatch, error)
 }
