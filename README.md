@@ -31,13 +31,11 @@ if err != nil {
     // ...
 }
 
-ladderOpts := poeapi.GetLadderOptions{
+ladder, err := client.GetLadder(poeapi.GetLadderOptions{
     ID:    "SSF Hardcore",
     Realm: "pc",
     Type:  "league",
-}
-
-ladder, err := client.GetLadder(ladderOpts)
+})
 // ...
 ```
 
