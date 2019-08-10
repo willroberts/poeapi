@@ -81,8 +81,9 @@ events are scheduled (hint: it's zero).
 
 ## To Do
 
-1. Use local HTTP server to run tests without Internet access.
 1. Implement stash tab endpoint: https://www.pathofexile.com/developer/docs/api-resource-public-stash-tabs
+1. Use local HTTP server to run tests without Internet access.
+1. Address TODO items
 1. Open source the repo to enable GoDoc and Go Report Card
 1. Add TravisCI to get a build passing badge.
 1. Add CodeCov to get a coverage badge.
