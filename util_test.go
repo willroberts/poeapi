@@ -13,8 +13,7 @@ const (
 )
 
 func loadFixture(filename string) (string, error) {
-	gopath := os.Getenv("GOPATH")
-	path := fmt.Sprintf("%s/src/%s/%s", gopath, repo, filename)
+	path := fmt.Sprintf("%s/src/%s/%s", os.Getenv("GOPATH"), repo, filename)
 
 	if runtime.GOOS == "windows" {
 		path = strings.ReplaceAll(path, "/", "\\")
