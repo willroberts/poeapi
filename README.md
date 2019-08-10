@@ -46,6 +46,11 @@ There are some examples in the `examples` directory.
 This example retrieves the current challenge league from the API and prints how
 much time it has remaining.
 
+#### listleaguerules
+
+This example retrieves all league rules from the API and prints their names and
+descriptions.
+
 #### ladderstats
 
 This example retrieves the ladder or leaderboard for a league, computes the
