@@ -32,7 +32,7 @@ type APIClient interface {
 	GetLadder(GetLadderOptions) (Ladder, error)
 	GetPVPMatches(GetPVPMatchesOptions) ([]PVPMatch, error)
 	GetStashes(opts GetStashOptions) (StashResponse, error)
-	GetLatestChangeID() (string, error)
+	GetLatestStashID() (string, error)
 }
 
 type client struct {

@@ -48,9 +48,9 @@ type latestChange struct {
 	ID string `json:"next_change_id"`
 }
 
-// GetLatestChangeID retrieves the latest stash tab ID from poe.ninja, with
+// GetLatestStashID retrieves the latest stash tab ID from poe.ninja, with
 // caching and ratelimiting.
-func (c *client) GetLatestChangeID() (string, error) {
+func (c *client) GetLatestStashID() (string, error) {
 	resp, err := c.get(latestChangeURL)
 	if err != nil {
 		return "", err

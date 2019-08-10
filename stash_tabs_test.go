@@ -23,12 +23,12 @@ func TestGetStash(t *testing.T) {
 	}
 }
 
-func TestGetLatestChangeID(t *testing.T) {
+func TestGetLatestStashID(t *testing.T) {
 	c, err := NewAPIClient(DefaultClientOptions)
 	if err != nil {
 		t.Fatalf("failed to create client for latest change id test: %v", err)
 	}
-	_, err = c.GetLatestChangeID()
+	_, err = c.GetLatestStashID()
 	if err != nil {
 		t.Fatalf("failed to get latest change id: %v", err)
 	}
