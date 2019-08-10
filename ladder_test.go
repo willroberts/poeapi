@@ -6,11 +6,11 @@ func TestLadderOptionsToQueryParams(t *testing.T) {
 	var (
 		opts = GetLadderOptions{
 			Realm:       "sony",
-			Limit:       200,
-			Offset:      200,
 			Type:        "league",
 			UniqueIDs:   true,
 			AccountName: "testaccount",
+			limit:       200,
+			offset:      200,
 		}
 		expected = "accountName=testaccount&limit=200&offset=200&realm=sony&track=true&type=league"
 	)
@@ -26,12 +26,12 @@ func TestLabyrinthLadderOptionsToQueryParams(t *testing.T) {
 	var (
 		opts = GetLadderOptions{
 			Realm:               "xbox",
-			Limit:               200,
-			Offset:              400,
 			Type:                "labyrinth",
 			UniqueIDs:           false,
 			LabyrinthDifficulty: "Normal",
 			LabyrinthStartTime:  1565283600,
+			limit:               200,
+			offset:              400,
 		}
 		expected = "difficulty=Normal&limit=200&offset=400&realm=xbox&start=1565283600&track=false&type=labyrinth"
 	)
@@ -47,9 +47,9 @@ func TestValidateLadderOptions(t *testing.T) {
 	opts := GetLadderOptions{
 		ID:     "Standard",
 		Realm:  "pc",
-		Limit:  200,
-		Offset: 0,
 		Type:   "league",
+		limit:  200,
+		offset: 0,
 	}
 	if err := validateGetLadderOptions(opts); err != nil {
 		t.Fatalf("failed to validate ladder options: %v", err)
@@ -58,10 +58,8 @@ func TestValidateLadderOptions(t *testing.T) {
 
 func TestValidateLadderOptionsWithMissingID(t *testing.T) {
 	opts := GetLadderOptions{
-		Realm:  "pc",
-		Limit:  200,
-		Offset: 0,
-		Type:   "league",
+		Realm: "pc",
+		Type:  "league",
 	}
 	if err := validateGetLadderOptions(opts); err != ErrMissingID {
 		t.Fatalf("failed to detect missing id in ladder options")
@@ -70,11 +68,9 @@ func TestValidateLadderOptionsWithMissingID(t *testing.T) {
 
 func TestValidateLadderOptionsWithInvalidRealm(t *testing.T) {
 	opts := GetLadderOptions{
-		ID:     "Standard",
-		Realm:  "testrealm",
-		Limit:  200,
-		Offset: 0,
-		Type:   "league",
+		ID:    "Standard",
+		Realm: "testrealm",
+		Type:  "league",
 	}
 	if err := validateGetLadderOptions(opts); err != ErrInvalidRealm {
 		t.Fatalf("failed to detect invalid realm in ladder options")
@@ -85,9 +81,9 @@ func TestValidateLadderOptionsWithInvalidLimit(t *testing.T) {
 	opts := GetLadderOptions{
 		ID:     "Standard",
 		Realm:  "pc",
-		Limit:  201,
-		Offset: 0,
 		Type:   "league",
+		limit:  201,
+		offset: 0,
 	}
 	if err := validateGetLadderOptions(opts); err != ErrInvalidLimit {
 		t.Fatalf("failed to detect invalid limit in ladder options")
@@ -98,9 +94,9 @@ func TestValidateLadderOptionsWithInvalidOffset(t *testing.T) {
 	opts := GetLadderOptions{
 		ID:     "Standard",
 		Realm:  "pc",
-		Limit:  200,
-		Offset: 15001,
 		Type:   "league",
+		limit:  200,
+		offset: 15001,
 	}
 	if err := validateGetLadderOptions(opts); err != ErrInvalidOffset {
 		t.Fatalf("failed to detect invalid offset in ladder options")
@@ -109,11 +105,9 @@ func TestValidateLadderOptionsWithInvalidOffset(t *testing.T) {
 
 func TestValidateLadderOptionsWithInvalidType(t *testing.T) {
 	opts := GetLadderOptions{
-		ID:     "Standard",
-		Realm:  "pc",
-		Limit:  200,
-		Offset: 0,
-		Type:   "testtype",
+		ID:    "Standard",
+		Realm: "pc",
+		Type:  "testtype",
 	}
 	if err := validateGetLadderOptions(opts); err != ErrInvalidLadderType {
 		t.Fatalf("failed to detect invalid type in ladder options")
@@ -124,8 +118,6 @@ func TestValidateLadderOptionsWithInvalidDifficulty(t *testing.T) {
 	opts := GetLadderOptions{
 		ID:                  "Standard",
 		Realm:               "pc",
-		Limit:               200,
-		Offset:              0,
 		Type:                "labyrinth",
 		LabyrinthDifficulty: "testdifficulty",
 	}
@@ -138,8 +130,6 @@ func TestValidateLadderOptionsWithNegativeStartTime(t *testing.T) {
 	opts := GetLadderOptions{
 		ID:                  "Standard",
 		Realm:               "pc",
-		Limit:               200,
-		Offset:              0,
 		Type:                "labyrinth",
 		LabyrinthDifficulty: "Normal",
 		LabyrinthStartTime:  -1,
@@ -153,8 +143,6 @@ func TestValidateLadderOptionsWithEarlyStartTime(t *testing.T) {
 	opts := GetLadderOptions{
 		ID:                  "Standard",
 		Realm:               "pc",
-		Limit:               200,
-		Offset:              0,
 		Type:                "labyrinth",
 		LabyrinthDifficulty: "Normal",
 		LabyrinthStartTime:  1400000000,
@@ -175,11 +163,11 @@ func TestGetLadderPage(t *testing.T) {
 	opts := GetLadderOptions{
 		ID:                  "Standard",
 		Realm:               "xbox",
-		Limit:               200,
 		Type:                "labyrinth",
 		UniqueIDs:           false,
 		LabyrinthDifficulty: "Normal",
 		LabyrinthStartTime:  1565283600,
+		limit:               200,
 	}
 
 	_, err := c.getLadderPage(opts)

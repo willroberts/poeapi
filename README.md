@@ -17,12 +17,31 @@ A Go client for the Path of Exile API.
 ## Usage
 
 ```go
-client, err := poeapi.NewAPIClient(poeapi.DefaultClientOptions)
+clientOpts := poeapi.ClientOptions{
+    Host:              "api.pathofexile.com",
+    UseSSL:            true,
+    UseCache:          true,
+    CacheSize:         50,
+    RateLimit:         4,
+    StashTabRateLimit: 1,
+} // This is equivalent to poeapi.DefaultClientOptions.
+
+client, err := poeapi.NewAPIClient(clientOpts)
 if err != nil {
-    // handle error
+    // ...
 }
-league, err := client.GetCurrentChallengeLeague() // etc.
+
+ladderOpts := poeapi.GetLadderOptions{
+    ID:    "SSF Hardcore",
+    Realm: "pc",
+    Type:  "league",
+}
+
+ladder, err := client.GetLadder(ladderOpts)
+// ...
 ```
+
+See examples below for more usage information.
 
 ## Interface
 
@@ -39,7 +58,7 @@ GetPVPMatches(poeapi.GetPVPMatchesOptions) ([]poeapi.PVPMatch, error)
 
 ## Examples
 
-There are some examples in the `examples` directory.
+There are several examples in the `examples` directory.
 
 #### leaguetimer
 

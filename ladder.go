@@ -29,12 +29,6 @@ type GetLadderOptions struct {
 	// Valid options: 'pc', 'xbox', or 'sony'.
 	Realm string
 
-	// Number of results to retrieve. Default: 20. Maximum: 200.
-	Limit int
-
-	// Position at which to start retrieving results. Default: 0.
-	Offset int
-
 	// The type of league whose ladder you want to retrieve.
 	// Valid options: 'league', 'pvp', or 'labyrinth'.
 	Type string
@@ -51,6 +45,12 @@ type GetLadderOptions struct {
 
 	// Start time of the Labyrinth ladder to retrieve. This is a Unix timestamp.
 	LabyrinthStartTime int
+
+	// Internal use only.
+	limit int
+
+	// Internal use only.
+	offset int
 }
 
 // ToQueryParams converts ladder options to a URL parameter string.
@@ -58,12 +58,6 @@ func (opts GetLadderOptions) ToQueryParams() string {
 	u := url.Values{}
 	if opts.Realm != "" {
 		u.Add("realm", opts.Realm)
-	}
-	if opts.Limit != 0 {
-		u.Add("limit", strconv.Itoa(opts.Limit))
-	}
-	if opts.Offset != 0 {
-		u.Add("offset", strconv.Itoa(opts.Offset))
 	}
 	if opts.Type != "" {
 		u.Add("type", opts.Type)
@@ -78,6 +72,12 @@ func (opts GetLadderOptions) ToQueryParams() string {
 	if opts.LabyrinthStartTime != 0 && opts.Type == labyrinthLadderType {
 		u.Add("start", strconv.Itoa(opts.LabyrinthStartTime))
 	}
+	if opts.limit != 0 {
+		u.Add("limit", strconv.Itoa(opts.limit))
+	}
+	if opts.offset != 0 {
+		u.Add("offset", strconv.Itoa(opts.offset))
+	}
 	return u.Encode()
 }
 
@@ -87,12 +87,6 @@ func validateGetLadderOptions(opts GetLadderOptions) error {
 	}
 	if _, ok := validRealms[opts.Realm]; opts.Realm != "" && !ok {
 		return ErrInvalidRealm
-	}
-	if opts.Limit < 1 || opts.Limit > maxLadderLimit {
-		return ErrInvalidLimit
-	}
-	if opts.Offset < 0 || opts.Offset > maxLadderLimit*maxLadderPages {
-		return ErrInvalidOffset
 	}
 	if _, ok := validLadderTypes[opts.Type]; opts.Type != "" && !ok {
 		return ErrInvalidLadderType
@@ -110,34 +104,19 @@ func validateGetLadderOptions(opts GetLadderOptions) error {
 			return ErrInvalidLabyrinthStartTime
 		}
 	}
+	if opts.limit < 1 || opts.limit > maxLadderLimit {
+		return ErrInvalidLimit
+	}
+	if opts.offset < 0 || opts.offset > maxLadderLimit*maxLadderPages {
+		return ErrInvalidOffset
+	}
 
 	return nil
 }
 
-func (c *client) getLadderPage(opts GetLadderOptions) (Ladder, error) {
-	if err := validateGetLadderOptions(opts); err != nil {
-		return Ladder{}, err
-	}
-	url := fmt.Sprintf("%s/%s?%s", c.formatURL(laddersEndpoint), opts.ID,
-		opts.ToQueryParams())
-	resp, err := c.get(url)
-	if err != nil {
-		return Ladder{}, err
-	}
-	return parseLadderResponse(resp)
-}
-
-func parseLadderResponse(resp string) (Ladder, error) {
-	ladder := Ladder{}
-	if err := json.Unmarshal([]byte(resp), &ladder); err != nil {
-		return Ladder{}, err
-	}
-	return ladder, nil
-}
-
 func (c *client) GetLadder(opts GetLadderOptions) (Ladder, error) {
 	entries := make([]LadderEntry, 0)
-	opts.Limit = maxLadderLimit
+	opts.limit = maxLadderLimit
 
 	// Make one initial request to determine the size of the ladder.
 	first, err := c.getLadderPage(opts)
@@ -159,7 +138,7 @@ func (c *client) GetLadder(opts GetLadderOptions) (Ladder, error) {
 		go func(offset int) {
 			wg.Add(1)
 			subOpts := opts
-			subOpts.Offset = offset
+			subOpts.offset = offset
 			page, err := c.getLadderPage(subOpts)
 			if err != nil {
 				errCh <- err
@@ -184,5 +163,26 @@ func (c *client) GetLadder(opts GetLadderOptions) (Ladder, error) {
 	// Copy first page to get top-level values.
 	ladder := first
 	ladder.Entries = entries
+	return ladder, nil
+}
+
+func (c *client) getLadderPage(opts GetLadderOptions) (Ladder, error) {
+	if err := validateGetLadderOptions(opts); err != nil {
+		return Ladder{}, err
+	}
+	url := fmt.Sprintf("%s/%s?%s", c.formatURL(laddersEndpoint), opts.ID,
+		opts.ToQueryParams())
+	resp, err := c.get(url)
+	if err != nil {
+		return Ladder{}, err
+	}
+	return parseLadderResponse(resp)
+}
+
+func parseLadderResponse(resp string) (Ladder, error) {
+	ladder := Ladder{}
+	if err := json.Unmarshal([]byte(resp), &ladder); err != nil {
+		return Ladder{}, err
+	}
 	return ladder, nil
 }
