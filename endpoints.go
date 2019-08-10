@@ -17,10 +17,8 @@ const (
 // the configured host (generally api.pathofexile.com), and the requested
 // endpoint.
 func (c *client) formatURL(endpoint string) string {
-	protocol := httpsProtocol
-	if !c.useSSL {
-		protocol = httpProtocol
+	if c.useSSL {
+		return fmt.Sprintf("%s://%s%s", httpsProtocol, c.host, endpoint)
 	}
-
-	return fmt.Sprintf("%s://%s%s", protocol, c.host, endpoint)
+	return fmt.Sprintf("%s://%s%s", httpProtocol, c.host, endpoint)
 }
