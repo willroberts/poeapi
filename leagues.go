@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
-// GetAllLeagues retrieves all leagues (Standard, Hardcore, etc.) from the API.
-func (c *client) GetAllLeagues() ([]League, error) {
+// GetLeagues retrieves all leagues (Standard, Hardcore, etc.) from the API.
+func (c *client) GetLeagues() ([]League, error) {
 	resp, err := c.get(c.formatURL(leaguesEndpoint))
 	if err != nil {
 		return []League{}, err
@@ -27,7 +27,7 @@ func parseLeaguesResponse(resp string) ([]League, error) {
 // GetCurrentChallengeLeague retrieves all leagues and returns the first league
 // with a time limit, which is generally the current challenge league.
 func (c *client) GetCurrentChallengeLeague() (League, error) {
-	leagues, err := c.GetAllLeagues()
+	leagues, err := c.GetLeagues()
 	if err != nil {
 		return League{}, err
 	}

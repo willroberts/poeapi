@@ -2,12 +2,12 @@ package poeapi
 
 import "testing"
 
-func TestGetAllLeagues(t *testing.T) {
+func TestGetLeagues(t *testing.T) {
 	client, err := NewAPIClient(DefaultClientOptions)
 	if err != nil {
 		t.Fatalf("failed to create client for leagues request: %v", err)
 	}
-	_, err = client.GetAllLeagues()
+	_, err = client.GetLeagues()
 	if err != nil {
 		t.Fatalf("failed to get all leagues: %v", err)
 	}
@@ -33,7 +33,7 @@ func TestParseLeaguesResponseWithInvalidJSON(t *testing.T) {
 	}
 }
 
-func TestGetAllLeaguesWithRequestFailure(t *testing.T) {
+func TestGetLeaguesWithRequestFailure(t *testing.T) {
 	var (
 		rateLimit = 1
 		client    = client{
@@ -41,7 +41,7 @@ func TestGetAllLeaguesWithRequestFailure(t *testing.T) {
 			limiter: newRateLimiter(rateLimit, rateLimit),
 		}
 	)
-	_, err := client.GetAllLeagues()
+	_, err := client.GetLeagues()
 	if err != ErrNotFound {
 		t.Fatal("failed to detect request error for leagues request")
 	}

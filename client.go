@@ -2,7 +2,7 @@ package poeapi
 
 // APIClient provides methods for interacting with the Path of Exile API.
 type APIClient interface {
-	GetAllLeagues() ([]League, error)
+	GetLeagues() ([]League, error)
 	GetCurrentChallengeLeague() (League, error)
 	GetLadder(GetLadderOptions) (Ladder, error)
 	GetPVPMatches(GetPVPMatchesOptions) ([]PVPMatch, error)
