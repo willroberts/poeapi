@@ -101,7 +101,7 @@ func parseLeaguesResponse(resp string) ([]League, error) {
 	return leagues, nil
 }
 
-// GetCurrentChallengeLeague retrieves all leagues and returns the first league
+// GetCurrentChallengeLeague retrieves all league and returns the first league
 // with a time limit, which is generally the current challenge league.
 func (c *client) GetCurrentChallengeLeague() (League, error) {
 	leagues, err := c.GetLeagues(GetLeaguesOptions{})

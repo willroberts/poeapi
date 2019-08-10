@@ -71,3 +71,7 @@ var ErrInvalidSeason = errors.New("invalid season")
 // ErrInvalidLeagueType is raised when requesting a league whose type is not
 // supported by the API.
 var ErrInvalidLeagueType = errors.New("invalid league type")
+
+// ErrInvalidLeagueID is raised when the league ID is omitted from a league
+// request.
+var ErrInvalidLeagueID = errors.New("invalid league id")

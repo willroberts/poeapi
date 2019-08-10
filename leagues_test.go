@@ -16,7 +16,7 @@ func TestGetLeagues(t *testing.T) {
 func TestParseLeaguesResponse(t *testing.T) {
 	resp, err := loadFixture("fixtures/leagues.json")
 	if err != nil {
-		t.Fatalf("failed to read fixture for pvp matches test: %v", err)
+		t.Fatalf("failed to read fixture for leagues test: %v", err)
 	}
 
 	_, err = parseLeaguesResponse(resp)
@@ -26,8 +26,12 @@ func TestParseLeaguesResponse(t *testing.T) {
 }
 
 func TestParseLeaguesResponseWithInvalidJSON(t *testing.T) {
-	resp := "{\"invalid_json\":true}"
-	_, err := parseLeaguesResponse(resp)
+	resp, err := loadFixture("fixtures/invalid.json")
+	if err != nil {
+		t.Fatalf("failed to load fixture for leagues response parsing: %v", err)
+	}
+
+	_, err = parseLeaguesResponse(resp)
 	if err == nil {
 		t.Fatal("failed to detect error in leagues response parsing")
 	}
