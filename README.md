@@ -31,6 +31,8 @@ These are the methods available on the client's interface:
 ```go
 GetLeagues() ([]poeapi.League, error)
 GetCurrentChallengeLeague() (poeapi.League, error)
+GetLeagueRules() ([]poeapi.LeagueRule, error)
+GetLeagueRule(poeapi.GetLeagueRuleOptions) (poeapi.LeagueRule, error)
 GetLadder(poeapi.GetLadderOptions) (poeapi.Ladder, error)
 GetPVPMatches(poeapi.GetPVPMatchesOptions) ([]poeapi.PVPMatch, error)
 ```
@@ -57,7 +59,6 @@ events are scheduled (hint: it's zero).
 ## To Do
 
 1. Implement all endpoints.
-   1. GetLeagueRules, GetLeagueRule with params. https://www.pathofexile.com/developer/docs/api-resource-league-rules
    1. GetLeague for single leagues, query params for all leagues endpoints. https://www.pathofexile.com/developer/docs/api-resource-leagues
    1. Stash tabs. https://www.pathofexile.com/developer/docs/api-resource-public-stash-tabs
 1. Use local HTTP server and fixtures to run tests without Internet access.

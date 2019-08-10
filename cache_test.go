@@ -55,13 +55,13 @@ func TestCacheLatency(t *testing.T) {
 		t.Fatalf("failed to create client for latency test: %v", err)
 	}
 
-	_, err = c.GetLeagues()
+	_, err = c.GetLeagues(GetLeaguesOptions{})
 	if err != nil {
 		t.Fatalf("failed to get all leagues for latency test: %v", err)
 	}
 
 	start := time.Now()
-	_, err = c.GetLeagues()
+	_, err = c.GetLeagues(GetLeaguesOptions{})
 	if err != nil {
 		t.Fatalf("failed to get all leagues for second latency test: %v", err)
 	}

@@ -22,13 +22,13 @@ var (
 		"sony": struct{}{},
 	}
 
-	validTypes = map[string]struct{}{
+	validLadderTypes = map[string]struct{}{
 		"league":    struct{}{},
 		"labyrinth": struct{}{},
 		"pvp":       struct{}{},
 	}
 
-	validDifficulties = map[string]struct{}{
+	validLabyrinthDifficulties = map[string]struct{}{
 		"Normal":    struct{}{},
 		"Cruel":     struct{}{},
 		"Merciless": struct{}{},
@@ -98,7 +98,7 @@ func (opts GetLadderOptions) ToQueryParams() string {
 	return u.Encode()
 }
 
-func validateLadderOptions(opts GetLadderOptions) error {
+func validateGetLadderOptions(opts GetLadderOptions) error {
 	if opts.ID == "" {
 		return ErrMissingID
 	}
@@ -111,12 +111,14 @@ func validateLadderOptions(opts GetLadderOptions) error {
 	if opts.Offset < 0 || opts.Offset > maxLimit*maxPages {
 		return ErrInvalidOffset
 	}
-	if _, ok := validTypes[opts.Type]; opts.Type != "" && !ok {
+	if _, ok := validLadderTypes[opts.Type]; opts.Type != "" && !ok {
 		return ErrInvalidLadderType
 	}
 	if opts.Type == "labyrinth" {
-		if _, ok := validDifficulties[opts.LabyrinthDifficulty]; opts.LabyrinthDifficulty != "" && !ok {
-			return ErrInvalidDifficulty
+		if opts.LabyrinthDifficulty != "" {
+			if _, ok := validLabyrinthDifficulties[opts.LabyrinthDifficulty]; !ok {
+				return ErrInvalidDifficulty
+			}
 		}
 		if opts.LabyrinthStartTime < 0 {
 			return ErrInvalidLabyrinthStartTime
@@ -130,6 +132,9 @@ func validateLadderOptions(opts GetLadderOptions) error {
 }
 
 func (c *client) getLadderPage(opts GetLadderOptions) (Ladder, error) {
+	if err := validateGetLadderOptions(opts); err != nil {
+		return Ladder{}, err
+	}
 	url := fmt.Sprintf("%s/%s?%s", c.formatURL(laddersEndpoint), opts.ID,
 		opts.ToQueryParams())
 	resp, err := c.get(url)

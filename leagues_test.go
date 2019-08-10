@@ -7,7 +7,7 @@ func TestGetLeagues(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to create client for leagues request: %v", err)
 	}
-	_, err = client.GetLeagues()
+	_, err = client.GetLeagues(GetLeaguesOptions{})
 	if err != nil {
 		t.Fatalf("failed to get all leagues: %v", err)
 	}
@@ -41,7 +41,7 @@ func TestGetLeaguesWithRequestFailure(t *testing.T) {
 			limiter: newRateLimiter(rateLimit, rateLimit),
 		}
 	)
-	_, err := client.GetLeagues()
+	_, err := client.GetLeagues(GetLeaguesOptions{})
 	if err != ErrNotFound {
 		t.Fatal("failed to detect request error for leagues request")
 	}

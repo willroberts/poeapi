@@ -34,7 +34,7 @@ func newCache(size int) (*cache, error) {
 	return c, nil
 }
 
-// Get adds an item to the cache.
+// Add adds an item to the cache.
 func (c *cache) Add(key, value string) {
 	c.lock.Lock()
 	defer c.lock.Unlock()

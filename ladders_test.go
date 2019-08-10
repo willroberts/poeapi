@@ -51,7 +51,7 @@ func TestValidateLadderOptions(t *testing.T) {
 		Offset: 0,
 		Type:   "league",
 	}
-	if err := validateLadderOptions(opts); err != nil {
+	if err := validateGetLadderOptions(opts); err != nil {
 		t.Fatalf("failed to validate ladder options: %v", err)
 	}
 }
@@ -63,7 +63,7 @@ func TestValidateLadderOptionsWithMissingID(t *testing.T) {
 		Offset: 0,
 		Type:   "league",
 	}
-	if err := validateLadderOptions(opts); err != ErrMissingID {
+	if err := validateGetLadderOptions(opts); err != ErrMissingID {
 		t.Fatalf("failed to detect missing id in ladder options")
 	}
 }
@@ -76,7 +76,7 @@ func TestValidateLadderOptionsWithInvalidRealm(t *testing.T) {
 		Offset: 0,
 		Type:   "league",
 	}
-	if err := validateLadderOptions(opts); err != ErrInvalidRealm {
+	if err := validateGetLadderOptions(opts); err != ErrInvalidRealm {
 		t.Fatalf("failed to detect invalid realm in ladder options")
 	}
 }
@@ -89,7 +89,7 @@ func TestValidateLadderOptionsWithInvalidLimit(t *testing.T) {
 		Offset: 0,
 		Type:   "league",
 	}
-	if err := validateLadderOptions(opts); err != ErrInvalidLimit {
+	if err := validateGetLadderOptions(opts); err != ErrInvalidLimit {
 		t.Fatalf("failed to detect invalid limit in ladder options")
 	}
 }
@@ -102,7 +102,7 @@ func TestValidateLadderOptionsWithInvalidOffset(t *testing.T) {
 		Offset: 15001,
 		Type:   "league",
 	}
-	if err := validateLadderOptions(opts); err != ErrInvalidOffset {
+	if err := validateGetLadderOptions(opts); err != ErrInvalidOffset {
 		t.Fatalf("failed to detect invalid offset in ladder options")
 	}
 }
@@ -115,7 +115,7 @@ func TestValidateLadderOptionsWithInvalidType(t *testing.T) {
 		Offset: 0,
 		Type:   "testtype",
 	}
-	if err := validateLadderOptions(opts); err != ErrInvalidLadderType {
+	if err := validateGetLadderOptions(opts); err != ErrInvalidLadderType {
 		t.Fatalf("failed to detect invalid type in ladder options")
 	}
 }
@@ -129,7 +129,7 @@ func TestValidateLadderOptionsWithInvalidDifficulty(t *testing.T) {
 		Type:                "labyrinth",
 		LabyrinthDifficulty: "testdifficulty",
 	}
-	if err := validateLadderOptions(opts); err != ErrInvalidDifficulty {
+	if err := validateGetLadderOptions(opts); err != ErrInvalidDifficulty {
 		t.Fatalf("failed to detect invalid difficulty in ladder options")
 	}
 }
@@ -144,7 +144,7 @@ func TestValidateLadderOptionsWithNegativeStartTime(t *testing.T) {
 		LabyrinthDifficulty: "Normal",
 		LabyrinthStartTime:  -1,
 	}
-	if err := validateLadderOptions(opts); err != ErrInvalidLabyrinthStartTime {
+	if err := validateGetLadderOptions(opts); err != ErrInvalidLabyrinthStartTime {
 		t.Fatalf("failed to detect negative start time in ladder options")
 	}
 }
@@ -159,7 +159,7 @@ func TestValidateLadderOptionsWithEarlyStartTime(t *testing.T) {
 		LabyrinthDifficulty: "Normal",
 		LabyrinthStartTime:  1400000000,
 	}
-	if err := validateLadderOptions(opts); err != ErrInvalidLabyrinthStartTime {
+	if err := validateGetLadderOptions(opts); err != ErrInvalidLabyrinthStartTime {
 		t.Fatalf("failed to detect too-early start time in ladder options")
 	}
 }

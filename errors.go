@@ -63,3 +63,11 @@ var ErrInvalidLabyrinthStartTime = errors.New("invalid labyrinth start time")
 // ErrInvalidLeagueRuleID is raised when the ID is missing in a league rule
 // request.
 var ErrInvalidLeagueRuleID = errors.New("missing league rule id")
+
+// ErrInvalidSeason is raised when requesting a season league with a missing
+// season name.
+var ErrInvalidSeason = errors.New("invalid season")
+
+// ErrInvalidLeagueType is raised when requesting a league whose type is not
+// supported by the API.
+var ErrInvalidLeagueType = errors.New("invalid league type")
