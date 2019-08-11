@@ -7,7 +7,7 @@ Output:
 
 ```
 $ go run main.go
-Distribution of characters by class in ladder:
+Distribution of characters by class in SSF Hardcore:
     Juggernaut: 10.32%
     Necromancer: 9.83%
     Trickster: 9.25%

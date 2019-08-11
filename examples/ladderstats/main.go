@@ -9,6 +9,11 @@ import (
 	"github.com/willroberts/poeapi"
 )
 
+var (
+	targetLeague = "SSF Hardcore"
+	targetRealm  = "pc"
+)
+
 func main() {
 	client, err := poeapi.NewAPIClient(poeapi.DefaultClientOptions)
 	if err != nil {
@@ -16,8 +21,8 @@ func main() {
 	}
 
 	opts := poeapi.GetLadderOptions{
-		ID:        "SSF Hardcore",
-		Realm:     "pc",
+		ID:        targetLeague,
+		Realm:     targetRealm,
 		UniqueIDs: false,
 	}
 
@@ -28,7 +33,7 @@ func main() {
 
 	dist := getDistributions(l.TotalEntries, countClasses(l))
 	sorted := sortDistributions(dist)
-	fmt.Println("Distribution of characters by class in ladder:")
+	fmt.Printf("Distribution of characters by class in %s:", targetLeague)
 	for _, entry := range sorted {
 		fmt.Printf("    %s: %.2f%%\n", entry.key, entry.val*100)
 	}
