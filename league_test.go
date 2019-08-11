@@ -3,35 +3,45 @@ package poeapi
 import "testing"
 
 func TestGetLeague(t *testing.T) {
-	client, err := NewAPIClient(DefaultClientOptions)
-	if err != nil {
-		t.Fatalf("failed to create client for league request: %v", err)
+	c := client{
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
-	_, err = client.GetLeague(GetLeagueOptions{ID: "Standard"})
+
+	_, err := c.GetLeague(GetLeagueOptions{ID: "Standard"})
 	if err != nil {
 		t.Fatalf("failed to get all league: %v", err)
 	}
 }
 
 func TestGetLeagueWithInvalidOptions(t *testing.T) {
-	client, err := NewAPIClient(DefaultClientOptions)
-	if err != nil {
-		t.Fatalf("failed to create client for league request: %v", err)
+	c := client{
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
-	_, err = client.GetLeague(GetLeagueOptions{ID: ""})
+
+	_, err := c.GetLeague(GetLeagueOptions{ID: ""})
 	if err == nil {
 		t.Fatal("failed to detect invalid options in league request")
 	}
 }
 
 func TestGetLeagueWithRequestFailure(t *testing.T) {
-	var (
-		c = client{
-			host:    "google.com",
-			limiter: newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
-		}
-	)
-	_, err := c.GetLeague(GetLeagueOptions{ID: "Standard"})
+	c := client{
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
+	}
+
+	_, err := c.GetLeague(GetLeagueOptions{ID: "Nonexistent"})
 	if err != ErrNotFound {
 		t.Log("err:", err)
 		t.Fatal("failed to detect request error for league request")

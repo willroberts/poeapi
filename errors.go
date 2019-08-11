@@ -24,12 +24,18 @@ var ErrUnknownFailure = errors.New("unknown server failure")
 // ErrInvalidHost is raised when an unsupported hostname is provided.
 var ErrInvalidHost = errors.New("invalid API host")
 
+// ErrInvalidNinjaHost is raised when the poe.ninja hostname is omitted.
+var ErrInvalidNinjaHost = errors.New("invalid poe.ninja host")
+
 // ErrInvalidRateLimit is raised when the general rate limit is out of range.
 var ErrInvalidRateLimit = errors.New("invalid rate limit")
 
 // ErrInvalidStashRateLimit is raised when the stash rate limit is out of
 // range.
 var ErrInvalidStashRateLimit = errors.New("invalid stash rate limit")
+
+// ErrInvalidRequestTimeout is raised when request timeout is too small.
+var ErrInvalidRequestTimeout = errors.New("invalid request timeout")
 
 // ErrInvalidCacheSize is raised when the cache size is out of range.
 var ErrInvalidCacheSize = errors.New("invalid cache size")

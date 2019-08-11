@@ -1,6 +1,9 @@
 package poeapi
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
 func TestNewAPIClient(t *testing.T) {
 	_, err := NewAPIClient(DefaultClientOptions)
@@ -30,21 +33,38 @@ func TestValidateOptions(t *testing.T) {
 
 func TestValidateOptionsInvalidHost(t *testing.T) {
 	opts := ClientOptions{
-		Host:              "google.com",
-		RateLimit:         DefaultRateLimit,
+		Host:           "google.com",
+		NinjaHost:      DefaultNinjaHost,
+		RateLimit:      DefaultRateLimit,
 		StashRateLimit: DefaultStashRateLimit,
+		RequestTimeout: DefaultRequestTimeout,
 	}
 	if err := validateClientOptions(opts); err != ErrInvalidHost {
 		t.Fatal("failed to detect invalid host option")
 	}
 }
 
+func TestValidateOptionsInvalidNinjaHost(t *testing.T) {
+	opts := ClientOptions{
+		Host:           DefaultHost,
+		NinjaHost:      "",
+		RateLimit:      DefaultRateLimit,
+		StashRateLimit: DefaultStashRateLimit,
+		RequestTimeout: DefaultRequestTimeout,
+	}
+	if err := validateClientOptions(opts); err != ErrInvalidNinjaHost {
+		t.Fatal("failed to detect invalid ninja host option")
+	}
+}
+
 func TestValidateOptionsInvalidCacheSize(t *testing.T) {
 	opts := ClientOptions{
-		Host:              DefaultHost,
-		CacheSize:         0,
-		RateLimit:         DefaultRateLimit,
+		Host:           DefaultHost,
+		NinjaHost:      DefaultNinjaHost,
+		CacheSize:      0,
+		RateLimit:      DefaultRateLimit,
 		StashRateLimit: DefaultStashRateLimit,
+		RequestTimeout: DefaultRequestTimeout,
 	}
 	if err := validateClientOptions(opts); err != ErrInvalidCacheSize {
 		t.Fatal("failed to detect invalid cache size")
@@ -53,10 +73,12 @@ func TestValidateOptionsInvalidCacheSize(t *testing.T) {
 
 func TestValidateOptionsInvalidRateLimit(t *testing.T) {
 	opts := ClientOptions{
-		Host:              DefaultHost,
-		CacheSize:         DefaultCacheSize,
-		RateLimit:         0,
+		Host:           DefaultHost,
+		NinjaHost:      DefaultNinjaHost,
+		CacheSize:      DefaultCacheSize,
+		RateLimit:      -1,
 		StashRateLimit: DefaultStashRateLimit,
+		RequestTimeout: DefaultRequestTimeout,
 	}
 	if err := validateClientOptions(opts); err != ErrInvalidRateLimit {
 		t.Fatal("failed to detect invalid rate limit option")
@@ -65,12 +87,28 @@ func TestValidateOptionsInvalidRateLimit(t *testing.T) {
 
 func TestValidateOptionsInvalidStashRateLimit(t *testing.T) {
 	opts := ClientOptions{
-		Host:              DefaultHost,
-		CacheSize:         DefaultCacheSize,
-		RateLimit:         DefaultRateLimit,
-		StashRateLimit: 0,
+		Host:           DefaultHost,
+		NinjaHost:      DefaultNinjaHost,
+		CacheSize:      DefaultCacheSize,
+		RateLimit:      DefaultRateLimit,
+		StashRateLimit: -1,
+		RequestTimeout: DefaultRequestTimeout,
 	}
 	if err := validateClientOptions(opts); err != ErrInvalidStashRateLimit {
 		t.Fatal("failed to detect invalid stash rate limit option")
+	}
+}
+
+func TestValidateOptionsInvalidRequestTimeout(t *testing.T) {
+	opts := ClientOptions{
+		Host:           DefaultHost,
+		NinjaHost:      DefaultNinjaHost,
+		CacheSize:      DefaultCacheSize,
+		RateLimit:      DefaultRateLimit,
+		StashRateLimit: DefaultStashRateLimit,
+		RequestTimeout: 0 * time.Millisecond,
+	}
+	if err := validateClientOptions(opts); err != ErrInvalidRequestTimeout {
+		t.Fatal("failed to detect invalid request timeout option")
 	}
 }

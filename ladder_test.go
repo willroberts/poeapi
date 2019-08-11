@@ -154,10 +154,11 @@ func TestValidateLadderOptionsWithEarlyStartTime(t *testing.T) {
 
 func TestGetLadderPage(t *testing.T) {
 	c := client{
-		host:     DefaultHost,
-		useSSL:   true,
-		useCache: false,
-		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
 
 	opts := GetLadderOptions{
@@ -178,46 +179,52 @@ func TestGetLadderPage(t *testing.T) {
 
 func TestGetLadderPageFailure(t *testing.T) {
 	c := client{
-		host:     DefaultHost,
-		useSSL:   true,
-		useCache: false,
-		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
-	_, err := c.getLadderPage(GetLadderOptions{ID: "Nonexistent"})
-	if err == nil {
+	_, err := c.getLadderPage(GetLadderOptions{
+		ID:    "Nonexistent",
+		limit: 1,
+	})
+	if err != ErrNotFound {
 		t.Fatal("failed to detect ladder retrieval failure")
 	}
 }
 
 func TestGetLadderRequestFailure(t *testing.T) {
 	c := client{
-		host:     "www.google.com",
-		useSSL:   true,
-		useCache: false,
-		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
 	opts := GetLadderOptions{
 		ID: "test",
 	}
 	_, err := c.GetLadder(opts)
-	if err == nil {
+	if err != ErrNotFound {
 		t.Fatal("failed to detect ladder request failure")
 	}
 }
 
 func TestGetLadderPageRequestFailure(t *testing.T) {
 	c := client{
-		host:     "www.google.com",
-		useSSL:   true,
-		useCache: false,
-		limiter:  newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
 	opts := GetLadderOptions{
 		ID:    "test",
 		limit: 200,
 	}
 	_, err := c.getLadderPage(opts)
-	if err == nil {
+	if err != ErrNotFound {
 		t.Fatal("failed to detect ladder request failure")
 	}
 }
@@ -235,17 +242,24 @@ func TestParseLadderResponse(t *testing.T) {
 }
 
 func TestParseInvalidLadderResponse(t *testing.T) {
-	var resp = "{\"total\": \"invalid\"}"
-	_, err := parseLadderResponse(resp)
+	resp, err := loadFixture("fixtures/invalid.json")
+	if err != nil {
+		t.Fatalf("failed to load fixture for ladder response test: %v", err)
+	}
+
+	_, err = parseLadderResponse(resp)
 	if err == nil {
 		t.Fatal("failed to detect ladder parsing failure")
 	}
 }
 
 func TestGetLadder(t *testing.T) {
-	c, err := NewAPIClient(DefaultClientOptions)
-	if err != nil {
-		t.Fatalf("failed to create client for ladder test: %v", err)
+	c := client{
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
 
 	opts := GetLadderOptions{
@@ -257,16 +271,19 @@ func TestGetLadder(t *testing.T) {
 		LabyrinthStartTime:  1560186000,
 	}
 
-	_, err = c.GetLadder(opts)
+	_, err := c.GetLadder(opts)
 	if err != nil {
 		t.Fatalf("failed to get ladder page: %v", err)
 	}
 }
 
 func TestGetSmallLadder(t *testing.T) {
-	c, err := NewAPIClient(DefaultClientOptions)
-	if err != nil {
-		t.Fatalf("failed to create client for small ladder test: %v", err)
+	c := client{
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
 
 	opts := GetLadderOptions{
@@ -276,7 +293,7 @@ func TestGetSmallLadder(t *testing.T) {
 		UniqueIDs: false,
 	}
 
-	_, err = c.GetLadder(opts)
+	_, err := c.GetLadder(opts)
 	if err != nil {
 		t.Fatalf("failed to get small ladder page: %v", err)
 	}

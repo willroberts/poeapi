@@ -6,35 +6,21 @@ import (
 )
 
 func TestGetPVPMatches(t *testing.T) {
-	c, err := NewAPIClient(DefaultClientOptions)
-	if err != nil {
-		t.Fatalf("failed to create client for pvp matches test: %v", err)
+	c := client{
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
 
-	_, err = c.GetPVPMatches(GetPVPMatchesOptions{
+	_, err := c.GetPVPMatches(GetPVPMatchesOptions{
 		Type:   "season",
 		Season: "EUPvPSeason1",
 		Realm:  "pc",
 	})
 	if err != nil {
 		t.Fatalf("failed to get pvp matches: %v", err)
-	}
-}
-
-func TestGetPVPMatchesRequestFailure(t *testing.T) {
-	var (
-		c = client{
-			host:    "google.com",
-			limiter: newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
-		}
-	)
-	_, err := c.GetPVPMatches(GetPVPMatchesOptions{
-		Type:   "season",
-		Season: "EUPvPSeason1",
-		Realm:  "pc",
-	})
-	if err != ErrNotFound {
-		t.Fatal("failed to detect request error for pvp matches request")
 	}
 }
 
@@ -72,12 +58,15 @@ func TestValidateGetPVPMatchesOptionsWithInvalidRealm(t *testing.T) {
 }
 
 func TestGetPVPMatchesWithInvalidOptions(t *testing.T) {
-	c, err := NewAPIClient(DefaultClientOptions)
-	if err != nil {
-		t.Fatalf("failed to create client for pvp matches test: %v", err)
+	c := client{
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
 
-	_, err = c.GetPVPMatches(GetPVPMatchesOptions{
+	_, err := c.GetPVPMatches(GetPVPMatchesOptions{
 		Type:   "season",
 		Season: "",
 		Realm:  "pc",

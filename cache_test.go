@@ -66,8 +66,7 @@ func TestCacheLatency(t *testing.T) {
 		t.Fatalf("failed to get all leagues for second latency test: %v", err)
 	}
 
-	// Latency should be under 1ms, but give some headroom.
-	if time.Since(start) > 10*time.Millisecond {
+	if time.Since(start) > 1*time.Millisecond {
 		t.Fatal("cache test took longer than 10ms")
 	}
 }

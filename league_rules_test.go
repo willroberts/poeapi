@@ -3,27 +3,17 @@ package poeapi
 import "testing"
 
 func TestGetLeagueRules(t *testing.T) {
-	c, err := NewAPIClient(DefaultClientOptions)
-	if err != nil {
-		t.Fatalf("failed to create client for league rules test: %v", err)
+	c := client{
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
 
-	_, err = c.GetLeagueRules()
+	_, err := c.GetLeagueRules()
 	if err != nil {
 		t.Fatalf("failed to get league rules: %v", err)
-	}
-}
-
-func TestGetLeagueRulesRequestFailure(t *testing.T) {
-	var (
-		c = client{
-			host:    "google.com",
-			limiter: newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
-		}
-	)
-	_, err := c.GetLeagueRules()
-	if err != ErrNotFound {
-		t.Fatal("failed to detect request error for league rules request")
 	}
 }
 

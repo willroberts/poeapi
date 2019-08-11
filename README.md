@@ -19,11 +19,12 @@ A Go client for the Path of Exile API.
 ```go
 clientOpts := poeapi.ClientOptions{
     Host:              "api.pathofexile.com",
+    NinjaHost:         "poe.ninja",
     UseSSL:            true,
     UseCache:          true,
     CacheSize:         50,
     RateLimit:         4,
-    StashRateLimit: 1,
+    StashRateLimit:    1,
 } // This is equivalent to poeapi.DefaultClientOptions.
 
 client, err := poeapi.NewAPIClient(clientOpts)
@@ -85,7 +86,6 @@ events are scheduled (hint: it's zero).
 
 1. Add stash tests and add stash example.
 1. Fix flaky ratelimiter tests.
-1. Use local HTTP server to run tests without Internet access.
 1. Address TODO items.
 1. Open source the repo to enable GoDoc and Go Report Card.
 1. Add TravisCI to get a build passing badge.

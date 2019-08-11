@@ -125,37 +125,32 @@ func TestValidateGetLeaguesOptionsWithInvalidOffset(t *testing.T) {
 }
 
 func TestGetLeagues(t *testing.T) {
-	client, err := NewAPIClient(DefaultClientOptions)
-	if err != nil {
-		t.Fatalf("failed to create client for leagues request: %v", err)
+	c := client{
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
-	_, err = client.GetLeagues(GetLeaguesOptions{})
+
+	_, err := c.GetLeagues(GetLeaguesOptions{})
 	if err != nil {
 		t.Fatalf("failed to get all leagues: %v", err)
 	}
 }
 
 func TestGetLeaguesWithInvalidOptions(t *testing.T) {
-	client, err := NewAPIClient(DefaultClientOptions)
-	if err != nil {
-		t.Fatalf("failed to create client for leagues request: %v", err)
+	c := client{
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
-	_, err = client.GetLeagues(GetLeaguesOptions{Realm: "toaster"})
+
+	_, err := c.GetLeagues(GetLeaguesOptions{Realm: "toaster"})
 	if err != ErrInvalidRealm {
 		t.Fatal("failed to detect invalid options in leagues request")
-	}
-}
-
-func TestGetLeaguesRequestFailure(t *testing.T) {
-	var (
-		c = client{
-			host:    "google.com",
-			limiter: newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
-		}
-	)
-	_, err := c.GetLeagues(GetLeaguesOptions{})
-	if err != ErrNotFound {
-		t.Fatal("failed to detect request error for leagues request")
 	}
 }
 

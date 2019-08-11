@@ -1,6 +1,7 @@
 package poeapi
 
 import (
+	"log"
 	"sync"
 	"testing"
 )
@@ -8,8 +9,9 @@ import (
 func TestGetJSON(t *testing.T) {
 	var (
 		c = client{
-			host:    DefaultHost,
-			limiter: newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
+			host:       testHost,
+			limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+			httpClient: testClient,
 		}
 		url = c.formatURL(leaguesEndpoint)
 	)
@@ -22,23 +24,26 @@ func TestGetJSON(t *testing.T) {
 func TestGetStashsJSON(t *testing.T) {
 	var (
 		c = client{
-			host:    DefaultHost,
-			limiter: newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
+			host:       testHost,
+			limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+			httpClient: testClient,
 		}
 		url = c.formatURL(stashTabsEndpoint)
 	)
 	_, err := c.getJSON(url)
 	if err != nil {
-		t.Fatalf("failed to get stashs json: %v", err)
+		t.Fatalf("failed to get stash json: %v", err)
 	}
 }
 
 func TestGetJSONWithInvalidProtocol(t *testing.T) {
 	var (
 		c = client{
-			limiter: newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
+			host:       testHost,
+			limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+			httpClient: testClient,
 		}
-		url = "htps://www.google.com"
+		url = "htps://127.0.0.1:8000"
 	)
 	_, err := c.getJSON(url)
 	if err == nil {
@@ -53,10 +58,11 @@ func TestGetJSONRateLimit(t *testing.T) {
 	}
 	var (
 		c = client{
-			host:    DefaultHost,
-			limiter: newRateLimiter(50, DefaultStashRateLimit),
+			host:       testHost,
+			limiter:    newRateLimiter(50, UnlimitedRate),
+			httpClient: testClient,
 		}
-		url  = c.formatURL(leaguesEndpoint)
+		url  = c.formatURL(rateLimitEndpoint)
 		errs = errorCollector{
 			set: make([]error, 0),
 		}
@@ -66,6 +72,7 @@ func TestGetJSONRateLimit(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			_, err := c.getJSON(url)
+			log.Println("err:", err)
 			errs.lock.Lock()
 			errs.set = append(errs.set, err)
 			errs.lock.Unlock()
@@ -77,6 +84,7 @@ func TestGetJSONRateLimit(t *testing.T) {
 	for _, e := range errs.set {
 		if e == ErrRateLimited {
 			rateLimited = true
+			break
 		}
 	}
 	if !rateLimited {
@@ -85,17 +93,13 @@ func TestGetJSONRateLimit(t *testing.T) {
 }
 
 func TestHandleServerError(t *testing.T) {
-	c, err := NewAPIClient(DefaultClientOptions)
-	if err != nil {
-		t.Fatalf("failed to create client in server error test: %v", err)
+	c := client{
+		host:       testHost,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
 
-	opts := GetLeagueRuleOptions{
-		// This ID is invalid and caused a 500. It should be "TurboMonsters".
-		// This could be patched at any time, necessitating a test update.
-		ID: "Turbo",
-	}
-	_, err = c.GetLeagueRule(opts)
+	_, err := c.getJSON(c.formatURL(failureEndpoint))
 	if err != ErrServerFailure {
 		t.Fatal("failed to handle server error")
 	}
@@ -104,9 +108,11 @@ func TestHandleServerError(t *testing.T) {
 func TestWithRateLimit(t *testing.T) {
 	var (
 		c = client{
-			limiter: newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
+			host:       testHost,
+			limiter:    newRateLimiter(DefaultRateLimit, UnlimitedRate),
+			httpClient: testClient,
 		}
-		url = "https://api.pathofexile.com"
+		url = "https://127.0.0.1:8000"
 		fn  = func(s string) (string, error) { return s, nil }
 	)
 	_ = c.withRateLimit(url, fn)
@@ -115,11 +121,12 @@ func TestWithRateLimit(t *testing.T) {
 func TestWithStashRateLimit(t *testing.T) {
 	var (
 		c = client{
-			host:    "api.pathofexile.com",
-			useSSL:  true,
-			limiter: newRateLimiter(DefaultRateLimit, DefaultStashRateLimit),
+			host:       testHost,
+			useSSL:     true,
+			limiter:    newRateLimiter(UnlimitedRate, DefaultStashRateLimit),
+			httpClient: testClient,
 		}
-		url = "https://api.pathofexile.com/public-stash-tabs"
+		url = "https://127.0.0.1:8000/public-stash-tabs"
 		fn  = func(s string) (string, error) { return s, nil }
 	)
 	_ = c.withRateLimit(url, fn)

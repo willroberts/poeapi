@@ -3,26 +3,32 @@ package poeapi
 import "testing"
 
 func TestGetLeagueRule(t *testing.T) {
-	c, err := NewAPIClient(DefaultClientOptions)
-	if err != nil {
-		t.Fatalf("failed to create client for league rule test: %v", err)
+	c := client{
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
 
 	opts := GetLeagueRuleOptions{ID: "TurboMonsters"}
-	_, err = c.GetLeagueRule(opts)
+	_, err := c.GetLeagueRule(opts)
 	if err != nil {
 		t.Fatalf("failed to get league rule: %v", err)
 	}
 }
 
 func TestGetLeagueRuleWithInvalidOptions(t *testing.T) {
-	c, err := NewAPIClient(DefaultClientOptions)
-	if err != nil {
-		t.Fatalf("failed to create client for league rule test: %v", err)
+	c := client{
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
 
 	opts := GetLeagueRuleOptions{ID: ""}
-	_, err = c.GetLeagueRule(opts)
+	_, err := c.GetLeagueRule(opts)
 	if err != ErrInvalidLeagueRuleID {
 		t.Fatal("failed to detect invalid league rule option in league rule request")
 	}

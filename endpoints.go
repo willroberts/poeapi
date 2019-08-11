@@ -9,6 +9,8 @@ const (
 	pvpMatchesEndpoint  = "/pvp-matches"
 	stashTabsEndpoint   = "/public-stash-tabs"
 
+	latestChangeURL = "/api/Data/GetStats"
+
 	httpProtocol  = "http"
 	httpsProtocol = "https"
 )

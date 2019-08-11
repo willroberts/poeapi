@@ -3,6 +3,11 @@ package poeapi
 import "time"
 
 var (
+	validHosts = map[string]struct{}{
+		"api.pathofexile.com": struct{}{},
+		"localhost:8000":      struct{}{},
+	}
+
 	validRealms = map[string]struct{}{
 		"pc":   struct{}{},
 		"xbox": struct{}{},

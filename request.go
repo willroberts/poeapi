@@ -15,7 +15,7 @@ func (c *client) get(url string) (string, error) {
 
 // getJSON retrieves the given URL. It returns the JSON response as a string.
 func (c *client) getJSON(url string) (string, error) {
-	resp, err := http.Get(url)
+	resp, err := c.httpClient.Get(url)
 	if err != nil {
 		// An error is returned if the Client's CheckRedirect function fails or
 		// if there was an HTTP protocol error. A non-2xx response doesn't cause

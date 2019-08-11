@@ -5,10 +5,16 @@ import (
 	"time"
 )
 
+const (
+	// UnlimitedRate disables rate limiting when passed into the newRateLimiter
+	// function.
+	UnlimitedRate = 0
+)
+
 // ratelimiter uses blocking time.Sleep calls to prevent callers from sending
 // requests too frequently. ratelimiter is threadsafe.
 type ratelimiter struct {
-	rateLimit         int
+	rateLimit      int
 	stashRateLimit int
 
 	lastRequest      time.Time
@@ -23,6 +29,9 @@ func (r *ratelimiter) wait(stash bool) {
 
 	var interval time.Duration
 	if stash {
+		if r.stashRateLimit == 0 {
+			return
+		}
 		interval = time.Duration(1000.0/r.stashRateLimit) * time.Millisecond
 		elapsed := time.Since(r.lastStashRequest)
 		if elapsed < interval {
@@ -30,6 +39,9 @@ func (r *ratelimiter) wait(stash bool) {
 		}
 		r.lastStashRequest = time.Now()
 	} else {
+		if r.rateLimit == 0 {
+			return
+		}
 		interval = time.Duration(1000.0/r.rateLimit) * time.Millisecond
 		elapsed := time.Since(r.lastRequest)
 		if elapsed < interval {
@@ -41,7 +53,7 @@ func (r *ratelimiter) wait(stash bool) {
 
 func newRateLimiter(rateLimit, stashRateLimit int) *ratelimiter {
 	return &ratelimiter{
-		rateLimit:         rateLimit,
+		rateLimit:      rateLimit,
 		stashRateLimit: stashRateLimit,
 	}
 }

@@ -1,6 +1,8 @@
 package poeapi
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestStashOptionsToQueryParams(t *testing.T) {
 	opts := GetStashOptions{ID: "1234"}
@@ -13,22 +15,31 @@ func TestStashOptionsToQueryParams(t *testing.T) {
 }
 
 func TestGetStash(t *testing.T) {
-	c, err := NewAPIClient(DefaultClientOptions)
-	if err != nil {
-		t.Fatalf("failed to creat eclient for stash test: %v", err)
+	c := client{
+		host:       testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
-	_, err = c.GetStashes(GetStashOptions{})
+
+	_, err := c.GetStashes(GetStashOptions{})
 	if err != nil {
 		t.Fatalf("failed to get stashes: %v", err)
 	}
 }
 
 func TestGetLatestStashID(t *testing.T) {
-	c, err := NewAPIClient(DefaultClientOptions)
-	if err != nil {
-		t.Fatalf("failed to create client for latest change id test: %v", err)
+	c := client{
+		host:       testHost,
+		ninjaHost:  testHost,
+		useSSL:     false,
+		useCache:   false,
+		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
+		httpClient: testClient,
 	}
-	_, err = c.GetLatestStashID()
+
+	_, err := c.GetLatestStashID()
 	if err != nil {
 		t.Fatalf("failed to get latest change id: %v", err)
 	}
