@@ -88,6 +88,14 @@ This example searches in real time, until the user exits with Ctrl-C, for Kaom's
 Heart in Standard league. When one is listed for sale, it prints the character
 name and asking price (if there is one).
 
+## Contributing
+
+Contributions to the code, examples, or documentation are very welcome.
+
+Found a problem? Have a question? [Open an issue][Issue]
+
+Have a patch or a new feature? [Open a pull request][Pull Request]
+
 ## To Do
 1. Open source the repo to enable GoDoc and Go Report Card.
 1. Add TravisCI to get a build passing badge.
@@ -100,3 +108,5 @@ name and asking price (if there is one).
 [GoReportCard Badge]: https://goreportcard.com/badge/github.com/willroberts/poeapi
 [License]: https://www.gnu.org/licenses/gpl-3.0
 [License Badge]: https://img.shields.io/badge/License-GPLv3-blue.svg
+[Issue]: https://github.com/willroberts/poeapi/issues
+[Pull Request]: https://github.com/willroberts/poeapi/pulls
