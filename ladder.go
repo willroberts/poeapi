@@ -3,11 +3,9 @@ package poeapi
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/url"
 	"strconv"
 	"sync"
-	"time"
 )
 
 const (
@@ -137,19 +135,16 @@ func (c *client) GetLadder(opts GetLadderOptions) (Ladder, error) {
 		lock  sync.RWMutex
 		errCh = make(chan error, maxLadderPages)
 	)
-	start := time.Now()
 	for i := maxLadderLimit; i < ladderSize; i += maxLadderLimit {
 		go func(offset int) {
 			wg.Add(1)
 			subOpts := opts
 			subOpts.offset = offset
 
-			start := time.Now()
 			page, err := c.getLadderPage(subOpts)
 			if err != nil {
 				errCh <- err
 			}
-			log.Println("subreq latency:", time.Since(start))
 
 			lock.Lock()
 			entries = append(entries, page.Entries...)
@@ -158,7 +153,6 @@ func (c *client) GetLadder(opts GetLadderOptions) (Ladder, error) {
 		}(i)
 	}
 	wg.Wait()
-	log.Println("waitgroup latency:", time.Since(start))
 
 	select {
 	case err, ok := <-errCh:

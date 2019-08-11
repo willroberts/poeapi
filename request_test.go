@@ -1,7 +1,6 @@
 package poeapi
 
 import (
-	"log"
 	"sync"
 	"testing"
 )
@@ -72,7 +71,6 @@ func TestGetJSONRateLimit(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			_, err := c.getJSON(url)
-			log.Println("err:", err)
 			errs.lock.Lock()
 			errs.set = append(errs.set, err)
 			errs.lock.Unlock()

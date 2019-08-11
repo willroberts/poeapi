@@ -101,7 +101,6 @@ func newTestHandler() (testHandler, error) {
 }
 
 func (h testHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	log.Println("test url:", r.URL.Path)
 	switch r.URL.Path {
 	case "/ladders/Standard":
 		w.Write([]byte(h.ladderFixture))

@@ -5,7 +5,7 @@ import "time"
 var (
 	validHosts = map[string]struct{}{
 		"api.pathofexile.com": struct{}{},
-		"localhost:8000":      struct{}{},
+		"127.0.0.1:8000":      struct{}{},
 	}
 
 	validRealms = map[string]struct{}{

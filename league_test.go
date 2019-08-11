@@ -43,7 +43,6 @@ func TestGetLeagueWithRequestFailure(t *testing.T) {
 
 	_, err := c.GetLeague(GetLeagueOptions{ID: "Nonexistent"})
 	if err != ErrNotFound {
-		t.Log("err:", err)
 		t.Fatal("failed to detect request error for league request")
 	}
 }
