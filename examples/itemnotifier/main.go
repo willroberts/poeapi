@@ -23,9 +23,7 @@ func main() {
 	}
 
 	for {
-		stashes, err := client.GetStashes(poeapi.GetStashOptions{
-			ID: latest,
-		})
+		stashes, err := client.GetStashes(poeapi.GetStashOptions{ID: latest})
 		if err != nil {
 			log.Fatal(err)
 		}
