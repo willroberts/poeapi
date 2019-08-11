@@ -45,14 +45,15 @@ ladder, err := client.GetLadder(poeapi.GetLadderOptions{
 These are the methods available on the client's interface:
 
 ```go
-GetLeagues() ([]poeapi.League, error)
-GetCurrentChallengeLeague() (poeapi.League, error)
-GetLeagueRules() ([]poeapi.LeagueRule, error)
+// Method:                                 Returns:
+GetLeagues()                               ([]poeapi.League, error)
+GetCurrentChallengeLeague()                (poeapi.League, error)
+GetLeagueRules()                           ([]poeapi.LeagueRule, error)
 GetLeagueRule(poeapi.GetLeagueRuleOptions) (poeapi.LeagueRule, error)
-GetLadder(poeapi.GetLadderOptions) (poeapi.Ladder, error)
+GetLadder(poeapi.GetLadderOptions)         (poeapi.Ladder, error)
 GetPVPMatches(poeapi.GetPVPMatchesOptions) ([]poeapi.PVPMatch, error)
-GetStashes(opts poeapi.GetStashOptions) (StashResponse, error)
-GetLatestStashID() (string, error)
+GetStashes(opts poeapi.GetStashOptions)    (StashResponse, error)
+GetLatestStashID()                         (string, error)
 ```
 
 See the [documentation](https://godoc.org/willroberts/poeapi) or examples for
