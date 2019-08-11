@@ -6,7 +6,7 @@ import (
 	"net/url"
 )
 
-// GetStashOptions ...
+// GetStashOptions contains the request parameters for the stash endpoint.
 type GetStashOptions struct {
 	// ID is the unique change ID containing a set of stashes. If ID is omitted,
 	// the API will return the oldest stash tab possible.
@@ -21,7 +21,7 @@ func (opts GetStashOptions) toQueryParams() string {
 	return u.Encode()
 }
 
-// GetStashes ...
+// GetStashes retrieves a batch of stashes from the trade API.
 func (c *client) GetStashes(opts GetStashOptions) (StashResponse, error) {
 	url := fmt.Sprintf("%s?%s", c.formatURL(stashTabsEndpoint),
 		opts.toQueryParams())
