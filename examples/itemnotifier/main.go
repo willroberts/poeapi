@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"time"
 
 	"github.com/willroberts/poeapi"
 )
@@ -13,16 +12,7 @@ var (
 )
 
 func main() {
-	client, err := poeapi.NewAPIClient(poeapi.ClientOptions{
-		Host:           poeapi.DefaultHost,
-		NinjaHost:      poeapi.DefaultNinjaHost,
-		UseSSL:         true,
-		UseCache:       true,
-		CacheSize:      100,
-		RateLimit:      poeapi.DefaultRateLimit,
-		StashRateLimit: poeapi.DefaultStashRateLimit,
-		RequestTimeout: 5 * time.Second,
-	})
+	client, err := poeapi.NewAPIClient(poeapi.DefaultClientOptions)
 	if err != nil {
 		log.Fatal(err)
 	}
