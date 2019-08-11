@@ -104,10 +104,6 @@ func (h testHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
 	case "/ladders/Standard":
 		w.Write([]byte(h.ladderFixture))
-	case "/ladders/Nonexistent":
-		w.WriteHeader(http.StatusNotFound)
-	case "/ladders/test":
-		w.WriteHeader(http.StatusNotFound)
 	case "/league-rules/TurboMonsters":
 		w.Write([]byte(h.leagueRuleFixture))
 	case "/league-rules":
