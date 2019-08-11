@@ -51,7 +51,7 @@ GetLeagueRules() ([]poeapi.LeagueRule, error)
 GetLeagueRule(poeapi.GetLeagueRuleOptions) (poeapi.LeagueRule, error)
 GetLadder(poeapi.GetLadderOptions) (poeapi.Ladder, error)
 GetPVPMatches(poeapi.GetPVPMatchesOptions) ([]poeapi.PVPMatch, error)
-GetStashes(opts GetStashOptions) (StashResponse, error)
+GetStashes(opts poeapi.GetStashOptions) (StashResponse, error)
 GetLatestStashID() (string, error)
 ```
 
