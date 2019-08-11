@@ -101,7 +101,6 @@ Have a patch or a new feature? [Open a pull request][Pull Request]
 1. Open source the repo to enable GoDoc and Go Report Card.
 1. Add TravisCI to get a build passing badge.
 1. Add CodeCov to get a coverage badge.
-1. Improve documentation, test coverage, etc.
 
 [GoDoc]: https://godoc.org/willroberts/poeapi
 [GoDoc Badge]: https://godoc.org/willroberts/poeapi?status.svg
