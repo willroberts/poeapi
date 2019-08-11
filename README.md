@@ -82,9 +82,14 @@ distribution of character classes, and prints the results.
 This example retrieves all upcoming PVP matches from the API and prints how many
 events are scheduled (hint: it's zero).
 
+#### itemnotifier
+
+This example searches in real time, until the user exits with Ctrl-C, for Kaom's
+Heart in Standard league. When one is listed for sale, it prints the character
+name and asking price (if there is one).
+
 ## To Do
 
-1. Add stash tests and add stash example.
 1. Fix flaky ratelimiter tests.
 1. Address TODO items.
 1. Open source the repo to enable GoDoc and Go Report Card.
