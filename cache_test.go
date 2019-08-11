@@ -50,24 +50,34 @@ func TestCacheEviction(t *testing.T) {
 }
 
 func TestCacheLatency(t *testing.T) {
-	c, err := NewAPIClient(DefaultClientOptions)
+	c, err := NewAPIClient(ClientOptions{
+		Host:           testHost,
+		NinjaHost:      DefaultNinjaHost,
+		UseSSL:         false,
+		UseCache:       true,
+		CacheSize:      DefaultCacheSize,
+		RateLimit:      UnlimitedRate,
+		StashRateLimit: UnlimitedRate,
+		RequestTimeout: testTimeout,
+	})
 	if err != nil {
 		t.Fatalf("failed to create client for latency test: %v", err)
 	}
 
-	_, err = c.GetLeagues(GetLeaguesOptions{})
+	_, err = c.GetLeague(GetLeagueOptions{ID: "Standard"})
 	if err != nil {
 		t.Fatalf("failed to get all leagues for latency test: %v", err)
 	}
 
-	start := time.Now()
-	_, err = c.GetLeagues(GetLeaguesOptions{})
+	start2 := time.Now()
+	_, err = c.GetLeague(GetLeagueOptions{ID: "Standard"})
 	if err != nil {
 		t.Fatalf("failed to get all leagues for second latency test: %v", err)
 	}
+	duration2 := time.Since(start2)
 
-	if time.Since(start) > 1*time.Millisecond {
-		t.Fatal("cache test took longer than 10ms")
+	if duration2 > 1*time.Millisecond {
+		t.Fatal("cache test took longer than 1ms")
 	}
 }
 
