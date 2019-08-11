@@ -8,9 +8,9 @@ import (
 
 func TestRateLimiter(t *testing.T) {
 	var (
-		rateLimit    = 10
+		rateLimit    = 10.0
 		requestCount = 0
-		testDuration = 2 // Seconds.
+		testDuration = 2.0 // Seconds.
 		r            = newRateLimiter(rateLimit, rateLimit)
 	)
 
@@ -23,17 +23,17 @@ func TestRateLimiter(t *testing.T) {
 	}
 	<-timer.C
 
-	if requestCount > (rateLimit * testDuration) {
-		t.Fatalf("ratelimiter failed: saw %d requests in %d seconds (expected %d)",
-			requestCount, testDuration, rateLimit*testDuration)
+	if requestCount > int(rateLimit*testDuration) {
+		t.Fatalf("ratelimiter failed: saw %d requests in %.1f seconds (expected %d)",
+			requestCount, testDuration, int(rateLimit*testDuration))
 	}
 }
 
 func TestRateLimiterTooFast(t *testing.T) {
 	var (
-		rateLimit    = 1
+		rateLimit    = 1.0
 		requestCount uint32
-		testDuration = 5 // Seconds.
+		testDuration = 5.0 // Seconds.
 		r            = newRateLimiter(rateLimit, rateLimit)
 	)
 
@@ -48,8 +48,8 @@ func TestRateLimiterTooFast(t *testing.T) {
 	}
 	<-timer.C
 
-	if int(atomic.LoadUint32(&requestCount)) > (rateLimit * testDuration) {
-		t.Fatalf("ratelimiter failed: saw %d requests in %d seconds (expected %d)",
-			requestCount, testDuration, rateLimit*testDuration)
+	if int(atomic.LoadUint32(&requestCount)) > int(rateLimit*testDuration) {
+		t.Fatalf("ratelimiter failed: saw %d requests in %.1f seconds (expected %d)",
+			requestCount, testDuration, int(rateLimit*testDuration))
 	}
 }

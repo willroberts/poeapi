@@ -3,6 +3,7 @@ package poeapi
 import (
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 type requestFunc func(string) (string, error)
@@ -40,6 +41,11 @@ func (c *client) withCache(url string, fn requestFunc) (string, error) {
 		return fn(url)
 	}
 
+	// Disable caching for stash endpoint.
+	if strings.HasPrefix(url, c.formatURL(stashTabsEndpoint)) {
+		return fn(url)
+	}
+
 	if cached := c.cache.Get(url); cached != "" {
 		return cached, nil
 	}
@@ -54,7 +60,7 @@ func (c *client) withCache(url string, fn requestFunc) (string, error) {
 }
 
 func (c *client) withRateLimit(url string, fn requestFunc) requestFunc {
-	if url == c.formatURL(stashTabsEndpoint) {
+	if strings.HasPrefix(url, c.formatURL(stashTabsEndpoint)) {
 		c.limiter.wait(true)
 		return fn
 	}

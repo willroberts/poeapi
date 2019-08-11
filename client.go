@@ -20,17 +20,16 @@ const (
 	// second. Tests performed with the ratetest program (cmd/ratetest) show
 	// occasional failures at this rate, so we back down to 4 requests per
 	// second by default to err on the side of caution.
-	DefaultRateLimit = 4
+	DefaultRateLimit = 4.0
 
 	// DefaultStashRateLimit sets the rate limit for the stash endpoint.
 	// The stash API has a rate limit of 1 request per second.
-	DefaultStashRateLimit = 1
+	DefaultStashRateLimit = 1.0
 
 	// DefaultCacheSize sets the number of items which can be stores in the
-	// in-memory LRU cache. A typical response from the public stashs API
-	// is around 3MB. By default, allow around 50x3MB=150MB total cache memory
-	// usage.
-	DefaultCacheSize = 50
+	// in-memory LRU cache. A typical response from the API is around 500KB.
+	// By default, allow around 200x500KB=100MB total cache memory usage.
+	DefaultCacheSize = 200
 
 	// DefaultRequestTimeout sets the time to wait before canceling HTTP
 	// requests. Some endpoits take over 1000ms to respond, so we use 2000ms as
@@ -101,21 +100,21 @@ type ClientOptions struct {
 	UseSSL bool
 
 	// Set to false to always hit the API for requests instead of using a local
-	// cache.
+	// cache. Caching is always disabled for stash requests, since retrieving
+	// a cached stash means we will never get a new change ID.
 	UseCache bool
 
-	// The number of items which can be stored in the cache. Expect around
-	// 3MB per item for stash requests, and up to 0.5MB per item for all
-	// other requests.
+	// The number of items which can be stored in the cache. Most endpoints
+	// have a response size up to 500KB or so.
 	CacheSize int
 
 	// The number of requests per second for all API endpoints except the stash
 	// tab endpoint. The API will ratelimit clients above 5rps.
-	RateLimit int
+	RateLimit float64
 
 	// The number of requests per second for the stash endpoint. The API
 	// will ratelimit clients above 1rps.
-	StashRateLimit int
+	StashRateLimit float64
 
 	// Time to wait before canceling HTTP requests.
 	RequestTimeout time.Duration

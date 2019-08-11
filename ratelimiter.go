@@ -14,8 +14,8 @@ const (
 // ratelimiter uses blocking time.Sleep calls to prevent callers from sending
 // requests too frequently. ratelimiter is threadsafe.
 type ratelimiter struct {
-	rateLimit      int
-	stashRateLimit int
+	rateLimit      float64
+	stashRateLimit float64
 
 	lastRequest      time.Time
 	lastStashRequest time.Time
@@ -51,7 +51,7 @@ func (r *ratelimiter) wait(stash bool) {
 	}
 }
 
-func newRateLimiter(rateLimit, stashRateLimit int) *ratelimiter {
+func newRateLimiter(rateLimit, stashRateLimit float64) *ratelimiter {
 	return &ratelimiter{
 		rateLimit:      rateLimit,
 		stashRateLimit: stashRateLimit,
