@@ -8,7 +8,7 @@ A Go client for the Path of Exile API.
 
 ## Features
 
-* Supports every endpoint of the [Path of Exile API](https://www.pathofexile.com/developer/docs/api)
+* Supports every endpoint of the [Path of Exile API][API Docs]
 * All operations are thread-safe
 * Built-in, tunable rate limiting
 * Built-in, tunable caching for responses
@@ -18,18 +18,19 @@ A Go client for the Path of Exile API.
 
 ```go
 clientOpts := poeapi.ClientOptions{
-    Host:              "api.pathofexile.com",
-    NinjaHost:         "poe.ninja",
-    UseSSL:            true,
-    UseCache:          true,
-    CacheSize:         50,
-    RateLimit:         4,
-    StashRateLimit:    1,
+    Host:              "api.pathofexile.com", // The primary API domain.
+    NinjaHost:         "poe.ninja",           // Used to get latest change ID.
+    UseSSL:            true,                  // Use HTTPS for requests.
+    UseCache:          true,                  // Enable the in-memory cache.
+    CacheSize:         200,                   // Number of items to store.
+    RateLimit:         4.0,                   // Requests per second.
+    StashRateLimit:    1.0,                   // Requests per second for trade API.
+    RequestTimeout:    5 * time.Second        // Time to wait before canceling requests.
 } // This is equivalent to poeapi.DefaultClientOptions.
 
 client, err := poeapi.NewAPIClient(clientOpts)
 if err != nil {
-    // ...
+    // Handle error.
 }
 
 ladder, err := client.GetLadder(poeapi.GetLadderOptions{
@@ -37,7 +38,7 @@ ladder, err := client.GetLadder(poeapi.GetLadderOptions{
     Realm: "pc",
     Type:  "league",
 })
-// ...
+// Etc.
 ```
 
 ## Interface
@@ -56,8 +57,7 @@ GetStashes(poeapi.GetStashOptions)         (StashResponse, error)
 GetLatestStashID()                         (string, error)
 ```
 
-See the [documentation](https://godoc.org/willroberts/poeapi) or examples for
-more usage information.
+See the [documentation][GoDoc] or examples for more usage information.
 
 ## Examples
 
@@ -109,5 +109,6 @@ Have a patch or a new feature? [Open a pull request][Pull Request]
 [GoReportCard Badge]: https://goreportcard.com/badge/github.com/willroberts/poeapi
 [License]: https://www.gnu.org/licenses/gpl-3.0
 [License Badge]: https://img.shields.io/badge/License-GPLv3-blue.svg
+[API Docs]: https://www.pathofexile.com/developer/docs/api
 [Issue]: https://github.com/willroberts/poeapi/issues
 [Pull Request]: https://github.com/willroberts/poeapi/pulls
