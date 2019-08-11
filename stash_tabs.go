@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
-	"strings"
 )
 
 // GetStashOptions ...
@@ -46,20 +45,17 @@ type latestChange struct {
 // GetLatestStashID retrieves the latest stash tab ID from poe.ninja, with
 // caching and ratelimiting.
 func (c *client) GetLatestStashID() (string, error) {
-	// poe.ninja only supports HTTPS, but we allow HTTP for local testing.
 	var url string
-	if strings.HasPrefix(c.ninjaHost, "127.0.0.1") {
-		url = fmt.Sprintf("http://%s/api/Data/GetStats", c.ninjaHost)
-	} else {
+	if c.useSSL {
 		url = fmt.Sprintf("https://%s/api/Data/GetStats", c.ninjaHost)
+	} else {
+		url = fmt.Sprintf("http://%s/api/Data/GetStats", c.ninjaHost)
 	}
 
 	resp, err := c.get(url)
 	if err != nil {
 		return "", err
 	}
-
-	fmt.Println(resp)
 
 	var latest latestChange
 	if err := json.Unmarshal([]byte(resp), &latest); err != nil {
