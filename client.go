@@ -39,13 +39,13 @@ const (
 
 // APIClient provides methods for interacting with the Path of Exile API.
 type APIClient interface {
-	GetLeagues(GetLeaguesOptions) ([]League, error)
-	GetLeague(GetLeagueOptions) (League, error)
-	GetLeagueRules() ([]LeagueRule, error)
-	GetLeagueRule(GetLeagueRuleOptions) (LeagueRule, error)
 	GetLadder(GetLadderOptions) (Ladder, error)
+	GetLeague(GetLeagueOptions) (League, error)
+	GetLeagueRule(GetLeagueRuleOptions) (LeagueRule, error)
+	GetLeagueRules() ([]LeagueRule, error)
+	GetLeagues(GetLeaguesOptions) ([]League, error)
 	GetPVPMatches(GetPVPMatchesOptions) ([]PVPMatch, error)
-	GetStashes(opts GetStashOptions) (StashResponse, error)
+	GetStashes(GetStashOptions) (StashResponse, error)
 	GetLatestStashID() (string, error)
 }
 

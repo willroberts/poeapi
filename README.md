@@ -47,13 +47,13 @@ These are the methods available on the client's interface:
 
 ```go
 // Method:                                 Returns:
-GetLeagues()                               ([]poeapi.League, error)
-GetCurrentChallengeLeague()                (poeapi.League, error)
-GetLeagueRules()                           ([]poeapi.LeagueRule, error)
-GetLeagueRule(poeapi.GetLeagueRuleOptions) (poeapi.LeagueRule, error)
 GetLadder(poeapi.GetLadderOptions)         (poeapi.Ladder, error)
+GetLeague(poeapi.GetLeagueOptions)         (poeapi.League, error)
+GetLeagueRule(poeapi.GetLeagueRuleOptions) (poeapi.LeagueRule, error)
+GetLeagueRules()                           ([]poeapi.LeagueRule, error)
+GetLeagues(poeapi.GetLeaguesOptions)       ([]poeapi.League, error)
 GetPVPMatches(poeapi.GetPVPMatchesOptions) ([]poeapi.PVPMatch, error)
-GetStashes(poeapi.GetStashOptions)         (StashResponse, error)
+GetStashes(poeapi.GetStashOptions)         (poeapi.StashResponse, error)
 GetLatestStashID()                         (string, error)
 ```
 
