@@ -30,13 +30,14 @@ type GetLeaguesOptions struct {
 	// response.
 	Compact bool
 
-	// Number of leagues to retrieve. Defaults to 50, but can go up to 230 when
-	// Compact is true.
+	// Number of leagues to retrieve. Defaults to 50, and is capped at 50 when
+	// Compact is false, but can go up to 230 when Compact is true. This is only
+	// needed when retrieving seasonal leagues, such as the 'Medallion' season
+	// which had 139 leagues.
 	Limit int
 
 	// Starting index for bulk league retrieval. Only needed when requesting
 	// more than 50 leagues.
-	// TODO: Abstract limit/offset behind client methods.
 	Offset int
 }
 
