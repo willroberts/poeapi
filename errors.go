@@ -40,6 +40,10 @@ var ErrInvalidRequestTimeout = errors.New("invalid request timeout")
 // ErrInvalidCacheSize is raised when the cache size is out of range.
 var ErrInvalidCacheSize = errors.New("invalid cache size")
 
+// ErrInvalidAddress is raised when a malformed IP address is returned by the
+// DNS cache.
+var ErrInvalidAddress = errors.New("invalid ip address")
+
 // ErrMissingID is raised when the user fails to provide a league ID for a
 // ladder request.
 var ErrMissingID = errors.New("missing league id")

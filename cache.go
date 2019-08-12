@@ -2,6 +2,8 @@ package poeapi
 
 import (
 	"container/list"
+	"container/ring"
+	"net"
 	"sync"
 )
 
@@ -78,4 +80,37 @@ func (c *cache) removeElement(e *list.Element) {
 	c.evictList.Remove(e)
 	kv := e.Value.(*entry)
 	delete(c.items, kv.key)
+}
+
+// dnscache is an in-memory ring cache which caches IP addresses from DNS
+// resolution for api.pathofexile.com. DNS can be a significant factor in
+// request latency, and Go does not cache DNS resolution by default.
+type dnscache struct {
+	ips *ring.Ring
+}
+
+func (d *dnscache) getIP() (string, error) {
+	ipval := d.ips.Value
+	ip, ok := ipval.(string)
+	if !ok {
+		return "", ErrInvalidAddress
+	}
+
+	d.ips = d.ips.Next()
+	return ip, nil
+}
+
+func newDNSCache(host string) (*dnscache, error) {
+	addrs, err := net.LookupHost(host)
+	if err != nil {
+		return nil, err
+	}
+
+	r := ring.New(len(addrs))
+	for i := 0; i < r.Len(); i++ {
+		r.Value = addrs[i]
+		r = r.Next()
+	}
+
+	return &dnscache{ips: r}, nil
 }
