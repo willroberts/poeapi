@@ -49,7 +49,6 @@ func validateGetPVPMatchesOptions(opts GetPVPMatchesOptions) error {
 	return nil
 }
 
-// GetPVPMatches retrieves all PVP matches from the API.
 func (c *client) GetPVPMatches(opts GetPVPMatchesOptions) ([]PVPMatch, error) {
 	if err := validateGetPVPMatchesOptions(opts); err != nil {
 		return []PVPMatch{}, err

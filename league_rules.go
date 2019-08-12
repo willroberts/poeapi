@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 )
 
-// GetLeagueRules retrieves all league rules from the API.
 func (c *client) GetLeagueRules() ([]LeagueRule, error) {
 	resp, err := c.get(c.formatURL(leagueRulesEndpoint))
 	if err != nil {

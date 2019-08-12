@@ -21,7 +21,6 @@ func (opts GetStashOptions) toQueryParams() string {
 	return u.Encode()
 }
 
-// GetStashes retrieves a batch of stashes from the trade API.
 func (c *client) GetStashes(opts GetStashOptions) (StashResponse, error) {
 	url := fmt.Sprintf("%s?%s", c.formatURL(stashTabsEndpoint),
 		opts.toQueryParams())
@@ -44,8 +43,6 @@ type latestChange struct {
 	ID string `json:"next_change_id"`
 }
 
-// GetLatestStashID retrieves the latest stash tab ID from poe.ninja, with
-// caching and ratelimiting.
 func (c *client) GetLatestStashID() (string, error) {
 	var url string
 	if c.useSSL {

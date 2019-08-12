@@ -42,13 +42,43 @@ const (
 
 // APIClient provides methods for interacting with the Path of Exile API.
 type APIClient interface {
+	// GetLadder sends multiple ladder requests to construct the entire ladder
+	// for a given league in a single call. Ladders contain information about
+	// the top-ranked characters in a given league. Up to 15,000 characters may
+	// be returned.
 	GetLadder(GetLadderOptions) (Ladder, error)
-	GetLeague(GetLeagueOptions) (League, error)
-	GetLeagueRule(GetLeagueRuleOptions) (LeagueRule, error)
-	GetLeagueRules() ([]LeagueRule, error)
+
+	// GetLeague retrieves all league (Standard, Hardcore, etc.) from the API.
+	// Responses include information such as start and end times and rules for
+	// the league.
 	GetLeagues(GetLeaguesOptions) ([]League, error)
+
+	// GetLeague retrieves a single league from the API by ID.
+	GetLeague(GetLeagueOptions) (League, error)
+
+	// GetLeagueRules retrieves all available league modifiers from the API.
+	// These modifiers affect league mechanics, such as the 'Turbo' rule
+	// granting increased attack, cast, and movement speed to monsters.
+	GetLeagueRules() ([]LeagueRule, error)
+
+	// GetLeagueRule retrieves a single rule from the API by ID.
+	GetLeagueRule(GetLeagueRuleOptions) (LeagueRule, error)
+
+	// GetPVPMatches retrieves past or upcoming PVP matches from the API.
+	// Specific seasons may be requested in order to view past events.
+	// Alternatively, not specifying a season returns all upcoming events.
 	GetPVPMatches(GetPVPMatchesOptions) ([]PVPMatch, error)
+
+	// GetStashes retrieves a batch of stashes from the trade API. Each response
+	// contains a set of stashes which can be parsed for specific items.
+	// Responses also include a "next change ID" which is used to request the
+	// next set of stashes in chronological order (by publish time).
 	GetStashes(GetStashOptions) (StashResponse, error)
+
+	// GetLatestStashID retrieves the latest stash tab ID from poe.ninja. This
+	// is helpful when building real-time trade applications, as not specifying
+	// a stash ID starts from the beginning of time. This makes a single request
+	// to poe.ninja's API, and caches the response to avoid subsequent traffic.
 	GetLatestStashID() (string, error)
 }
 

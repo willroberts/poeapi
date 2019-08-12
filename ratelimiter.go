@@ -6,8 +6,7 @@ import (
 )
 
 const (
-	// UnlimitedRate disables rate limiting when passed into the newRateLimiter
-	// function.
+	// UnlimitedRate disables rate limiting when used as a rate limit.
 	UnlimitedRate = 0
 )
 

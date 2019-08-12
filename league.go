@@ -39,7 +39,6 @@ func validateGetLeagueOptions(opts GetLeagueOptions) error {
 	return nil
 }
 
-// GetLeague retrieves all league (Standard, Hardcore, etc.) from the API.
 func (c *client) GetLeague(opts GetLeagueOptions) (League, error) {
 	if err := validateGetLeagueOptions(opts); err != nil {
 		return League{}, err
