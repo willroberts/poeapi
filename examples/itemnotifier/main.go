@@ -22,6 +22,8 @@ func main() {
 		log.Fatal(err)
 	}
 
+	log.Printf("Searching for %s in %s league. Press Ctrl-C to exit.",
+		targetItem, targetLeague)
 	for {
 		stashes, err := client.GetStashes(poeapi.GetStashOptions{ID: latest})
 		if err != nil {

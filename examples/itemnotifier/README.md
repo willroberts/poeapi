@@ -13,6 +13,7 @@ Output:
 
 ```
 $ go run main.go
+2019/08/11 15:53:01 Searching for Kaom's Heart in Standard league. Press Ctrl-C to exit.
 2019/08/11 15:53:06 LowFattt is selling Kaom's Heart in Standard league.
 2019/08/11 15:53:08 StriXXa is selling Kaom's Heart for ~price 75 chaos in Standard league.
 2019/08/11 15:53:22 SASHQUE is selling Kaom's Heart in Standard league.

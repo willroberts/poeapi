@@ -26,6 +26,8 @@ func main() {
 		UniqueIDs: false,
 	}
 
+	fmt.Printf("Retrieving ladder for %s.\n", targetLeague)
+	fmt.Println("This may take up to 20 seconds.\n")
 	l, err := client.GetLadder(opts)
 	if err != nil {
 		log.Fatal(err)
@@ -33,7 +35,7 @@ func main() {
 
 	dist := getDistributions(l.TotalEntries, countClasses(l))
 	sorted := sortDistributions(dist)
-	fmt.Printf("Distribution of characters by class in %s:", targetLeague)
+	fmt.Printf("Distribution of characters by class in %s:\n", targetLeague)
 	for _, entry := range sorted {
 		fmt.Printf("    %s: %.2f%%\n", entry.key, entry.val*100)
 	}

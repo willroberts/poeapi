@@ -7,6 +7,9 @@ Output:
 
 ```
 $ go run main.go
+Retrieving ladder for SSF Hardcore.
+This may take up to 20 seconds.
+
 Distribution of characters by class in SSF Hardcore:
     Juggernaut: 10.32%
     Necromancer: 9.83%
