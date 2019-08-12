@@ -18,15 +18,15 @@ A Go client for the Path of Exile API.
 
 ```go
 clientOpts := poeapi.ClientOptions{
-    Host:              "api.pathofexile.com", // The primary API domain.
-    NinjaHost:         "poe.ninja",           // Used to get latest stash ID.
-    UseSSL:            true,                  // Use HTTPS for requests.
-    UseCache:          true,                  // Enable the in-memory cache.
-    UseDNSCache:       true,                  // Enable the in-memory DNS resolution cache.
-    CacheSize:         200,                   // Number of items to store.
-    RateLimit:         4.0,                   // Requests per second.
-    StashRateLimit:    1.0,                   // Requests per second for trade API.
-    RequestTimeout:    5 * time.Second        // Time to wait before canceling requests.
+    Host:           "api.pathofexile.com", // The primary API domain.
+    NinjaHost:      "poe.ninja",           // Used to get latest stash ID.
+    UseSSL:         true,                  // Use HTTPS for requests.
+    UseCache:       true,                  // Enable the in-memory cache.
+    UseDNSCache:    true,                  // Enable the in-memory DNS resolution cache.
+    CacheSize:      200,                   // Number of items to store.
+    RateLimit:      4.0,                   // Requests per second.
+    StashRateLimit: 1.0,                   // Requests per second for trade API.
+    RequestTimeout: 5 * time.Second        // Time to wait before canceling requests.
 } // This is equivalent to poeapi.DefaultClientOptions.
 
 client, err := poeapi.NewAPIClient(clientOpts)
