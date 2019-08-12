@@ -1,1 +1,12 @@
-{"id":1,"next_change_id":"464945299-481818264-454430381-519967592-493704931","api_bytes_downloaded":85457176168388,"stash_tabs_processed":2380844647,"api_calls":0,"character_bytes_downloaded":1417000856906,"character_api_calls":23969016,"ladder_bytes_downloaded":80746395971,"ladder_api_calls":1377501,"pob_characters_calculated":5777330}
+{
+    "id": 1,
+    "next_change_id": "464945299-481818264-454430381-519967592-493704931",
+    "api_bytes_downloaded": 85457176168388,
+    "stash_tabs_processed": 2380844647,
+    "api_calls": 0,
+    "character_bytes_downloaded": 1417000856906,
+    "character_api_calls": 23969016,
+    "ladder_bytes_downloaded": 80746395971,
+    "ladder_api_calls": 1377501,
+    "pob_characters_calculated": 5777330
+}
