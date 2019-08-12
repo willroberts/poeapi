@@ -87,31 +87,39 @@ func (c *cache) removeElement(e *list.Element) {
 // request latency, and Go does not cache DNS resolution by default.
 // TODO: Make the cache generic so it can be used for more than one host.
 type dnscache struct {
-	ips *ring.Ring
+	IPs map[string]*ring.Ring
 }
 
-func (d *dnscache) getIP() (string, error) {
-	ipval := d.ips.Value
-	ip, ok := ipval.(string)
-	if !ok {
-		return "", ErrInvalidAddress
-	}
-
-	d.ips = d.ips.Next()
-	return ip, nil
-}
-
-func newDNSCache(host string) (*dnscache, error) {
+func (d *dnscache) resolve(host string) error {
 	addrs, err := net.LookupHost(host)
 	if err != nil {
-		return nil, err
+		return err
 	}
-
 	r := ring.New(len(addrs))
 	for i := 0; i < r.Len(); i++ {
 		r.Value = addrs[i]
 		r = r.Next()
 	}
+	d.IPs[host] = r
+	return nil
+}
 
-	return &dnscache{ips: r}, nil
+func (d *dnscache) get(host string) (string, error) {
+	if _, ok := d.IPs[host]; !ok {
+		if err := d.resolve(host); err != nil {
+			return "", err
+		}
+	}
+
+	ip, ok := d.IPs[host].Value.(string)
+	if !ok {
+		return "", ErrInvalidAddress
+	}
+	d.IPs[host] = d.IPs[host].Next()
+	return ip, nil
+}
+
+func newDNSCache() *dnscache {
+	ips := make(map[string]*ring.Ring, 0)
+	return &dnscache{IPs: ips}
 }
