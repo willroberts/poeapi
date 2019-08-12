@@ -85,7 +85,6 @@ func (c *cache) removeElement(e *list.Element) {
 // dnscache is an in-memory ring cache which caches IP addresses from DNS
 // resolution for api.pathofexile.com. DNS can be a significant factor in
 // request latency, and Go does not cache DNS resolution by default.
-// TODO: Make the cache generic so it can be used for more than one host.
 type dnscache struct {
 	IPs map[string]*ring.Ring
 }
