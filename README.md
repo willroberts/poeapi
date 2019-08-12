@@ -98,7 +98,6 @@ Found a problem? Have a question? [Open an issue][Issue]
 Have a patch or a new feature? [Open a pull request][Pull Request]
 
 ## To Do
-1. Reduce fixture sizes.
 1. Add DNS caching with container/ring.
 1. Improve test coverage and documentation.
 1. Open source the repo to enable GoDoc and Go Report Card.
