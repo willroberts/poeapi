@@ -118,9 +118,9 @@ func (h testHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(h.stashFixture))
 	case "/api/Data/GetStats":
 		w.Write([]byte(h.latestChangeFixture))
-	case "/rate-limit-me":
+	case rateLimitEndpoint:
 		w.WriteHeader(http.StatusTooManyRequests)
-	case "/fail-me":
+	case failureEndpoint:
 		w.WriteHeader(http.StatusInternalServerError)
 	default:
 		w.WriteHeader(http.StatusNotFound)

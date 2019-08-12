@@ -39,19 +39,17 @@ func TestParseStashResponse(t *testing.T) {
 	}
 }
 
-func TestGetLatestStashID(t *testing.T) {
-	c := client{
-		ninjaHost:  testHost,
-		useSSL:     false,
-		limiter:    newRateLimiter(UnlimitedRate, UnlimitedRate),
-		httpClient: testClient,
+func TestParseStashResponseWithInvalidJSON(t *testing.T) {
+	resp, err := loadFixture("fixtures/invalid.json")
+	if err != nil {
+		t.Fatalf("failed to load fixture: %v", err)
 	}
-	if _, err := c.GetLatestStashID(); err != nil {
-		t.Fatalf("failed to get latest change id: %v", err)
+	if _, err = parseStashResponse(resp); err == nil {
+		t.Fatal("failed to detect invalid json")
 	}
 }
 
-func TestGetLatestStashIDWithSSL(t *testing.T) {
+func TestGetLatestStashID(t *testing.T) {
 	c := client{
 		ninjaHost:  testHost,
 		useSSL:     false,
@@ -70,5 +68,15 @@ func TestParseLatestChangeResponse(t *testing.T) {
 	}
 	if _, err := parseLatestChangeResponse(resp); err != nil {
 		t.Fatalf("failed to parse latest change: %v", err)
+	}
+}
+
+func TestParseLatestChangeResponseWithInvalidJSON(t *testing.T) {
+	resp, err := loadFixture("fixtures/invalid.json")
+	if err != nil {
+		t.Fatalf("failed to load fixture: %v", err)
+	}
+	if _, err := parseLatestChangeResponse(resp); err == nil {
+		t.Fatal("failed to detect invalid json")
 	}
 }

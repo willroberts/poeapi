@@ -1,6 +1,7 @@
 package poeapi
 
 import (
+	"net/http"
 	"sync"
 	"testing"
 )
@@ -128,4 +129,53 @@ func TestWithStashRateLimit(t *testing.T) {
 		fn  = func(s string) (string, error) { return s, nil }
 	)
 	_ = c.withRateLimit(url, fn)
+}
+
+func TestParseCodeBadRequest(t *testing.T) {
+	if err := parseError(http.StatusBadRequest); err != ErrBadRequest {
+		t.Fatal("failed to detect bad request")
+	}
+}
+
+func TestParseCodeUnknownFailure(t *testing.T) {
+	if err := parseError(http.StatusTeapot); err != ErrUnknownFailure {
+		t.Fatal("failed to detect unknown error")
+	}
+}
+
+func TestCacheHelperWithStashURL(t *testing.T) {
+	var (
+		c = client{
+			host:     testHost,
+			useCache: true,
+		}
+		url = c.formatURL(stashTabsEndpoint)
+		fn  = func(s string) (string, error) {
+			return "", nil
+		}
+	)
+	if _, err := c.withCache(url, fn); err != nil {
+		t.Fatal("failed to bypass cache in decorated function")
+	}
+}
+
+func TestCacheHelperWithErrorResult(t *testing.T) {
+	cache, err := newCache(10)
+	if err != nil {
+		t.Fatalf("failed to create cache: %v", err)
+	}
+	var (
+		c = client{
+			host:     testHost,
+			useCache: true,
+			cache:    cache,
+		}
+		url = c.formatURL(leaguesEndpoint)
+		fn  = func(s string) (string, error) {
+			return "", ErrUnknownFailure
+		}
+	)
+	if _, err := c.withCache(url, fn); err != ErrUnknownFailure {
+		t.Fatal("failed to detect error in decorated function")
+	}
 }
