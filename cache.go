@@ -90,21 +90,9 @@ type dnscache struct {
 	IPs map[string]*ring.Ring
 }
 
-func (d *dnscache) resolve(host string) error {
-	addrs, err := net.LookupHost(host)
-	if err != nil {
-		return err
-	}
-	r := ring.New(len(addrs))
-	for i := 0; i < r.Len(); i++ {
-		r.Value = addrs[i]
-		r = r.Next()
-	}
-	d.IPs[host] = r
-	return nil
-}
-
-func (d *dnscache) get(host string) (string, error) {
+// Get retrieves the least-recently-used IP address from the DNS cache. If there
+// is no cache entry, a DNS resolution is performed before returning an IP.
+func (d *dnscache) Get(host string) (string, error) {
 	if _, ok := d.IPs[host]; !ok {
 		if err := d.resolve(host); err != nil {
 			return "", err
@@ -117,6 +105,20 @@ func (d *dnscache) get(host string) (string, error) {
 	}
 	d.IPs[host] = d.IPs[host].Next()
 	return ip, nil
+}
+
+func (d *dnscache) resolve(host string) error {
+	addrs, err := net.LookupHost(host)
+	if err != nil {
+		return err
+	}
+	r := ring.New(len(addrs))
+	for i := 0; i < r.Len(); i++ {
+		r.Value = addrs[i]
+		r = r.Next()
+	}
+	d.IPs[host] = r
+	return nil
 }
 
 func newDNSCache() *dnscache {

@@ -91,29 +91,20 @@ func NewAPIClient(opts ClientOptions) (APIClient, error) {
 	}
 
 	if opts.UseDNSCache {
-		d, err := newDNSCache(c.host)
-		if err != nil {
-			return nil, err
-		}
-		c.dnscache = d
+		c.dnscache = newDNSCache()
 		c.httpClient = &http.Client{
 			Transport: &http.Transport{
 				// When a connection dials an address for the first time, if the
 				// host is DefaultHost, resolve the IP using the local DNS
 				// cache.
 				Dial: func(proto, addr string) (net.Conn, error) {
-					if !strings.HasPrefix(addr, DefaultHost) {
-						return net.Dial(proto, addr)
-					}
-					ip, err := c.dnscache.getIP()
+					a := strings.Split(addr, ":")
+					ip, err := c.dnscache.Get(a[0])
 					if err != nil {
 						return nil, err
 					}
-					port := "80"
-					if c.useSSL {
-						port = "443"
-					}
-					return net.Dial("tcp", fmt.Sprintf("%s:%s", ip, port))
+					newAddr := fmt.Sprintf("%s:%s", ip, a[1])
+					return net.Dial(proto, newAddr)
 				},
 			},
 			Timeout: opts.RequestTimeout,

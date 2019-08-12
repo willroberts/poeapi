@@ -106,7 +106,7 @@ func TestDNSCacheGetUnresolved(t *testing.T) {
 		host = "localhost"
 		d    = newDNSCache()
 	)
-	_, err := d.get(host)
+	_, err := d.Get(host)
 	if err != nil {
 		t.Fatalf("failed to get ip from dns cache: %v", err)
 	}
@@ -127,7 +127,7 @@ func TestDNSCacheGetResolutionFailure(t *testing.T) {
 		host = "11111"
 		d    = newDNSCache()
 	)
-	if _, err := d.get(host); err == nil {
+	if _, err := d.Get(host); err == nil {
 		t.Fatal("failed to detect dns resolution failure")
 	}
 }
@@ -143,7 +143,7 @@ func TestDNSCacheInvalidEntry(t *testing.T) {
 		d.IPs[host].Value = i
 		d.IPs[host].Next()
 	}
-	if _, err := d.get(host); err != ErrInvalidAddress {
+	if _, err := d.Get(host); err != ErrInvalidAddress {
 		t.Fatal("failed to detect invalid dns cache entry")
 	}
 }
