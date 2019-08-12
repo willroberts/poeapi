@@ -84,6 +84,12 @@ type Account struct {
 	Name       string     `json:"name"`
 	Realm      string     `json:"realm"`
 	Challenges Challenges `json:"challenges"`
+	TwitchInfo TwitchInfo `json:"twitch"`
+}
+
+// TwitchInfo represents an account's linked Twitch user.
+type TwitchInfo struct {
+	Username string `json:"name"`
 }
 
 // Challenges represents an account's completed challenges.

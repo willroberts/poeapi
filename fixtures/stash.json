@@ -4,8 +4,8 @@
         {
             "id": "5e25b6ae1bdf65f202e3ef4d3274f8c92b4f0b34d9ff4b6603761c2819697e73",
             "public": true,
-            "accountName": "yolonolf",
-            "lastCharacterName": "ArcingGC",
+            "accountName": "Account1",
+            "lastCharacterName": "Character1",
             "stash": "$3",
             "stashType": "PremiumStash",
             "league": "Standard",
@@ -290,8 +290,8 @@
         {
             "id": "3d1816fcbfd846ff1cef761150a596d4653938836e2e88b975da721d86fe5b30",
             "public": true,
-            "accountName": "yolonolf",
-            "lastCharacterName": "ArcingGC",
+            "accountName": "Account2",
+            "lastCharacterName": "Character2",
             "stash": "$1",
             "stashType": "PremiumStash",
             "league": "Standard",
@@ -521,8 +521,8 @@
         {
             "id": "65376e8dae78fe74650f29162ccc7f1662345305db2a4258771398f4b6303d7e",
             "public": true,
-            "accountName": "letimalaya",
-            "lastCharacterName": "DusyaLegion",
+            "accountName": "Account3",
+            "lastCharacterName": "Character3",
             "stash": "10",
             "stashType": "PremiumStash",
             "league": "Standard",

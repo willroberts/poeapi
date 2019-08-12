@@ -7,14 +7,14 @@
             "dead": false,
             "online": false,
             "character": {
-                "name": "PenDora",
+                "name": "Character1",
                 "level": 100,
                 "class": "Scion",
                 "id": "cc248e0d23c849d71b40379d82dfc19b200bdb7b8ac63322f06de6483aaca5ea",
                 "experience": 4250334444
             },
             "account": {
-                "name": "Jin_melike",
+                "name": "Account1",
                 "realm": "pc",
                 "challenges": {
                     "total": 0
@@ -26,20 +26,20 @@
             "dead": false,
             "online": false,
             "character": {
-                "name": "TaylorSwiftVEVO",
+                "name": "Character2",
                 "level": 100,
                 "class": "Scion",
                 "id": "b23f488245ffebc87616c9acf76fbbb3d534e0490a8b30a9be48f8fcc3941be0",
                 "experience": 4250334444
             },
             "account": {
-                "name": "PeakingDuck",
+                "name": "Account2",
                 "realm": "pc",
                 "challenges": {
                     "total": 0
                 },
                 "twitch": {
-                    "name": "peakingduck"
+                    "name": "Twitch2"
                 }
             }
         },
@@ -48,14 +48,14 @@
             "dead": false,
             "online": false,
             "character": {
-                "name": "Dear_Santa_UA",
+                "name": "Character3",
                 "level": 100,
                 "class": "Occultist",
                 "id": "41240e2f9f7a56ebb409d6060619a14ffba154c61a84ef769bc9758361351ae8",
                 "experience": 4250334444
             },
             "account": {
-                "name": "Valerchik",
+                "name": "Account3",
                 "realm": "pc",
                 "challenges": {
                     "total": 0
