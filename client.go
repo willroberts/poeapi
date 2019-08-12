@@ -1,7 +1,10 @@
 package poeapi
 
 import (
+	"fmt"
+	"net"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -32,9 +35,9 @@ const (
 	DefaultCacheSize = 200
 
 	// DefaultRequestTimeout sets the time to wait before canceling HTTP
-	// requests. Some endpoits take over 1000ms to respond, so we use 2000ms as
-	// as default.
-	DefaultRequestTimeout = 2 * time.Second
+	// requests. Some endpoits take over 2-3s to respond, so we use 5s as a
+	// a default.
+	DefaultRequestTimeout = 5 * time.Second
 )
 
 // APIClient provides methods for interacting with the Path of Exile API.
@@ -55,11 +58,13 @@ type client struct {
 	host      string
 	ninjaHost string
 
-	useSSL   bool
-	useCache bool
+	useSSL      bool
+	useCache    bool
+	useDNSCache bool
 
-	limiter *ratelimiter
-	cache   *cache
+	limiter  *ratelimiter
+	cache    *cache
+	dnscache *dnscache
 }
 
 // NewAPIClient configures and returns an APIClient.
@@ -69,12 +74,12 @@ func NewAPIClient(opts ClientOptions) (APIClient, error) {
 	}
 
 	c := &client{
-		host:       opts.Host,
-		ninjaHost:  opts.NinjaHost,
-		useSSL:     opts.UseSSL,
-		useCache:   opts.UseCache,
-		limiter:    newRateLimiter(opts.RateLimit, opts.StashRateLimit),
-		httpClient: &http.Client{Timeout: opts.RequestTimeout},
+		host:        opts.Host,
+		ninjaHost:   opts.NinjaHost,
+		useSSL:      opts.UseSSL,
+		useCache:    opts.UseCache,
+		useDNSCache: opts.UseDNSCache,
+		limiter:     newRateLimiter(opts.RateLimit, opts.StashRateLimit),
 	}
 
 	if opts.UseCache {
@@ -83,6 +88,38 @@ func NewAPIClient(opts ClientOptions) (APIClient, error) {
 			return nil, err
 		}
 		c.cache = cache
+	}
+
+	if opts.UseDNSCache {
+		d, err := newDNSCache(c.host)
+		if err != nil {
+			return nil, err
+		}
+		c.dnscache = d
+		c.httpClient = &http.Client{
+			Transport: &http.Transport{
+				// When a connection dials an address for the first time, if the
+				// host is DefaultHost, resolve the IP using the local DNS
+				// cache.
+				Dial: func(proto, addr string) (net.Conn, error) {
+					if !strings.HasPrefix(addr, DefaultHost) {
+						return net.Dial(proto, addr)
+					}
+					ip, err := c.dnscache.getIP()
+					if err != nil {
+						return nil, err
+					}
+					port := "80"
+					if c.useSSL {
+						port = "443"
+					}
+					return net.Dial("tcp", fmt.Sprintf("%s:%s", ip, port))
+				},
+			},
+			Timeout: opts.RequestTimeout,
+		}
+	} else {
+		c.httpClient = &http.Client{Timeout: opts.RequestTimeout}
 	}
 
 	return c, nil
@@ -103,6 +140,10 @@ type ClientOptions struct {
 	// cache. Caching is always disabled for stash requests, since retrieving
 	// a cached stash means we will never get a new change ID.
 	UseCache bool
+
+	// Set to true to cache DNS resolution locally, speeding up subsequent
+	// requests. Go's resolver does not cache by default.
+	UseDNSCache bool
 
 	// The number of items which can be stored in the cache. Most endpoints
 	// have a response size up to 500KB or so.
@@ -126,6 +167,7 @@ var DefaultClientOptions = ClientOptions{
 	NinjaHost:      DefaultNinjaHost,
 	UseSSL:         true,
 	UseCache:       true,
+	UseDNSCache:    true,
 	CacheSize:      DefaultCacheSize,
 	RateLimit:      DefaultRateLimit,
 	StashRateLimit: DefaultStashRateLimit,

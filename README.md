@@ -22,6 +22,7 @@ clientOpts := poeapi.ClientOptions{
     NinjaHost:         "poe.ninja",           // Used to get latest stash ID.
     UseSSL:            true,                  // Use HTTPS for requests.
     UseCache:          true,                  // Enable the in-memory cache.
+    UseDNSCache:       true,                  // Enable the in-memory DNS resolution cache.
     CacheSize:         200,                   // Number of items to store.
     RateLimit:         4.0,                   // Requests per second.
     StashRateLimit:    1.0,                   // Requests per second for trade API.
@@ -98,7 +99,7 @@ Found a problem? Have a question? [Open an issue][Issue]
 Have a patch or a new feature? [Open a pull request][Pull Request]
 
 ## To Do
-1. Add DNS caching with container/ring.
+1. Expand and clean up DNS caching.
 1. Improve test coverage and documentation.
 1. Open source the repo to enable GoDoc and Go Report Card.
 1. Add TravisCI to get a build passing badge.
