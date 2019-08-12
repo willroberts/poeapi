@@ -27,7 +27,7 @@ func main() {
 	}
 
 	fmt.Printf("Retrieving ladder for %s.\n", targetLeague)
-	fmt.Println("This may take up to 20 seconds.\n")
+	fmt.Printf("This may take up to 20 seconds.\n\n")
 	l, err := client.GetLadder(opts)
 	if err != nil {
 		log.Fatal(err)
