@@ -29,12 +29,14 @@ func (c *client) GetStashes(opts GetStashOptions) (StashResponse, error) {
 	if err != nil {
 		return StashResponse{}, err
 	}
+	return parseStashResponse(resp)
+}
 
+func parseStashResponse(resp string) (StashResponse, error) {
 	var s StashResponse
 	if err := json.Unmarshal([]byte(resp), &s); err != nil {
 		return StashResponse{}, err
 	}
-
 	return s, nil
 }
 
@@ -56,11 +58,13 @@ func (c *client) GetLatestStashID() (string, error) {
 	if err != nil {
 		return "", err
 	}
+	return parseLatestChangeResponse(resp)
+}
 
+func parseLatestChangeResponse(resp string) (string, error) {
 	var latest latestChange
 	if err := json.Unmarshal([]byte(resp), &latest); err != nil {
 		return "", err
 	}
-
 	return latest.ID, nil
 }
