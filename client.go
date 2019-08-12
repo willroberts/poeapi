@@ -132,13 +132,13 @@ type ClientOptions struct {
 	// a cached stash means we will never get a new change ID.
 	UseCache bool
 
-	// Set to true to cache DNS resolution locally, speeding up subsequent
-	// requests. Go's resolver does not cache by default.
-	UseDNSCache bool
-
 	// The number of items which can be stored in the cache. Most endpoints
 	// have a response size up to 500KB or so.
 	CacheSize int
+
+	// Set to true to cache DNS resolution locally, speeding up subsequent
+	// requests. Go's resolver does not cache by default.
+	UseDNSCache bool
 
 	// The number of requests per second for all API endpoints except the stash
 	// tab endpoint. The API will ratelimit clients above 5rps.
@@ -158,8 +158,8 @@ var DefaultClientOptions = ClientOptions{
 	NinjaHost:      DefaultNinjaHost,
 	UseSSL:         true,
 	UseCache:       true,
-	UseDNSCache:    true,
 	CacheSize:      DefaultCacheSize,
+	UseDNSCache:    true,
 	RateLimit:      DefaultRateLimit,
 	StashRateLimit: DefaultStashRateLimit,
 	RequestTimeout: DefaultRequestTimeout,
@@ -172,7 +172,7 @@ func validateClientOptions(opts ClientOptions) error {
 	if opts.NinjaHost == "" {
 		return ErrInvalidNinjaHost
 	}
-	if opts.CacheSize < 1 {
+	if opts.UseCache && opts.CacheSize < 1 {
 		return ErrInvalidCacheSize
 	}
 	if opts.RateLimit < 0 {

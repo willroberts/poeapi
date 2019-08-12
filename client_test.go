@@ -61,6 +61,7 @@ func TestValidateOptionsInvalidCacheSize(t *testing.T) {
 	opts := ClientOptions{
 		Host:           DefaultHost,
 		NinjaHost:      DefaultNinjaHost,
+		UseCache:       true,
 		CacheSize:      0,
 		RateLimit:      DefaultRateLimit,
 		StashRateLimit: DefaultStashRateLimit,
@@ -110,5 +111,24 @@ func TestValidateOptionsInvalidRequestTimeout(t *testing.T) {
 	}
 	if err := validateClientOptions(opts); err != ErrInvalidRequestTimeout {
 		t.Fatal("failed to detect invalid request timeout option")
+	}
+}
+
+func TestClientDNSDialer(t *testing.T) {
+	c, err := NewAPIClient(ClientOptions{
+		Host:           testHost,
+		NinjaHost:      testHost,
+		UseSSL:         false,
+		UseCache:       false,
+		UseDNSCache:    true,
+		RateLimit:      UnlimitedRate,
+		StashRateLimit: UnlimitedRate,
+		RequestTimeout: testTimeout,
+	})
+	if err != nil {
+		t.Fatalf("failed to create client: %v", err)
+	}
+	if _, err := c.GetLeagueRules(); err != nil {
+		t.Fatalf("failed to get http with dns caching: %v", err)
 	}
 }
