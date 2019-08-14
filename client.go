@@ -93,7 +93,7 @@ type client struct {
 	useDNSCache bool
 
 	limiter  *ratelimiter
-	cache    *cache
+	cache    *responsecache
 	dnscache *dnscache
 }
 
@@ -113,7 +113,7 @@ func NewAPIClient(opts ClientOptions) (APIClient, error) {
 	}
 
 	if opts.UseCache {
-		cache, err := newCache(opts.CacheSize)
+		cache, err := newResponseCache(opts.CacheSize)
 		if err != nil {
 			return nil, err
 		}

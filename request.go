@@ -46,7 +46,7 @@ func (c *client) withCache(url string, fn requestFunc) (string, error) {
 		return fn(url)
 	}
 
-	if cached := c.cache.Get(url); cached != "" {
+	if cached, err := c.cache.Get(url); err == nil {
 		return cached, nil
 	}
 
@@ -55,7 +55,7 @@ func (c *client) withCache(url string, fn requestFunc) (string, error) {
 		return "", err
 	}
 
-	c.cache.Add(url, resp)
+	c.cache.Set(url, resp)
 	return resp, nil
 }
 

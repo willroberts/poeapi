@@ -7,79 +7,66 @@ import (
 	"sync"
 )
 
-// cache is an in-memory LRU cache with a fixed size in terms of item count.
-// It is based on https://github.com/hashicorp/golang-lru, combining the
-// features of the simplelru package with the features of its threadsafe
-// top-level package. Keys and values must be strings.
-type cache struct {
-	size      int
-	evictList *list.List
-	items     map[string]*list.Element
-	lock      sync.RWMutex
+// responsecache stores JSON responses from the API, storing them by URL. It is
+// thread-safe and uses strings for both keys and values. It tracks recently
+// used URLs deletes the oldest entries when maxSize is reached.
+type responsecache struct {
+	responses  map[string]*list.Element
+	recenturls *list.List
+	maxSize    int
+	lock       sync.Mutex
 }
 
-// entry is an item in the cache's eviction list.
-type entry struct {
-	key   string
-	value string
+type response struct {
+	url  string
+	body string
 }
 
-func newCache(size int) (*cache, error) {
-	if size <= 0 {
+// Get retrieves a response from the cache.
+func (c *responsecache) Get(url string) (string, error) {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+
+	resp, ok := c.responses[url]
+	if !ok {
+		return "", ErrNotFoundInCache
+	}
+
+	c.recenturls.MoveToFront(resp)
+	return resp.Value.(*response).body, nil
+}
+
+// Set writes a response to the cache.
+func (c *responsecache) Set(url, body string) {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+
+	if resp, ok := c.responses[url]; ok {
+		c.recenturls.MoveToFront(resp)
+		resp.Value.(*response).body = body
+		return
+	}
+	c.responses[url] = c.recenturls.PushFront(&response{
+		url:  url,
+		body: body,
+	})
+
+	if c.recenturls.Len() > c.maxSize {
+		oldest := c.recenturls.Back()
+		c.recenturls.Remove(oldest)
+		delete(c.responses, oldest.Value.(*response).url)
+	}
+}
+
+func newResponseCache(maxSize int) (*responsecache, error) {
+	if maxSize < 1 {
 		return nil, ErrInvalidCacheSize
 	}
-	c := &cache{
-		size:      size,
-		evictList: list.New(),
-		items:     make(map[string]*list.Element),
-	}
-	return c, nil
-}
-
-// Add adds an item to the cache.
-func (c *cache) Add(key, value string) {
-	c.lock.Lock()
-	defer c.lock.Unlock()
-
-	if ent, ok := c.items[key]; ok {
-		c.evictList.MoveToFront(ent)
-		ent.Value.(*entry).value = value
-	}
-	ent := &entry{key, value}
-	entry := c.evictList.PushFront(ent)
-	c.items[key] = entry
-	if c.evictList.Len() > c.size {
-		c.removeOldest()
-	}
-}
-
-// Get retrieves an item from the cache. If the requested key is not in the
-// cache, an empty string is returned.
-func (c *cache) Get(key string) string {
-	c.lock.Lock()
-	defer c.lock.Unlock()
-
-	if ent, ok := c.items[key]; ok {
-		c.evictList.MoveToFront(ent)
-		if ent.Value.(*entry) == nil {
-			return ""
-		}
-		return ent.Value.(*entry).value
-	}
-	return ""
-}
-
-func (c *cache) removeOldest() {
-	ent := c.evictList.Back()
-	if ent != nil {
-		c.removeElement(ent)
-	}
-}
-
-func (c *cache) removeElement(e *list.Element) {
-	c.evictList.Remove(e)
-	kv := e.Value.(*entry)
-	delete(c.items, kv.key)
+	return &responsecache{
+		responses:  make(map[string]*list.Element),
+		recenturls: list.New(),
+		maxSize:    maxSize,
+	}, nil
 }
 
 // dnscache is an in-memory ring cache which caches IP addresses from DNS

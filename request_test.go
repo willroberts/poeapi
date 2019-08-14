@@ -160,7 +160,7 @@ func TestCacheHelperWithStashURL(t *testing.T) {
 }
 
 func TestCacheHelperWithErrorResult(t *testing.T) {
-	cache, err := newCache(10)
+	cache, err := newResponseCache(10)
 	if err != nil {
 		t.Fatalf("failed to create cache: %v", err)
 	}

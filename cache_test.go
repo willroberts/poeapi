@@ -6,47 +6,50 @@ import (
 	"time"
 )
 
-func TestNewCache(t *testing.T) {
-	_, err := newCache(1)
+func TestNewResponseCache(t *testing.T) {
+	_, err := newResponseCache(1)
 	if err != nil {
 		t.Fatalf("failed to create cache: %v", err)
 	}
 }
 
 func TestInvalidCacheSize(t *testing.T) {
-	_, err := newCache(0)
+	_, err := newResponseCache(0)
 	if err != ErrInvalidCacheSize {
 		t.Fatal("failed to detect invalid cache size")
 	}
 }
 
 func TestCacheEviction(t *testing.T) {
-	cache, err := newCache(10)
+	cache, err := newResponseCache(10)
 	if err != nil {
 		t.Fatalf("failed to create cache for operations test: %v", err)
 	}
 
-	cache.Add("1", "A")
-	cache.Add("2", "B")
-	cache.Add("3", "C")
-	cache.Add("4", "D")
-	cache.Add("5", "E")
-	cache.Add("6", "F")
-	cache.Add("7", "G")
-	cache.Add("8", "H")
-	cache.Add("9", "I")
+	cache.Set("1", "A")
+	cache.Set("2", "B")
+	cache.Set("3", "C")
+	cache.Set("4", "D")
+	cache.Set("5", "E")
+	cache.Set("6", "F")
+	cache.Set("7", "G")
+	cache.Set("8", "H")
+	cache.Set("9", "I")
 
-	val := cache.Get("5")
+	val, err := cache.Get("5")
+	if err != nil {
+		t.Fatalf("failed to get from cache: %v", err)
+	}
 	if val != "E" {
 		t.Fatalf("unexpected cache result: got %s, expected E", val)
 	}
 
-	cache.Add("foo", "foo")
-	cache.Add("bar", "bar")
+	cache.Set("foo", "foo")
+	cache.Set("bar", "bar")
 
-	val = cache.Get("1")
-	if val != "" {
-		t.Fatalf("unexpected cache result: got %s, expected \"\"", val)
+	val, err = cache.Get("1")
+	if err != ErrNotFoundInCache {
+		t.Fatalf("failed to get from cache: %v", err)
 	}
 }
 
@@ -83,12 +86,12 @@ func TestCacheLatency(t *testing.T) {
 }
 
 func TestCacheExistingKey(t *testing.T) {
-	cache, err := newCache(10)
+	cache, err := newResponseCache(10)
 	if err != nil {
 		t.Fatalf("failed to create cache for existing key test: %v", err)
 	}
-	cache.Add("foo", "bar")
-	cache.Add("foo", "bar")
+	cache.Set("foo", "bar")
+	cache.Set("foo", "bar")
 }
 
 func TestDNSCacheResolve(t *testing.T) {

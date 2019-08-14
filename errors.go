@@ -40,6 +40,10 @@ var (
 	// ErrInvalidCacheSize is raised when the cache size is out of range.
 	ErrInvalidCacheSize = errors.New("invalid cache size")
 
+	// ErrNotFoundInCache is raised when a value is requested from the cache
+	// before it is written.
+	ErrNotFoundInCache = errors.New("not found in cache")
+
 	// ErrInvalidAddress is raised when a malformed IP address is returned by
 	// the DNS cache.
 	ErrInvalidAddress = errors.New("invalid ip address")
