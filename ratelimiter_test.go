@@ -19,7 +19,7 @@ func TestRateLimiter(t *testing.T) {
 
 	for i := 0; i < 25; i++ {
 		go func() {
-			r.wait(false)
+			r.Wait(false)
 			atomic.AddUint32(&requestCount, 1)
 		}()
 	}

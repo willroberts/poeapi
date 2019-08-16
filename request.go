@@ -61,10 +61,10 @@ func (c *client) withCache(url string, fn requestFunc) (string, error) {
 
 func (c *client) withRateLimit(url string, fn requestFunc) requestFunc {
 	if strings.HasPrefix(url, c.formatURL(stashTabsEndpoint)) {
-		c.limiter.wait(true)
+		c.limiter.Wait(true)
 		return fn
 	}
-	c.limiter.wait(false)
+	c.limiter.Wait(false)
 	return fn
 }
 

@@ -23,8 +23,8 @@ type ratelimiter struct {
 	stashLock sync.Mutex
 }
 
-// wait blocks execution until enough time has elasped since the last request.
-func (r *ratelimiter) wait(stash bool) {
+// Wait blocks execution until enough time has elasped since the last request.
+func (r *ratelimiter) Wait(stash bool) {
 	if stash {
 		r.stashLock.Lock()
 		defer r.stashLock.Unlock()
