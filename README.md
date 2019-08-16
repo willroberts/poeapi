@@ -100,7 +100,7 @@ Have a patch or a new feature? [Open a pull request][Pull Request]
 
 ## To Do
 
-1. Open source the repo to enable GoDoc and Go Report Card.
+1. Open source to enable GoDoc and Go Report Card.
 1. Tag version 1.0.0.
 1. Add TravisCI to get a build passing badge.
 1. Add CodeCov to get a coverage badge.

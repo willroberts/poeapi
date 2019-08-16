@@ -18,35 +18,35 @@ type ratelimiter struct {
 
 	lastRequest      time.Time
 	lastStashRequest time.Time
-	lock             sync.Mutex
+
+	lock      sync.Mutex
+	stashLock sync.Mutex
 }
 
 // wait blocks execution until enough time has elasped since the last request.
 func (r *ratelimiter) wait(stash bool) {
+	if stash {
+		r.stashLock.Lock()
+		defer r.stashLock.Unlock()
+		r.waitLimit(r.stashRateLimit, r.lastStashRequest)
+		r.lastStashRequest = time.Now()
+		return
+	}
+
 	r.lock.Lock()
 	defer r.lock.Unlock()
+	r.waitLimit(r.rateLimit, r.lastRequest)
+	r.lastRequest = time.Now()
+}
 
-	var interval time.Duration
-	if stash {
-		if r.stashRateLimit == 0 {
-			return
-		}
-		interval = time.Duration(1000.0/r.stashRateLimit) * time.Millisecond
-		elapsed := time.Since(r.lastStashRequest)
-		if elapsed < interval {
-			time.Sleep(interval - elapsed)
-		}
-		r.lastStashRequest = time.Now()
-	} else {
-		if r.rateLimit == 0 {
-			return
-		}
-		interval = time.Duration(1000.0/r.rateLimit) * time.Millisecond
-		elapsed := time.Since(r.lastRequest)
-		if elapsed < interval {
-			time.Sleep(interval - elapsed)
-		}
-		r.lastRequest = time.Now()
+func (r *ratelimiter) waitLimit(ratelimit float64, last time.Time) {
+	if ratelimit == UnlimitedRate {
+		return
+	}
+	interval := time.Duration(1000.0/ratelimit) * time.Millisecond
+	elapsed := time.Since(last)
+	if elapsed < interval {
+		time.Sleep(interval - elapsed)
 	}
 }
 
