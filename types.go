@@ -2,10 +2,14 @@ package poeapi
 
 import "time"
 
+const (
+	testHost = "127.0.0.1:8000"
+)
+
 var (
 	validHosts = map[string]struct{}{
 		"api.pathofexile.com": struct{}{},
-		"127.0.0.1:8000":      struct{}{},
+		testHost:              struct{}{},
 	}
 
 	validRealms = map[string]struct{}{
