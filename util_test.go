@@ -27,7 +27,6 @@ func init() {
 	if err := startStubServer(); err != nil {
 		log.Fatalf("failed to start test server: %v", err)
 	}
-	time.Sleep(100 * time.Millisecond)
 }
 
 func loadFixture(filename string) (string, error) {
