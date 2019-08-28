@@ -14,7 +14,7 @@ import (
 
 const (
 	repo              = "github.com/willroberts/poeapi"
-	testHost          = "127.0.0.1:8000"
+	testHost          = "127.0.0.1:32893"
 	rateLimitEndpoint = "/rate-limit-me"
 	failureEndpoint   = "/fail-me"
 )
@@ -151,7 +151,7 @@ func TestStubServer(t *testing.T) {
 	if err := startStubServer(); err != nil {
 		t.Fatalf("falied to start stub server: %v", err)
 	}
-	_, err := http.Get("http://127.0.0.1:8000/test")
+	_, err := http.Get(fmt.Sprintf("http://%s/test", testHost))
 	if err != nil {
 		t.Fatalf("failed stub server test request: %v", err)
 	}
