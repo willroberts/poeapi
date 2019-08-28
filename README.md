@@ -103,8 +103,8 @@ Have a patch or a new feature? [Open a pull request][Pull Request]
 1. Add TravisCI to get a build badge.
 1. Add CodeCov to get a coverage badge.
 
-[GoDoc]: https://godoc.org/willroberts/poeapi
-[GoDoc Badge]: https://godoc.org/willroberts/poeapi?status.svg
+[GoDoc]: https://godoc.org/github.com/willroberts/poeapi
+[GoDoc Badge]: https://godoc.org/github.com/willroberts/poeapi?status.svg
 [GoReportCard]: https://goreportcard.com/report/github.com/willroberts/poeapi
 [GoReportCard Badge]: https://goreportcard.com/badge/github.com/willroberts/poeapi
 [License]: https://www.gnu.org/licenses/gpl-3.0
