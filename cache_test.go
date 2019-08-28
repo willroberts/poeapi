@@ -80,7 +80,7 @@ func TestCacheLatency(t *testing.T) {
 	}
 	duration2 := time.Since(start2)
 
-	if duration2 > 1*time.Millisecond {
+	if duration2 > 2*time.Millisecond {
 		t.Fatal("cache test took longer than 1ms")
 	}
 }
