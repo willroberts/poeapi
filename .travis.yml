@@ -2,3 +2,6 @@ language: go
 
 go:
 - 1.12.x
+
+before_install:
+- ss -ntlp | grep 8000
