@@ -19,7 +19,7 @@ const (
 )
 
 var (
-	testTimeout = 100 * time.Millisecond
+	testTimeout = 200 * time.Millisecond
 	testClient  = &http.Client{Timeout: testTimeout}
 )
 
