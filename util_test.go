@@ -148,9 +148,6 @@ func startStubServer() error {
 }
 
 func TestStubServer(t *testing.T) {
-	if err := startStubServer(); err != nil {
-		t.Fatalf("falied to start stub server: %v", err)
-	}
 	_, err := http.Get(fmt.Sprintf("http://%s/test", testHost))
 	if err != nil {
 		t.Fatalf("failed stub server test request: %v", err)
