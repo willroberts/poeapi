@@ -2,6 +2,7 @@
 
 [![GoDoc Badge]][GoDoc]
 [![GoReportCard Badge]][GoReportCard]
+[![Travis Badge]][Travis]
 [![License Badge]][License]
 
 A Go client for the Path of Exile API.
@@ -108,6 +109,8 @@ Have a patch or a new feature? [Open a pull request][Pull Request]
 [GoReportCard Badge]: https://goreportcard.com/badge/github.com/willroberts/poeapi
 [License]: https://www.gnu.org/licenses/gpl-3.0
 [License Badge]: https://img.shields.io/badge/License-GPLv3-blue.svg
+[Travis]: https://travis-ci.org/willroberts/poeapi
+[Travis Badge]: https://api.travis-ci.org/willroberts/poeapi.svg?branch=master
 [API Docs]: https://www.pathofexile.com/developer/docs/api
 [Issue]: https://github.com/willroberts/poeapi/issues
 [Pull Request]: https://github.com/willroberts/poeapi/pulls
