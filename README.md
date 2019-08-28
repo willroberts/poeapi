@@ -100,7 +100,6 @@ Have a patch or a new feature? [Open a pull request][Pull Request]
 
 ## To Do
 
-1. Add TravisCI to get a build badge.
 1. Add CodeCov to get a coverage badge.
 
 [GoDoc]: https://godoc.org/github.com/willroberts/poeapi
