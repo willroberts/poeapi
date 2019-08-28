@@ -14,7 +14,6 @@ import (
 
 const (
 	repo              = "github.com/willroberts/poeapi"
-	testHost          = "127.0.0.1:8000"
 	rateLimitEndpoint = "/rate-limit-me"
 	failureEndpoint   = "/fail-me"
 )
