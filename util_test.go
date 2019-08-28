@@ -19,7 +19,7 @@ const (
 )
 
 var (
-	testTimeout = 100 * time.Millisecond
+	testTimeout = 200 * time.Millisecond
 	testClient  = &http.Client{Timeout: testTimeout}
 )
 
@@ -27,7 +27,6 @@ func init() {
 	if err := startStubServer(); err != nil {
 		log.Fatalf("failed to start test server: %v", err)
 	}
-	time.Sleep(100 * time.Millisecond)
 }
 
 func loadFixture(filename string) (string, error) {
@@ -148,9 +147,6 @@ func startStubServer() error {
 }
 
 func TestStubServer(t *testing.T) {
-	if err := startStubServer(); err != nil {
-		t.Fatalf("falied to start stub server: %v", err)
-	}
 	_, err := http.Get(fmt.Sprintf("http://%s/test", testHost))
 	if err != nil {
 		t.Fatalf("failed stub server test request: %v", err)
