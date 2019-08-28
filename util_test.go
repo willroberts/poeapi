@@ -14,7 +14,7 @@ import (
 
 const (
 	repo              = "github.com/willroberts/poeapi"
-	testHost          = "127.0.0.1:32893"
+	testHost          = "127.0.0.1:8000"
 	rateLimitEndpoint = "/rate-limit-me"
 	failureEndpoint   = "/fail-me"
 )
@@ -28,6 +28,7 @@ func init() {
 	if err := startStubServer(); err != nil {
 		log.Fatalf("failed to start test server: %v", err)
 	}
+	time.Sleep(100 * time.Millisecond)
 }
 
 func loadFixture(filename string) (string, error) {
