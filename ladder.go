@@ -134,8 +134,8 @@ func (c *client) GetLadder(opts GetLadderOptions) (Ladder, error) {
 		errCh = make(chan error, maxLadderPages)
 	)
 	for i := maxLadderLimit; i < ladderSize; i += maxLadderLimit {
+		wg.Add(1)
 		go func(offset int) {
-			wg.Add(1)
 			subOpts := opts
 			subOpts.offset = offset
 
