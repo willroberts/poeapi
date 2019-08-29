@@ -90,24 +90,30 @@ func validateGetLadderOptions(opts GetLadderOptions) error {
 	if _, ok := validLadderTypes[opts.Type]; opts.Type != "" && !ok {
 		return ErrInvalidLadderType
 	}
-	if opts.Type == labyrinthLadderType {
-		if opts.LabyrinthDifficulty != "" {
-			if _, ok := validLabyrinthDifficulties[opts.LabyrinthDifficulty]; !ok {
-				return ErrInvalidDifficulty
-			}
-		}
-		if opts.LabyrinthStartTime < 0 {
-			return ErrInvalidLabyrinthStartTime
-		}
-		if opts.LabyrinthStartTime > 0 && opts.LabyrinthStartTime < earliestLabyrinthTime {
-			return ErrInvalidLabyrinthStartTime
-		}
-	}
 	if opts.limit < 1 || opts.limit > maxLadderLimit {
 		return ErrInvalidLimit
 	}
 	if opts.offset < 0 || opts.offset > maxLadderLimit*maxLadderPages {
 		return ErrInvalidOffset
+	}
+
+	if opts.Type == labyrinthLadderType {
+		return validateGetLabyrinthLadderOptions(opts)
+	}
+	return nil
+}
+
+func validateGetLabyrinthLadderOptions(opts GetLadderOptions) error {
+	if opts.LabyrinthDifficulty != "" {
+		if _, ok := validLabyrinthDifficulties[opts.LabyrinthDifficulty]; !ok {
+			return ErrInvalidDifficulty
+		}
+	}
+	if opts.LabyrinthStartTime < 0 {
+		return ErrInvalidLabyrinthStartTime
+	}
+	if opts.LabyrinthStartTime > 0 && opts.LabyrinthStartTime < earliestLabyrinthTime {
+		return ErrInvalidLabyrinthStartTime
 	}
 
 	return nil

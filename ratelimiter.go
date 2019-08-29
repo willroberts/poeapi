@@ -23,7 +23,7 @@ type ratelimiter struct {
 	stashLock sync.Mutex
 }
 
-// Wait blocks execution until enough time has elasped since the last request.
+// Wait blocks execution until enough time has elapsed since the last request.
 func (r *ratelimiter) Wait(stash bool) {
 	if stash {
 		r.stashLock.Lock()

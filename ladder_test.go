@@ -120,6 +120,8 @@ func TestValidateLadderOptionsWithInvalidDifficulty(t *testing.T) {
 		Realm:               "pc",
 		Type:                "labyrinth",
 		LabyrinthDifficulty: "testdifficulty",
+		limit:               200,
+		offset:              0,
 	}
 	if err := validateGetLadderOptions(opts); err != ErrInvalidDifficulty {
 		t.Fatalf("failed to detect invalid difficulty in ladder options")
@@ -133,6 +135,8 @@ func TestValidateLadderOptionsWithNegativeStartTime(t *testing.T) {
 		Type:                "labyrinth",
 		LabyrinthDifficulty: "Normal",
 		LabyrinthStartTime:  -1,
+		limit:               200,
+		offset:              0,
 	}
 	if err := validateGetLadderOptions(opts); err != ErrInvalidLabyrinthStartTime {
 		t.Fatalf("failed to detect negative start time in ladder options")
@@ -146,6 +150,8 @@ func TestValidateLadderOptionsWithEarlyStartTime(t *testing.T) {
 		Type:                "labyrinth",
 		LabyrinthDifficulty: "Normal",
 		LabyrinthStartTime:  1400000000,
+		limit:               200,
+		offset:              0,
 	}
 	if err := validateGetLadderOptions(opts); err != ErrInvalidLabyrinthStartTime {
 		t.Fatalf("failed to detect too-early start time in ladder options")

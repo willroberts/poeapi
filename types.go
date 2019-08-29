@@ -8,33 +8,33 @@ const (
 
 var (
 	validHosts = map[string]struct{}{
-		"api.pathofexile.com": struct{}{},
-		testHost:              struct{}{},
+		"api.pathofexile.com": {},
+		testHost:              {},
 	}
 
 	validRealms = map[string]struct{}{
-		"pc":   struct{}{},
-		"xbox": struct{}{},
-		"sony": struct{}{},
+		"pc":   {},
+		"xbox": {},
+		"sony": {},
 	}
 
 	validLeagueTypes = map[string]struct{}{
-		"main":   struct{}{},
-		"event":  struct{}{},
-		"season": struct{}{},
+		"main":   {},
+		"event":  {},
+		"season": {},
 	}
 
 	validLadderTypes = map[string]struct{}{
-		"league":    struct{}{},
-		"labyrinth": struct{}{},
-		"pvp":       struct{}{},
+		"league":    {},
+		"labyrinth": {},
+		"pvp":       {},
 	}
 
 	validLabyrinthDifficulties = map[string]struct{}{
-		"Normal":    struct{}{},
-		"Cruel":     struct{}{},
-		"Merciless": struct{}{},
-		"Eternal":   struct{}{},
+		"Normal":    {},
+		"Cruel":     {},
+		"Merciless": {},
+		"Eternal":   {},
 	}
 )
 

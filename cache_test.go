@@ -47,7 +47,7 @@ func TestCacheEviction(t *testing.T) {
 	cache.Set("foo", "foo")
 	cache.Set("bar", "bar")
 
-	val, err = cache.Get("1")
+	_, err = cache.Get("1")
 	if err != ErrNotFoundInCache {
 		t.Fatalf("failed to get from cache: %v", err)
 	}
