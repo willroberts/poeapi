@@ -30,12 +30,11 @@ func init() {
 }
 
 func loadFixture(filename string) (string, error) {
-	// Allow loading of fixtures by GitHub Actions.
+	// GitHub Actions Workaround: load fixtures without GOPATH.
 	b, err := ioutil.ReadFile(filename)
 	if err == nil {
 		return string(b), nil
 	}
-	// Failed to load filename directly; proceed with old logic below.
 
 	// Allow loading of fixtures on Windows systems.
 	path := fmt.Sprintf("%s/src/%s/%s", os.Getenv("GOPATH"), repo, filename)
