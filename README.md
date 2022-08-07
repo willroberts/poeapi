@@ -83,8 +83,8 @@ Have a patch or a new feature? [Open a pull request][Pull Request]
 [Build]: https://github.com/willroberts/poeapi/actions/workflows/build.yaml
 [Build Badge]: https://github.com/willroberts/poeapi/actions/workflows/build.yaml/badge.svg
 [CodeCov]: https://codecov.io/gh/willroberts/poeapi
-[CodeCov Badge]: https://codecov.io/gh/willroberts/poeapi/branch/master/graph/badge.svg
+[CodeCov Badge]: https://codecov.io/gh/willroberts/poeapi/branch/main/graph/badge.svg
 [API Docs]: https://www.pathofexile.com/developer/docs/api
-[Examples]: https://github.com/willroberts/poeapi/tree/master/examples
+[Examples]: https://github.com/willroberts/poeapi/tree/main/examples
 [Issue]: https://github.com/willroberts/poeapi/issues
 [Pull Request]: https://github.com/willroberts/poeapi/pulls
