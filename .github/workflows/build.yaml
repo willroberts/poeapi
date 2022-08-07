@@ -1,0 +1,22 @@
+name: build
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: install golang
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
+    - name: check out code
+      uses: actions/checkout@v3
+    - name: build code
+      run: go build -v ./...
+    - name: test code
+      run: go test -race -v ./...
