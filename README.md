@@ -1,10 +1,10 @@
 # poeapi
 
-[![GoDoc Badge]][GoDoc]
-[![GoReportCard Badge]][GoReportCard]
+[![License Badge]][License]
 [![Build Badge]][Build]
 [![CodeCov Badge]][CodeCov]
-[![License Badge]][License]
+[![GoReportCard Badge]][GoReportCard]
+[![GoDoc Badge]][GoDoc]
 
 A Go client for the Path of Exile API.
 
@@ -74,16 +74,17 @@ Found a problem? Have a question? [Open an issue][Issue]
 
 Have a patch or a new feature? [Open a pull request][Pull Request]
 
-[GoDoc]: https://godoc.org/github.com/willroberts/poeapi
-[GoDoc Badge]: https://godoc.org/github.com/willroberts/poeapi?status.svg
-[GoReportCard]: https://goreportcard.com/report/github.com/willroberts/poeapi
-[GoReportCard Badge]: https://goreportcard.com/badge/github.com/willroberts/poeapi
 [License]: https://www.gnu.org/licenses/gpl-3.0
 [License Badge]: https://img.shields.io/badge/License-GPLv3-blue.svg
 [Build]: https://github.com/willroberts/poeapi/actions/workflows/build.yaml
 [Build Badge]: https://github.com/willroberts/poeapi/actions/workflows/build.yaml/badge.svg
 [CodeCov]: https://codecov.io/gh/willroberts/poeapi
 [CodeCov Badge]: https://codecov.io/gh/willroberts/poeapi/branch/main/graph/badge.svg
+[GoReportCard]: https://goreportcard.com/report/github.com/willroberts/poeapi
+[GoReportCard Badge]: https://goreportcard.com/badge/github.com/willroberts/poeapi
+[GoDoc]: https://pkg.go.dev/github.com/willroberts/poeapi
+[GoDoc Badge]: https://pkg.go.dev/badge/github.com/willroberts/poeapi
+
 [API Docs]: https://www.pathofexile.com/developer/docs/api
 [Examples]: https://github.com/willroberts/poeapi/tree/main/examples
 [Issue]: https://github.com/willroberts/poeapi/issues
