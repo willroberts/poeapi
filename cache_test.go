@@ -122,7 +122,7 @@ func TestDNSCacheResolutionFailure(t *testing.T) {
 	)
 	if err := d.resolve(host); err == nil {
 		// GitHub Actions Workaround: 11111 resolves to 0.0.43.103.
-		if d.IPs[host] != ["0.0.43.103"] {
+		if d.IPs[host].Next().Value != "0.0.43.103" {
 			t.Fatal("failed to detect dns resolution failure")
 		}
 	}
@@ -135,7 +135,7 @@ func TestDNSCacheGetResolutionFailure(t *testing.T) {
 	)
 	if _, err := d.Get(host); err == nil {
 		// GitHub Actions Workaround: 11111 resolves to 0.0.43.103.
-		if d.IPs[host] != ["0.0.43.103"] {
+		if d.IPs[host].Next().Value != "0.0.43.103" {
 			t.Fatal("failed to detect dns resolution failure")
 		}
 	}
