@@ -2,7 +2,7 @@
 
 [![GoDoc Badge]][GoDoc]
 [![GoReportCard Badge]][GoReportCard]
-[![Travis Badge]][Travis]
+[![Build Badge]][Build]
 [![CodeCov Badge]][CodeCov]
 [![License Badge]][License]
 
@@ -80,8 +80,8 @@ Have a patch or a new feature? [Open a pull request][Pull Request]
 [GoReportCard Badge]: https://goreportcard.com/badge/github.com/willroberts/poeapi
 [License]: https://www.gnu.org/licenses/gpl-3.0
 [License Badge]: https://img.shields.io/badge/License-GPLv3-blue.svg
-[Travis]: https://travis-ci.org/willroberts/poeapi
-[Travis Badge]: https://api.travis-ci.org/willroberts/poeapi.svg?branch=master
+[Build]: https://github.com/willroberts/poeapi/actions/workflows/build.yaml
+[Build Badge]: https://github.com/willroberts/poeapi/actions/workflows/build.yaml/badge.svg
 [CodeCov]: https://codecov.io/gh/willroberts/poeapi
 [CodeCov Badge]: https://codecov.io/gh/willroberts/poeapi/branch/master/graph/badge.svg
 [API Docs]: https://www.pathofexile.com/developer/docs/api
