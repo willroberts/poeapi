@@ -3,7 +3,6 @@ package poeapi
 import (
 	"container/list"
 	"container/ring"
-	"log"
 	"net"
 	"sync"
 )
@@ -99,7 +98,6 @@ func (d *dnscache) resolve(host string) error {
 	if err != nil {
 		return err
 	}
-	log.Printf("err = %v, addrs = %v", err, addrs)
 	r := ring.New(len(addrs))
 	for i := 0; i < r.Len(); i++ {
 		r.Value = addrs[i]
