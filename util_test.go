@@ -30,17 +30,24 @@ func init() {
 }
 
 func loadFixture(filename string) (string, error) {
-	path := fmt.Sprintf("%s/src/%s/%s", os.Getenv("GOPATH"), repo, filename)
+	// Allow loading of fixtures by GitHub Actions.
+	b, err := ioutil.ReadFile(filename)
+	if err == nil {
+		return string(b), nil
+	}
+	// Failed to load filename directly; proceed with old logic below.
 
+	// Allow loading of fixtures on Windows systems.
+	path := fmt.Sprintf("%s/src/%s/%s", os.Getenv("GOPATH"), repo, filename)
 	if runtime.GOOS == "windows" {
 		path = strings.ReplaceAll(path, "/", "\\")
 	}
 
-	b, err := ioutil.ReadFile(path)
+	b2, err := ioutil.ReadFile(path)
 	if err != nil {
 		return "", err
 	}
-	return string(b), nil
+	return string(b2), nil
 }
 
 type testHandler struct {
