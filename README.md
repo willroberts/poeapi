@@ -85,7 +85,7 @@ Have a patch or a new feature? [Open a pull request][Pull Request]
 [GoDoc]: https://pkg.go.dev/github.com/willroberts/poeapi
 [GoDoc Badge]: https://pkg.go.dev/badge/github.com/willroberts/poeapi
 
-[API Docs]: https://www.pathofexile.com/developer/docs/api
+[API Docs]: https://www.pathofexile.com/developer/docs/reference
 [Examples]: https://github.com/willroberts/poeapi/tree/main/examples
 [Issue]: https://github.com/willroberts/poeapi/issues
 [Pull Request]: https://github.com/willroberts/poeapi/pulls
